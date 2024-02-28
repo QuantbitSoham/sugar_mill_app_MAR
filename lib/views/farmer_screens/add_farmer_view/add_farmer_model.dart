@@ -116,8 +116,7 @@ class FarmerViewModel extends BaseViewModel {
     //   Fluttertoast.showToast(msg: "Can not edit approved document!");
     //   return;
     // }
-    Logger().i(farmerData.aadhaarCard);
-    Logger().i(files.adharCard);
+ 
     if(isEdit==true){if(farmerData.aadhaarCard== null && files.adharCard == null){
 
       Fluttertoast.showToast(msg: "Please upload aadhaar card");
@@ -153,7 +152,8 @@ class FarmerViewModel extends BaseViewModel {
       bool res = false;
       if (isEdit == true) {
         Logger().i(farmerData.workflowState);
-if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ farmerData.workflowState = "Pending For Agriculture Officer";}else{ farmerData.workflowState = "Pending";}
+if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved"||farmerData.workflowState=="Rejected" ){ farmerData.workflowState = "Pending For Agriculture Officer";}
+if(farmerData.workflowState=="Pending"){farmerData.workflowState = "Pending";}
 
 
         Logger().i(farmerData.toJson());
@@ -360,7 +360,7 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
     }
   }
 
-  String errorMessage = '';
+String errorMessage = '';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// for gender //////////////////////////////////////////////////
@@ -393,12 +393,14 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
     notifyListeners();
   }
 
+
   String? selectedVendorGroup;
   void setSelectedVendorGroup(String? vender) {
     selectedVendorGroup = vender;
     farmerData.supplierGroup = vender;
     notifyListeners();
   }
+
 
   String? selectedVillage;
   String? selectedoffice;
@@ -474,6 +476,7 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
   //   notifyListeners();
   // }
   // final List<String> roles = ['Transporter'];
+  
   Set<String> selectedRoleforservice = <String>{};
   String? _selectedRole;
 
@@ -489,6 +492,7 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
   //   }
   // }
 
+ bool isLoading = false;
   bool transporter = false;
   bool harvester = false;
   bool farmer = false;
@@ -645,6 +649,7 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
     } catch (e) {
       Fluttertoast.showToast(
           msg: 'Error while picking an image or document: $e');
+          Logger().e(e);
     }
     notifyListeners();
   }
@@ -725,6 +730,18 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
     return null;
   }
 
+ String? validateAge(String? value) {
+   if (value == null || value.isEmpty) {
+      return 'Please Enter Age';
+    }
+    if (value.length==3) {
+      return 'Please Enter Valid Age';
+    }
+    Logger().i(value.length);
+    return null;
+    
+  }
+
   String? validatename(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter the vendor name';
@@ -760,41 +777,67 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
     return null;
   }
 
-  void validateForm(BuildContext context, int index) async {
-    // if (farmerData.workflowState == "Approved") {
-    //   Fluttertoast.showToast(msg: "Can not edit Approved document");
-    //   return;
-    // }
-    if (passbookattch == "") {
-      Fluttertoast.showToast(msg: "Please attach the passbook");
+  Future<void> validateForm(BuildContext context, int index) async {
+
+    if (bankAccounts.any((account) => account.accountNumber == accountNumber && idbankedit == false)) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        msg: "Account number already exists",
+        toastLength: Toast.LENGTH_LONG,
+      );
       return;
     }
-    final formState = bankformKey.currentState;
-    if (formState!.validate()) {
-      // Form is valid, submit it
-      if (index == -1) {
-        if (!isRoleAlreadyPresent(bankName)) {
-          Fluttertoast.showToast(
-              msg: "Role is already exist", toastLength: Toast.LENGTH_LONG);
-          return;
-        }
+
+    if (bankAccounts.any((account) => account.bankPassbook == passbookattch && idbankedit == false)) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        msg: "Passbook attachment already exists",
+        toastLength: Toast.LENGTH_LONG,
+      );
+      return;
+    }
+
+    if (index == -1) {
+      if (!isRoleAlreadyPresent(bankName)) {
+        Fluttertoast.showToast(
+          msg: "Role is already exist",
+          toastLength: Toast.LENGTH_LONG,
+        );
+        return;
       }
-      setBusy(false);
+    }
+
+    setBusy(true); // Set the loading state
+ Navigator.pop(context);
+    try {
       await uploadpassbook(index);
       submitBankAccount(index);
-      setBusy(false);
-      if (context.mounted) {
-        Navigator.pop(context);
-      }
+    setBusy(false);
+//  if (context.mounted) {
+//         Navigator.pop(context);
+//       }
       Fluttertoast.showToast(
-          msg: "Bank is Added Succesfully", toastLength: Toast.LENGTH_LONG);
+         gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+          msg:idbankedit==true ?"Bank is edited succesfully":'Bank is added successfully', toastLength: Toast.LENGTH_LONG);
       resetBankVariables();
       passbookattch = "";
-    } else {
-      // Form is invalid, show error messages
-      Logger().i('Bank Form is invalid');
+      // Reset state variables, dismiss dialog, show toast, etc.
+
+    } catch (e) {
+      Logger().e(e);
+       setBusy(false);
+      // Handle any errors here...
+    } finally {
+      setBusy(false); // Set the loading state
     }
-  }
+  
+}
 
   bool getRoleValue(String role, int index) {
     if (index >= 0 && index < bankAccounts.length) {
@@ -866,12 +909,13 @@ if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved" ){ fa
         bankPassbook: passbookattch));
     notifyListeners();
   }
-
+bool idbankedit=false;
   void setValuesToBankVaribles(int index) {
     if (index != -1) {
       if (index >= bankAccounts.length) {
         return;
       }
+      idbankedit=true;
       // Reset all roles to false
       farmer = false;
       harvester = false;
@@ -903,6 +947,7 @@ nursery=false;
   }
 
   void resetBankVariables() {
+    idbankedit=false;
     farmer = false;
     harvester = false;
     transporter = false;
@@ -950,9 +995,7 @@ nursery=false;
     if (value!.isEmpty) {
       return 'Please enter a branch IFSC code';
     }
-    if (value.length != 11) {
-      return 'The branch IFSC code must be 11 characters long';
-    }
+   
     return null;
   }
 

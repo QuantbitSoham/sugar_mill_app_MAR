@@ -20,9 +20,19 @@ class ListAgriModel extends BaseViewModel {
 
   initialise(BuildContext context) async {
     setBusy(true);
-    agriList = (await ListAgriService().getAllCaneList()).cast<AgriListModel>();
+    // agriList = (await ListAgriService().getAllCaneList()).cast<AgriListModel>();
     seasonlist = await AddCaneService().fetchSeason();
-    filteredagriList = agriList;
+    // filteredagriList = agriList;
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonlist.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+    );
+    seasoncontroller.text=latestSeason;
+    // canefilterList = caneList;
+    await filterListBySeason(name: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
       logout(context);
@@ -30,7 +40,14 @@ class ListAgriModel extends BaseViewModel {
     notifyListeners();
   }
 ///dhdjhdjhj
-  void filterListBySeason({String? name}) async {
+
+Future<void> refresh() async {
+  filteredagriList = (await ListAgriService().getAllCaneList()).cast<AgriListModel>();
+  notifyListeners();
+}
+
+
+  Future<void>  filterListBySeason({String? name}) async {
     caneSeasonFilter = name ?? caneSeasonFilter;
     notifyListeners();
     filteredagriList =

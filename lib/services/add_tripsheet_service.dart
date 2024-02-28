@@ -31,8 +31,8 @@ class AddTripSheetServices {
         // print(response.statusMessage);
         return null;
       }
-    } catch (e) {
-      Logger().i(e);
+    } on DioException catch (e) {
+      Logger().i(e.response);
       Fluttertoast.showToast(msg: "Error while fetching user");
     }
     return null;
@@ -166,7 +166,7 @@ class AddTripSheetServices {
       }
     } catch (e) {
       Logger().i(e);
-      Fluttertoast.showToast(msg: "Error while fetching user");
+      // Fluttertoast.showToast(msg: "Error while fetching user");
     }
     return null;
   }

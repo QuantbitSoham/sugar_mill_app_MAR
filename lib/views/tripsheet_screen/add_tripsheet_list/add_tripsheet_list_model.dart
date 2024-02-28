@@ -10,7 +10,7 @@ import '../../../services/list_tripsheet_service.dart';
 class ListTripsheet extends BaseViewModel {
   TextEditingController idcontroller = TextEditingController();
   TextEditingController namecontroller = TextEditingController();
-
+  TextEditingController seasonController = TextEditingController();
   List<TripSheetSearch> triSheetList = [];
   List<TripSheetSearch> tripSheetFilter = [];
   List<String> seasonlist = [];
@@ -20,16 +20,28 @@ class ListTripsheet extends BaseViewModel {
 
   initialise(BuildContext context) async {
     setBusy(true);
-    triSheetList = (await ListTripshhetService().getAllTripsheetList())
-        .cast<TripSheetSearch>();
-    tripSheetFilter = triSheetList;
     seasonlist = await ListTripshhetService().fetchSeason();
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonlist.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+    );
+    seasonController.text=latestSeason;
+ await filterListByNameAndVillage(season: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
       logout(context);
     }
     notifyListeners();
   }
+
+Future<void> refresh() async {
+   tripSheetFilter= (await ListTripshhetService().getAllTripsheetList())
+        .cast<TripSheetSearch>();
+  notifyListeners();
+}
 
   void filterList(String filter, int query) async {
     notifyListeners();
@@ -38,7 +50,7 @@ class ListTripsheet extends BaseViewModel {
     notifyListeners();
   }
 
-  void filterListByNameAndVillage(
+  Future<void> filterListByNameAndVillage(
       {String? transName, String? village, String? season}) async {
     tripsheeNameFilter = transName ?? tripsheeNameFilter;
     tripsheetVillageFilter = village ?? tripsheetVillageFilter;

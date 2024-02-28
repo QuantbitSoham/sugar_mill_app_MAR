@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/views/cane_screens/add_cane_view/add_cane_model.dart';
@@ -531,18 +532,22 @@ class AddCaneScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: TextFormField(
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: false),
-                                  controller: model.surveyNumberController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Survey Number *',
-                                  ),
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Please enter a Survey Number'
-                                      : null,
-                                  onChanged: model.setsurveyNumber,
-                                ),
+
+  controller: model.surveyNumberController,
+  decoration: const InputDecoration(
+    labelText: 'Survey Number *',
+  ),
+  validator: (value) =>
+      value!.isEmpty ? 'Please enter a Survey Number' : null,
+  onChanged: model.setsurveyNumber,
+  inputFormatters: [
+    FilteringTextInputFormatter.allow(
+      RegExp(r'[0-9@#$%^&8()_+={}[/]|\\:;"\<>,.?/-]'), // Allow only numbers, '/', '.', and '-'
+    ),
+    
+  ],
+),
+
                               ),
                               const SizedBox(
                                 width: 15,
@@ -657,7 +662,7 @@ class AddCaneScreen extends StatelessWidget {
                                       DropdownButtonFormField<String>(
                                     isExpanded: true,
                                     value: model.canedata.plantationSystem,
-                                    // Replace null with the selected value if needed
+                        
                                     decoration: const InputDecoration(
                                       labelText: 'Plantation System *',
                                     ),
@@ -789,7 +794,8 @@ class AddCaneScreen extends StatelessWidget {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  keyboardType: TextInputType.number,
+
+                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                                   controller: model.areainAcrsController,
                                   decoration: const InputDecoration(
                                     labelText: 'Area In Acrs *',

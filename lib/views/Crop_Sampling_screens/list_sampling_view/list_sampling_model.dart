@@ -32,15 +32,30 @@ class ListSamplingModel extends BaseViewModel {
 
   initialise(BuildContext context) async {
     setBusy(true);
-    samplingList = (await ListCropSamplingServices().getAllCropSamplingList());
+    // samplingList = (await ListCropSamplingServices().getAllCropSamplingList());
     seasonlist = await AddCaneService().fetchSeason();
-    filtersamplingList = samplingList;
+
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonlist.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+    );
+    seasoncontroller.text=latestSeason;
+    // filtersamplingList = samplingList;
+    await filterListBySeason(name: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
       logout(context);
     }
     notifyListeners();
   }
+
+Future<void> refresh() async {
+   filtersamplingList= (await ListCropSamplingServices().getAllCropSamplingList());
+  notifyListeners();
+}
 
   void onRowClick(BuildContext context, ListSampling? samplingList) {
     Navigator.pushNamed(
@@ -54,7 +69,7 @@ class ListSamplingModel extends BaseViewModel {
   }
 
 
-  void filterListBySeason({String? name}) async {
+  Future<void> filterListBySeason({String? name}) async {
     caneSeasonFilter = name ?? caneSeasonFilter;
     notifyListeners();
     filtersamplingList =

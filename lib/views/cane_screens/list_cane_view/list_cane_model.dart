@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/router.router.dart';
@@ -39,9 +40,19 @@ class ListCaneModel extends BaseViewModel {
   List<String> seasonlist = [""];
   void initialise(BuildContext context) async {
     setBusy(true);
-    caneList = (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
+    // caneList = (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
     seasonlist = await AddCaneService().fetchSeason();
-    canefilterList = caneList;
+    Logger().i(seasonlist);
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonlist.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+    );
+    seasoncontroller.text=latestSeason;
+    // canefilterList = caneList;
+    await filterListByNameAndVillage(season: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
       logout(context);
@@ -49,13 +60,19 @@ class ListCaneModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void filterListByNameAndVillage({String? season,String? name, String? village}) async {
+Future<void> refresh() async {
+   canefilterList= (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
+  notifyListeners();
+}
+
+  Future<void> filterListByNameAndVillage({String? season,String? name, String? village}) async {
     caneseasonFilter=season ?? caneseasonFilter;
     caneNameFilter = name ?? caneNameFilter;
     canevillageFilter = village ?? canevillageFilter;
     notifyListeners();
     canefilterList = await ListCaneService()
         .getCaneListByNameFilter(caneseasonFilter,caneNameFilter, canevillageFilter);
+
     notifyListeners();
   }
 

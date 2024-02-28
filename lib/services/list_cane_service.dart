@@ -39,26 +39,29 @@ class ListCaneService {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
+String url= '$apiBaseUrl/api/resource/Cane Master?fields=["plantation_status","route_name","crop_variety","name","grower_code","grower_name","plantattion_ratooning_date","survey_number"]&filters=[["season","like","$season%"],["grower_name","like","%$name%"],["route_name","like","$village%"]]&order_by=creation desc';
+      Logger().i(url);
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Cane Master?fields=["plantation_status","route_name","crop_variety","name","grower_code","grower_name","plantattion_ratooning_date","survey_number"]&filters=[["season","like","$season%"],["grower_name","like","%$name%"],["route_name","like","$village%"]]',
+        url,
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-
+Logger().i(response.realUri);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
         List<CaneListModel> farmersList = List.from(jsonData['data'])
             .map<CaneListModel>((data) => CaneListModel.fromJson(data))
             .toList();
+        Logger().i(jsonData);
         return farmersList;
       } else {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
+    } on DioException catch (e) {
+      Logger().e(e.response?.data.toString());
     }
 
     return [];

@@ -43,13 +43,14 @@ class ListCropSamplingServices {
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","season","plantation_status","area","form_number","name"]&filters=[["season","like","$season%"]]',
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","season","plantation_status","area","form_number","name"]&filters=[["season","like","$season%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
       Logger().i(response);
+      Logger().i(response.realUri);
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
@@ -76,7 +77,7 @@ class ListCropSamplingServices {
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","season","plantation_status","area","form_number","name"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"]]',
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","season","plantation_status","area","form_number","name"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,

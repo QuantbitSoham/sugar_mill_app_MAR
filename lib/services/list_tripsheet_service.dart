@@ -78,7 +78,7 @@ class ListTripshhetService {
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["$query","like","$filter%"]]',
+        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["$query","like","$filter%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,
@@ -110,13 +110,13 @@ class ListTripshhetService {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["transporter_name","like","%$trsname%"],["field_village","like","$village%"],["season","like","$season%"]]',
+        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["transporter_name","like","%$trsname%"],["field_village","like","$village%"],["season","like","$season%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-
+Logger().i(response);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
         List<TripSheetSearch> farmersList = List.from(jsonData['data'])
