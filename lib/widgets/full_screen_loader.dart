@@ -13,10 +13,10 @@ Widget fullScreenLoader(
           ? Container(
               height: getHeight(context),
               width: getWidth(context),
-              color: lightBlack,
+              color: Colors.white,
               child: Center(
                 child: LoadingAnimationWidget.discreteCircle(
-                    color: Colors.white,
+                    color: Colors.black38,
                     size: 150,
                     secondRingColor: Colors.blue,
                     thirdRingColor: Colors.lightBlue),

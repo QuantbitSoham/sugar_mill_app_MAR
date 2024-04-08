@@ -338,12 +338,7 @@ void showSuccessDialog(BuildContext context,String? name) {
         ),
       );
     }
-    Logger().i(farmerList.length);
-    // final selectedRouteData =
-    //     villageList.firstWhere((routeData) => routeData.name == village);
 
-    Logger().i(canedata.circleOffice);
-    // Set th distance in the kmController
     notifyListeners();
   }
 

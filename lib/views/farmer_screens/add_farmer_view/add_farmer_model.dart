@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,7 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/models/farmer.dart';
 import 'package:sugar_mill_app/services/add_farmer_service.dart';
-
+import '../../../models/aadharData_model.dart';
 import '../../../models/bank_model.dart';
 import '../../../models/village_model.dart';
 import '../../../router.router.dart';
@@ -45,7 +44,7 @@ class FarmerViewModel extends BaseViewModel {
   late String branch = "";
   late String passbookattch = "";
   bool isPassbookAdded = false;
-  String? role;
+  bool role=false;
 
   bool isEdit = false;
 
@@ -53,7 +52,7 @@ class FarmerViewModel extends BaseViewModel {
 
   List<String> get selectedItems => _selectedItems;
 
-  initialise(BuildContext context, String farmerid) async {
+  initialise(BuildContext context, String farmerid,aadharData qrdata) async {
     setBusy(true);
     villageList = await FarmerService().fetchVillages();
     bankList = await FarmerService().fetchBanks();
@@ -63,6 +62,22 @@ class FarmerViewModel extends BaseViewModel {
     Logger().i(villageList.length);
     farmerId = farmerid;
     //setting aleardy available data
+    if(qrdata.name !=null){
+      farmerData.supplierName=qrdata.name;
+      farmerData.dateOfBirth=qrdata.dob;
+      farmerData.aadhaarNumber="********${qrdata.aadhaarLast4Digit}";
+      _formatAadhar(farmerData.aadhaarNumber.toString());
+      supplierNameController.text = farmerData.supplierName ?? "";
+      aadharNumberController.text =
+          _formatAadhar(farmerData.aadhaarNumber ?? "");
+      dobController.text =farmerData.dateOfBirth.toString();
+      onDobChanged(dobController.text);
+      farmerData.taluka=qrdata.subdistrict;
+      farmerData.village=qrdata.postoffice;
+      String gender="";
+      if(qrdata.gender =="M"){gender='Male';}else if(qrdata.gender =="F"){gender='Female';}else{gender='Other';}
+      farmerData.gender=gender;
+    }
     if (farmerId != "") {
       isEdit = true;
       farmerData = await FarmerService().getFarmer(farmerid) ?? Farmer();
@@ -377,7 +392,7 @@ String errorMessage = '';
   }
 
   bool shouldShowCheckbox(String item) {
-    if (role == "Slip Boy") {
+    if (role == true) {
       // Show checkboxes for "Far" and "Mem" only if the role is "Slip Boy"
       return item == "Far" || item == "Mem";
     } else {
@@ -891,12 +906,12 @@ String errorMessage = '';
       bankAccounts[index].branchifscCode = branchifscCode;
       bankAccounts[index].accountNumber = accountNumber;
       bankAccounts[index].bankPassbook = passbookattch;
-      print("BANK IFSCE: ${bankAccounts[index].bankAndBranch}");
+      
 
       notifyListeners();
       return;
     }
-    print("BANK IFSCE: ${branchifscCode}");
+
     bankAccounts.add(BankDetails(
         farmer: farmer ? 1 : 0,
         harvester: harvester ? 1 : 0,

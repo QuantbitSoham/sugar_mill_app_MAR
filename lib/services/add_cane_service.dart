@@ -40,7 +40,7 @@ class AddCaneService {
         return "";
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured $e ");
+      Fluttertoast.showToast(msg: e.response?.data["exception"]);
       Logger().e(e.response?.data["exception"]);
     }
     return "";

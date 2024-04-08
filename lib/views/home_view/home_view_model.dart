@@ -11,21 +11,18 @@ import 'package:sugar_mill_app/models/employee.dart';
 import 'package:sugar_mill_app/router.router.dart';
 import 'package:sugar_mill_app/services/chekin_Services.dart';
 import 'package:sugar_mill_app/services/geolocation_service.dart';
+import '../../models/dashboard_model.dart';
 import '../../services/login_success.dart';
 
 class HomeViewModel extends BaseViewModel {
   Checkin checkindata = Checkin();
   Employee employee = Employee();
+  Dashboard dashboard=Dashboard();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   List<String> villageList = [""];
   List<Employee> empList = [];
   List<Checkin> checkinList = [];
-  String? mobile;
-  String? empname;
-  String? empid;
-  String? checkvalue;
-  String? time;
-  String? sharedempid;
+
    String? greeting;
   String? imageurl;
 
@@ -38,33 +35,25 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
+
+
   initialise(BuildContext context) async {
     setBusy(true);
     final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
     final SharedPreferences prefs = await prefs0;
-    mobile = prefs.getString("mobile");
     villageList = await login().fetchVillages();
     if (villageList.isEmpty) {
       final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
       final SharedPreferences prefs = await prefs0;
       prefs.clear();
       if (context.mounted) {
-        Navigator.pushNamed(context, Routes.loginViewScreen);
+        Navigator.popAndPushNamed(context, Routes.loginViewScreen);
       }
     }
 handleGreeting();
 handleImage();
-    empList = await CheckinServices().fetchmobile(mobile ?? "");
-    empname = empList[0].employeeName;
-    notifyListeners();
-    empid = empList[0].name;
-    checkinList = await CheckinServices().fetchcheckindata(empid ?? "");
+dashboard=await CheckInServices().dashboard() ?? Dashboard();
     setBusy(false);
-    checkvalue = checkinList[0].logType;
-    time = checkinList[0].time;
-    notifyListeners();
-    Logger().i(checkvalue);
-    Logger().i(time);
   }
 
 
@@ -90,16 +79,13 @@ handleImage();
       imageurl = "assets/images/sunset.png";
     }
   }
-  void checkin(BuildContext context) async {
+
+  void employeeLog(String logtype, BuildContext context) async {
     setBusy(true);
-
+    GeolocationService geolocationService = GeolocationService();
     try {
-      checkindata.employee = empid;
-      checkindata.logType = "IN";
-      checkindata.time = DateTime.now().toString();
-
-      GeolocationService geolocationService = GeolocationService();
       Position? position = await geolocationService.determinePosition();
+
 
       if (position == null) {
         Fluttertoast.showToast(msg: 'Failed to get location');
@@ -114,112 +100,28 @@ handleImage();
 
       String formattedAddress =
           await geolocationService.getAddressFromCoordinates(
-                  position.latitude, position.longitude) ??
+              position.latitude, position.longitude) ??
               "";
       checkindata.latitude = position.latitude.toString();
       checkindata.longitude = position.longitude.toString();
       checkindata.deviceId = formattedAddress;
+      Logger().i(position.latitude.toString());
+      Logger().i(position.longitude.toString());
+      Logger().i(formattedAddress);
 
-      Logger().i(checkindata.toJson().toString());
-
-      bool res = await CheckinServices().addCheckin(checkindata);
+      bool res = await CheckInServices().addCheckIn(logtype,position.latitude.toString(),position.longitude.toString(),formattedAddress);
       if (res) {
         setBusy(false);
-        checkinList = await CheckinServices().fetchcheckindata(empid ?? "");
-
-        if (checkinList.isNotEmpty) {
-          checkvalue = checkinList[0].logType;
-          time = checkinList[0].time;
-          notifyListeners();
-          Navigator.pop(context);
-          Fluttertoast.showToast(
-            msg: "Check-$checkvalue Successfully!",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.black87,
-            fontSize: 16.0,
-          );
-        }
+        dashboard=await CheckInServices().dashboard() ?? Dashboard();
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'An error occurred: $e');
+      Fluttertoast.showToast(msg: '$e');
     } finally {
       setBusy(false);
-      notifyListeners();
     }
-  }
-
-  void checkout(BuildContext context) async {
-    setBusy(true);
-
-    try {
-      checkindata.employee = empid;
-      checkindata.logType = "OUT";
-      checkindata.time = DateTime.now().toString();
-
-      GeolocationService geolocationService = GeolocationService();
-      Position? position = await geolocationService.determinePosition();
-
-      if (position == null) {
-        Fluttertoast.showToast(msg: 'Failed to get location');
-        return setBusy(false);
-      }
-
-      Placemark? placemark = await geolocationService.getPlacemarks(position);
-      if (placemark == null) {
-        Fluttertoast.showToast(msg: 'Failed to get placemark');
-        return setBusy(false);
-      }
-
-      String formattedAddress =
-          await geolocationService.getAddressFromCoordinates(
-                  position.latitude, position.longitude) ??
-              "";
-      checkindata.latitude = position.latitude.toString();
-      checkindata.longitude = position.longitude.toString();
-      checkindata.deviceId = formattedAddress;
-
-      Logger().i(checkindata.toJson().toString());
-
-      bool res = await CheckinServices().addCheckin(checkindata);
-      if (res) {
-        setBusy(false);
-        checkinList = await CheckinServices().fetchcheckindata(empid ?? "");
-        if (checkinList.isNotEmpty) {
-          checkvalue = checkinList[0].logType;
-          time = checkinList[0].time;
-          notifyListeners();
-          Navigator.pop(context);
-          Fluttertoast.showToast(
-            msg: "Check-$checkvalue Successfully!",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.black87,
-            fontSize: 16.0,
-          );
-        }
-      }
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'An error occurred: $e');
-    } finally {
-      setBusy(false);
-      notifyListeners();
-    }
-  }
-
-  void getGeoLocation() async {
-    setBusy(true);
-    notifyListeners();
-    Position? position = await GeolocationService().determinePosition();
-    Logger().i(position);
-    Placemark? placemark = await GeolocationService().getPlacemarks(position);
-    Fluttertoast.showToast(
-        msg: placemark.toString(), toastLength: Toast.LENGTH_LONG);
     setBusy(false);
     notifyListeners();
   }
+
+
 }

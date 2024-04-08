@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
 import 'package:stacked/stacked.dart';
-
 import '../../../constants.dart';
 import '../../../models/tripsheet_list_search.dart';
 import '../../../router.router.dart';
@@ -40,6 +38,7 @@ class ListTripsheet extends BaseViewModel {
 Future<void> refresh() async {
    tripSheetFilter= (await ListTripshhetService().getAllTripsheetList())
         .cast<TripSheetSearch>();
+  tripSheetFilter.sort((a, b) => b.name!.compareTo(a.name ?? 0)); 
   notifyListeners();
 }
 
@@ -58,6 +57,7 @@ Future<void> refresh() async {
     notifyListeners();
     tripSheetFilter = await ListTripshhetService().getTransporterNameFilter(
         tripsheeNameFilter, tripsheetVillageFilter, tripsheetSeasonFilter);
+    tripSheetFilter.sort((a, b) => b.name!.compareTo(a.name ?? 0)); 
     notifyListeners();
   }
 

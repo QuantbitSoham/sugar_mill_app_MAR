@@ -15,8 +15,8 @@ const kPanpdf = "PanCard";
 
 const kBankpdf = "BankPassbook";
 const kConcentpdf = "ConcentLetter";
-// const apiBaseUrl = "https://deverpvppl.erpdata.in";
-const apiBaseUrl = "https://erpvppl.erpdata.in";
+// const apiBaseUrl = "https://erpvppl.erpdata.in";
+const apiBaseUrl = "https://migratesugar.erpdata.in";
 
 /// api usrls
 String apifetchSeason =
@@ -66,7 +66,7 @@ String apigetagrilist =
 ///Crop Sampling
 String apiPostCropSampling = "$apiBaseUrl/api/resource/Crop Sampling";
 String apiListSampling =
-    '$apiBaseUrl/api/resource/Crop Sampling?order_by=creation desc&fields=["id","season","plantation_status","area","form_number","name"]';
+    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety"]';
 
 ///TripSheet
 String apifetchplotnumber =
@@ -170,3 +170,5 @@ File fileFromXFile(XFile xfile) {
 
   return file;
 }
+
+

@@ -1,54 +1,52 @@
 import 'dart:convert';
-
+import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/checkin.dart';
-
 import '../constants.dart';
+import '../models/dashboard_model.dart';
 import '../models/employee.dart';
 
-class CheckinServices {
-  Future<List<Employee>> fetchmobile(String mobile) async {
+class CheckInServices {
+
+  Future<Dashboard?> dashboard() async {
     try {
-      var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Employee?filters=[["cell_number","=","$mobile"]]&fields=["employee_name","name"]',
+        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.get_dashboard',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Cookie': await getTocken()},
         ),
       );
 
       if (response.statusCode == 200) {
-        var jsonData = json.encode(response.data);
-        Map<String, dynamic> jsonDataMap = json.decode(jsonData);
-        List<dynamic> dataList = jsonDataMap['data'];
-        List<Employee> canelistwithfilter =
-            dataList.map<Employee>((data) => Employee.fromJson(data)).toList();
-        Logger().i(canelistwithfilter);
-        return canelistwithfilter;
+        Logger().i(response.data["data"]);
+        return Dashboard.fromJson(response.data["data"]);
       } else {
-        Logger().e(response.statusCode);
-        Logger().e(response.statusMessage);
-        return [];
+        // print(response.statusMessage);
+        return null;
       }
-    } catch (e) {
-      Logger().e(e);
-      return [];
+    } on DioException catch (e) {
+      Logger().i(e.response);
+      // Fluttertoast.showToast(msg: "Error while fetching user");
     }
+    return null;
   }
 
-  Future<bool> addCheckin(Checkin check) async {
-    var data = json.encode({
-      "data": check,
-    });
-    Logger().i(check.toString());
+  Future<bool> addCheckIn(String logtype,String latitude,String longitude,String address) async {
+    var data = {
+      "log_type": logtype,
+      "latitude":latitude,
+      "longitude":longitude,
+      "address":address
+    };
+    Logger().i(data.toString());
     try {
       var dio = Dio();
       var response = await dio.request(
-        apiEmployeeCheckin,
+        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.create_employee_log',
         options: Options(
           method: 'POST',
           headers: {'Cookie': await getTocken()},
@@ -70,31 +68,5 @@ class CheckinServices {
     return false;
   }
 
-  Future<List<Checkin>> fetchcheckindata(String emp) async {
-    try {
-      var headers = {'Cookie': await getTocken()};
-      var dio = Dio();
-      var response = await dio.request(
-        '$apiBaseUrl/api/resource/Employee Checkin?filters=[["employee","=","$emp"]]&order_by=creation desc&fields=["log_type","time","employee","employee_name"]',
-        options: Options(
-          method: 'GET',
-          headers: headers,
-        ),
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<Checkin> routeList = List.from(jsonData['data'])
-            .map<Checkin>((data) => Checkin.fromJson(data))
-            .toList();
-        return routeList;
-      } else {
-        Logger().e(response.statusMessage);
-        return [];
-      }
-    } catch (e) {
-      Logger().e(e);
-    }
 
-    return [];
-  }
 }

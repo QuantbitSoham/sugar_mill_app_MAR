@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
+
 import 'package:sugar_mill_app/views/farmer_screens/add_farmer_view/add_farmer_model.dart';
 import 'package:sugar_mill_app/widgets/cdrop_down_widget.dart';
 import 'package:sugar_mill_app/widgets/ctext_button.dart';
@@ -17,20 +18,33 @@ import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 import 'package:sugar_mill_app/widgets/view_docs_from_internet.dart';
 import 'package:sugar_mill_app/widgets/view_image.dart';
 
+import '../../../models/aadharData_model.dart';
+import '../qr_scanner.dart';
+
 class AddFarmerScreen extends StatelessWidget {
+  final aadharData qrdata;
   final String farmerid;
-  const AddFarmerScreen({super.key, required this.farmerid});
+  const AddFarmerScreen({super.key, required this.farmerid, required this.qrdata});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FarmerViewModel>.reactive(
       viewModelBuilder: () => FarmerViewModel(),
-      onViewModelReady: (model) => model.initialise(context, farmerid),
+      onViewModelReady: (model) => model.initialise(context, farmerid,qrdata),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: model.isEdit == true
               ? Text(model.farmerData.existingSupplierCode ?? "")
               : const Text('Farmer Form'),
+          actions: [
+            IconButton(onPressed: (){Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QRCodeScanner(
+                ),
+              ),
+            );}, icon: Icon(Icons.qr_code))
+          ],
         ),
         body: fullScreenLoader(
           child: SingleChildScrollView(
@@ -626,19 +640,19 @@ class AddFarmerScreen extends StatelessWidget {
                                 const DataColumn(
                                   label: Text('Far.'),
                                 ),
-                                 if(model.role != "Slip Boy")
+                                 if(model.role ==false)
                                 const DataColumn(
                                   label: Text('Har.'),
                                 ),
-                                 if(model.role != "Slip Boy")
+                                 if(model.role ==false)
                                 const DataColumn(
                                   label: Text('Trans.'),
                                 ),
-                                 if(model.role != "Slip Boy")
+                                if(model.role ==false)
                                 const DataColumn(
                                   label: Text('Drip'),
                                 ),
-                                 if(model.role != "Slip Boy")
+                                if(model.role ==false)
                                 const DataColumn(
                                   label: Text('Nursery'),
                                 ),
@@ -682,7 +696,7 @@ class AddFarmerScreen extends StatelessWidget {
                                         );
                                       },
                                     )),
-                                     if(model.role != "Slip Boy")
+                                    if(model.role ==false)
                                     DataCell(Checkbox(
                                       value:
                                           model.bankAccounts[index].harvester ==
@@ -692,7 +706,7 @@ class AddFarmerScreen extends StatelessWidget {
                                             "Harvester", newValue ?? false);
                                       },
                                     )),
-                                     if(model.role != "Slip Boy")
+                                     if(model.role ==false)
                                     DataCell(Checkbox(
                                       value: model.bankAccounts[index]
                                               .transporter ==
@@ -702,7 +716,7 @@ class AddFarmerScreen extends StatelessWidget {
                                             "Transporter", newValue ?? false);
                                       },
                                     )),
-                                     if(model.role != "Slip Boy")
+                                  if(model.role ==false)
                                     DataCell(Checkbox(
                                       value: model.bankAccounts[index]
                                           .drip ==
@@ -712,7 +726,7 @@ class AddFarmerScreen extends StatelessWidget {
                                             "Drip", newValue ?? false);
                                       },
                                     )),
-                                     if(model.role != "Slip Boy")
+                                     if(model.role ==false)
                                     DataCell(Checkbox(
                                       value: model.bankAccounts[index]
                                           .nursery ==

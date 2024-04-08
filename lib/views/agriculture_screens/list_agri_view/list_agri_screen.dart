@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_model.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 
@@ -70,7 +71,7 @@ class ListAgriScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          const SizedBox(width: 10,),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -83,7 +84,7 @@ class ListAgriScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          const SizedBox(width: 10,),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -106,53 +107,49 @@ class ListAgriScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   color: Colors.grey,
                   child: const ListTile(
-                    leading: SizedBox(
-                      // width: getWidth(context) / 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          AutoSizeText(
-                            'Village',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style:
-                                TextStyle(color: Colors.white), // Set text color
-                          ),
-                          AutoSizeText(
-                            'Area In Acres',
-                            maxLines: 2,
-                            style: TextStyle(
-                                fontSize: 8,
-                                color: Colors.white), // Set text color
-                          ),
-                        ],
-                      ),
-                    ),
-                    title: AutoSizeText(
-                      'Survey Number',
-                      style: TextStyle(
-                          fontSize: 14, color: Colors.white), // Set text color
-                    ),
-                    subtitle: AutoSizeText(
-                      'Plantation Date',
-                      style: TextStyle(
-                          fontSize: 14, color: Colors.white), // Set text color
-                    ),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         AutoSizeText(
-                          'Crop Type',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.white), // Set text color
+                          'Village/route',
+                          maxLines: 2,
+                          style: TextStyle(color: Colors.white),
                         ),
-                        AutoSizeText(
+                       AutoSizeText(
                           'Crop Variety',
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: 8, color: Colors.white), // Set text color
+                          style: TextStyle(color: Colors.white),
                         ),
+                      ],
+                    ),
+                    leading:AutoSizeText(
+                      'Plot Number',
+                       overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    title: AutoSizeText(
+                      'Farmer Name',
+                      style: TextStyle(color: Colors.white),
+                      minFontSize: 8,
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                         Expanded(
+                          child: AutoSizeText(
+                            'ID',
+                              overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        Expanded(
+                          child: AutoSizeText(
+                            'Plantation Date',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                       
+                         
                       ],
                     ),
                   ),
@@ -162,77 +159,65 @@ class ListAgriScreen extends StatelessWidget {
                 ),
                 model.filteredagriList.isNotEmpty
                     ? Expanded(
-                        child: ListView.builder(
+                        child: ListView.separated(
                           itemCount: model.filteredagriList.length,
                           itemBuilder: (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.only(
-                                  bottom: 16.0), // Add margin between containers
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: ListTile(
-                                  tileColor: const Color(0xFFD3E8FD),
-                                  trailing: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      AutoSizeText(
-                                        model.filteredagriList[index].cropType ??
-                                            '',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      AutoSizeText(
-                                        model.filteredagriList[index]
-                                                .cropVariety ??
-                                            '',
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                          fontSize: 8,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  leading: SizedBox(
-                                    width: getWidth(context) / 5,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        AutoSizeText(
-                                          model.filteredagriList[index].village ??
-                                              '',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        AutoSizeText(
-                                          model.filteredagriList[index].area
-                                              .toString(),
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                            fontSize: 8,
-                                          ),
-                                        ),
-                                      ],
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: ListTile(
+                               tileColor:const Color(0xFFD3E8FD),
+                                trailing: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    AutoSizeText(
+                                      model.filteredagriList[index].village ?? '',
+                                      maxLines: 2,
                                     ),
-                                  ),
-                                  title: Text(
-                                    model.filteredagriList[index].surveyNumber ?? "",
-                                    style: const TextStyle(fontSize: 22),
-                                  ),
-                                  subtitle: Text(DateFormat('dd-MM-yyyy').format(DateTime.parse(model.filteredagriList[index].date ?? '')),
-            
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  onTap: () {
-                                    // Handle row click here
-                                    // _onRowClick(context, filteredList[index]);
-                                    model.onRowClick(
-                                        context, model.filteredagriList[index]);
-                                  },
+                                    AutoSizeText(
+                                      model.filteredagriList[index]
+                                              .cropVariety ??
+                                          '',
+                                    ),
+                                  ],
                                 ),
+                                leading:AutoSizeText(
+                                  model.filteredagriList[index]
+                                      .caneRegistrationId.toString(),
+                                      minFontSize: 20,
+                                ),
+                               
+                                title: AutoSizeText(
+                                  model.filteredagriList[index].growerName ?? '', maxLines: 2,minFontSize: 10,
+                                ),
+                                subtitle: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: AutoSizeText(
+                                        model.filteredagriList[index].name.toString(),maxLines: 2,
+                                      ),
+                                    ),
+                               const SizedBox(width: 15),
+                                    Expanded(
+                                      child: AutoSizeText(DateFormat('dd-MM-yyyy').format(DateTime.parse(model.filteredagriList[index].date ??
+                                          '')),
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  model.onRowClick(
+                                      context, model.filteredagriList[index]);
+                                },
                               ),
+                            );
+                          },
+                           separatorBuilder: (context, index) {
+                            return const Divider(
+                              color: Colors.white, // Color of the line
+                              thickness: 0, // Thickness of the line
                             );
                           },
                         ),

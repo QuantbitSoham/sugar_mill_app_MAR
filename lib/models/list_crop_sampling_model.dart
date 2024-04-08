@@ -1,36 +1,44 @@
 class ListSampling {
   String? id;
-  String? season;
-  String? plantationStatus;
-  String? area;
-  String? formNumber;
+  String? plantattionRatooningDate;
   String? name;
+  double? averageBrix;
+  String? growerName;
+  String? route;
+  String? formNumber;
+  String? cropVariety;
 
   ListSampling(
       {this.id,
-      this.season,
-      this.plantationStatus,
-      this.area,
+      this.plantattionRatooningDate,
+      this.name,
+      this.averageBrix,
+      this.growerName,
+      this.route,
       this.formNumber,
-      this.name});
+      this.cropVariety});
 
   ListSampling.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    season = json['season'];
-    plantationStatus = json['plantation_status'];
-    area = json['area'];
-    formNumber = json['form_number'];
+    plantattionRatooningDate = json['plantattion_ratooning_date'];
     name = json['name'];
+    averageBrix = json['average_brix'];
+    growerName = json['grower_name'];
+    route = json['route'];
+    formNumber = json['form_number'];
+    cropVariety = json['crop_variety'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['season'] = season;
-    data['plantation_status'] = plantationStatus;
-    data['area'] = area;
-    data['form_number'] = formNumber;
-    data['name'] = name;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['plantattion_ratooning_date'] = this.plantattionRatooningDate;
+    data['name'] = this.name;
+    data['average_brix'] = this.averageBrix;
+    data['grower_name'] = this.growerName;
+    data['route'] = this.route;
+    data['form_number'] = this.formNumber;
+    data['crop_variety'] = this.cropVariety;
     return data;
   }
 }

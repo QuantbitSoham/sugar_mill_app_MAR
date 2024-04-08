@@ -8,6 +8,8 @@ import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/models/farmer.dart';
 
+import '../models/aadharData_model.dart';
+
 import '../models/bank_model.dart';
 import '../models/village_model.dart';
 
@@ -95,7 +97,7 @@ class FarmerService {
     return false;
   }
 
-  Future<String> role() async {
+  Future<bool> role() async {
     try {
       var dio = Dio();
       var response = await dio.request(
@@ -107,20 +109,48 @@ class FarmerService {
       );
 
       if (response.statusCode == 200) {
-        String name=response.data["message"];
+        bool name=response.data["message"];
         // Logger().i('vendor code generate');
         // Fluttertoast.showToast(msg: "vendor code genrated");
         return name;
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO vendor code genrated!");
-        return "";
+        return false;
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "Error accoured $e ");
       Logger().e(e);
     }
-    return "";
+    return false;
   }
+
+Future<aadharData?> aadharCardData(var qrData) async {
+  try {
+    var data = {
+      "qrData": qrData,
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.aadhardata',
+      options: Options(
+        method: 'GET',
+        headers: {'Cookie': await getTocken()},
+      ),
+      data: data
+    );
+
+    if (response.statusCode == 200) {
+      return aadharData.fromJson(response.data["message"]);
+    } else {
+      Fluttertoast.showToast(msg: "UNABLE TO call aadhar");
+      return null;
+    }
+  } on DioException catch (e) {
+    Fluttertoast.showToast(msg: "Please scan valid aadhar QR code ${e.response?.data["exception"]}");
+    Logger().e(e.response?.data["exception"]);
+  }
+  return null;
+}
 
   Future<bool> addFarmer(Farmer farmer) async {
     var data = json.encode({

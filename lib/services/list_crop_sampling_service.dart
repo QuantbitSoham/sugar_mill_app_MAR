@@ -43,7 +43,7 @@ class ListCropSamplingServices {
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","season","plantation_status","area","form_number","name"]&filters=[["season","like","$season%"]]&order_by=creation desc',
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety"]&filters=[["season","like","$season%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,

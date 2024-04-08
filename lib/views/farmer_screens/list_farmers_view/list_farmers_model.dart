@@ -5,6 +5,8 @@ import 'package:sugar_mill_app/models/farmrs_list_model.dart';
 import 'package:sugar_mill_app/router.router.dart';
 import 'package:sugar_mill_app/services/list_farmers_service.dart';
 
+import '../../../models/aadharData_model.dart';
+
 class ListFarmersModel extends BaseViewModel {
   TextEditingController villageController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -53,7 +55,7 @@ Color getColorForStatus(String status) {
     Navigator.pushNamed(
       context,
       Routes.addFarmerScreen,
-      arguments: AddFarmerScreenArguments(farmerid: farmresList?.name ?? ""),
+      arguments: AddFarmerScreenArguments(farmerid: farmresList?.name ?? "", qrdata: aadharData()),
     );
     // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
     //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));

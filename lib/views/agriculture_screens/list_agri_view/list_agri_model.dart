@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -42,7 +43,8 @@ class ListAgriModel extends BaseViewModel {
 ///dhdjhdjhj
 
 Future<void> refresh() async {
-  filteredagriList = (await ListAgriService().getAllCaneList()).cast<AgriListModel>();
+  filteredagriList = await ListAgriService().getAllCaneList();
+  filteredagriList.sort((a, b) => b.caneRegistrationId!.compareTo(a.caneRegistrationId ?? '')); 
   notifyListeners();
 }
 
@@ -52,6 +54,7 @@ Future<void> refresh() async {
     notifyListeners();
     filteredagriList =
         await ListAgriService().getAgriListByNameFilter(caneSeasonFilter);
+        filteredagriList.sort((a, b) => b.caneRegistrationId!.compareTo(a.caneRegistrationId ?? '')); 
     notifyListeners();
   }
 
@@ -61,6 +64,7 @@ Future<void> refresh() async {
     notifyListeners();
     filteredagriList = await ListAgriService()
         .getAgriListByvillagefarmernameFilter(caneVillageFilter, caneNameFilter);
+   
     notifyListeners();
   }
 

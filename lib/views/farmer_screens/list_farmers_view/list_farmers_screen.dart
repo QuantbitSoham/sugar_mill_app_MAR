@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/views/farmer_screens/list_farmers_view/list_farmers_model.dart';
+import 'package:sugar_mill_app/views/farmer_screens/qr_scanner.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
-
+import '../../../models/aadharData_model.dart';
 import '../../../router.router.dart';
 import '../../../widgets/error_widget.dart';
 
@@ -20,18 +21,13 @@ class ListFarmersScreen extends StatelessWidget {
         appBar: AppBar(
           title: const AutoSizeText('Farmer List'),
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.addFarmerScreen,
-                      arguments: const AddFarmerScreenArguments(farmerid: ""),
-                    );
-                  },
-                  child: const AutoSizeText('+Add Farmer')),
-            )
+           IconButton(onPressed: (){Navigator.push(
+             context,
+             MaterialPageRoute(
+               builder: (context) => QRCodeScanner(
+               ),
+             ),
+           );}, icon: Icon(Icons.qr_code))
           ],
         ),
         body: fullScreenLoader(

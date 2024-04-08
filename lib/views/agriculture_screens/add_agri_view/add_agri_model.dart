@@ -33,7 +33,7 @@ class AgriViewModel extends BaseViewModel {
   ];
   bool isEdit = false;
   List<String> seasonlist = [""];
-  List<String> saleslist = ["Drip", "Nursery", "Fertilizer"];
+  List<String> saleslist = ["Nursery", "Fertilizer"];
   List<AgriCane> canelistwithfilter = [];
   List<caneFarmer> farmerList = [];
   List<FertilizerItemList> itemList = [];

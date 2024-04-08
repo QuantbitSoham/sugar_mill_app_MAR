@@ -8,7 +8,8 @@
 import 'package:flutter/material.dart' as _i15;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i16;
+import 'package:stacked_services/stacked_services.dart' as _i17;
+import 'package:sugar_mill_app/models/aadharData_model.dart' as _i16;
 import 'package:sugar_mill_app/views/agriculture_screens/add_agri_view/add_agri_screen.dart'
     as _i9;
 import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_screen.dart'
@@ -156,8 +157,8 @@ class StackedRouter extends _i1.RouterBase {
     _i5.AddFarmerScreen: (data) {
       final args = data.getArgs<AddFarmerScreenArguments>(nullOk: false);
       return _i15.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i5.AddFarmerScreen(key: args.key, farmerid: args.farmerid),
+        builder: (context) => _i5.AddFarmerScreen(
+            key: args.key, farmerid: args.farmerid, qrdata: args.qrdata),
         settings: data,
       );
     },
@@ -227,6 +228,7 @@ class StackedRouter extends _i1.RouterBase {
 
   @override
   List<_i1.RouteDef> get routes => _routes;
+
   @override
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
@@ -235,26 +237,31 @@ class AddFarmerScreenArguments {
   const AddFarmerScreenArguments({
     this.key,
     required this.farmerid,
+    required this.qrdata,
   });
 
   final _i15.Key? key;
 
   final String farmerid;
 
+  final _i16.aadharData qrdata;
+
   @override
   String toString() {
-    return '{"key": "$key", "farmerid": "$farmerid"}';
+    return '{"key": "$key", "farmerid": "$farmerid", "qrdata": "$qrdata"}';
   }
 
   @override
   bool operator ==(covariant AddFarmerScreenArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.farmerid == farmerid;
+    return other.key == key &&
+        other.farmerid == farmerid &&
+        other.qrdata == qrdata;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ farmerid.hashCode;
+    return key.hashCode ^ farmerid.hashCode ^ qrdata.hashCode;
   }
 }
 
@@ -366,7 +373,7 @@ class AddTripsheetScreenArguments {
   }
 }
 
-extension NavigatorStateExtension on _i16.NavigationService {
+extension NavigatorStateExtension on _i17.NavigationService {
   Future<dynamic> navigateToSplashScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -412,6 +419,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
   Future<dynamic> navigateToAddFarmerScreen({
     _i15.Key? key,
     required String farmerid,
+    required _i16.aadharData qrdata,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -419,7 +427,8 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.addFarmerScreen,
-        arguments: AddFarmerScreenArguments(key: key, farmerid: farmerid),
+        arguments: AddFarmerScreenArguments(
+            key: key, farmerid: farmerid, qrdata: qrdata),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -610,6 +619,7 @@ extension NavigatorStateExtension on _i16.NavigationService {
   Future<dynamic> replaceWithAddFarmerScreen({
     _i15.Key? key,
     required String farmerid,
+    required _i16.aadharData qrdata,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -617,7 +627,8 @@ extension NavigatorStateExtension on _i16.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.addFarmerScreen,
-        arguments: AddFarmerScreenArguments(key: key, farmerid: farmerid),
+        arguments: AddFarmerScreenArguments(
+            key: key, farmerid: farmerid, qrdata: qrdata),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

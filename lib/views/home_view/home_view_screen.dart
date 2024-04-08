@@ -1,11 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/views/home_view/home_view_model.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 
+import '../../models/aadharData_model.dart';
 import '../../router.router.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -132,11 +135,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
           child: WillPopScope(
             onWillPop: _onWillPop,
             child: SingleChildScrollView(
-              child:  model.empList.isNotEmpty ?Hero(
+              child:  Hero(
                   tag: "TITLE",
-
                       child:Container(
-
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               image: DecorationImage(
@@ -147,201 +148,114 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                               Container(
-                                padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3), // Customize the shadow offset
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    ListTile(
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.asset(
-          fit: BoxFit.fill,
-          model.imageurl ?? "",
-        ),
-      ),
-      title: AutoSizeText(
-        model.greeting ?? "",
-        minFontSize: 10,
-        style: const TextStyle(
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      subtitle: AutoSizeText(
-        "${model.empname}",
-        minFontSize: 20,
-        style: const TextStyle(
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    ),
-    if (model.checkinList.isNotEmpty)
-      AutoSizeText(
-        " Last ${model.checkvalue == "IN" ? "Check-In" : "Check-Out"} at ${DateFormat('dd MMM yyyy, hh:mm a').format(DateTime.tryParse(model.time ?? "") ?? DateTime.now())}",
-        style: const TextStyle(
-          fontWeight: FontWeight.w300,
-        ),
-        minFontSize: 15,
-      )
-    else
-      Container(),
-    const SizedBox(height: 10),
-    model.checkvalue != "IN"
-        ? OutlinedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                enableDrag: true,
-                isDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Center(
-                          child: Text(
-                            DateFormat('hh:mm:ss a').format(DateTime.now()),
-                            style: const TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Text(
-                            DateFormat('dd MMM, yyyy').format(DateTime.now()),
-                            style: const TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        MaterialButton(
-                          onPressed: () {
-                            model.checkin(context);
-                            // Close the bottom sheet
-                          },
-                          minWidth: 150.0,
-                          height: 48.0,
-                          color: Colors.green,
-                          textColor: Colors.white,
-                          child: const AutoSizeText(
-                            "Check In",
-                            maxFontSize: 20,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              side: const BorderSide(color: Colors.green, width: 2),
-              minimumSize: const Size(150, 50),
-            ),
-            child: const Text(
-              "Check In",
-              style: TextStyle(color: Colors.green  ,fontSize: 20,),
-            ),
-          )
-        : OutlinedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                enableDrag: false,
-                isDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Center(
-                              child: Text(
-                                DateFormat('hh:mm:ss a').format(DateTime.now()),
-                                style: const TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
+                              model.dashboard.empName!="" ?
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 3), // Customize the shadow offset
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                DateFormat('dd MMM, yyyy').format(DateTime.now()),
-                                style: const TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10.0),
-                            MaterialButton(
-                              onPressed: () {
-                                model.checkout(context);
-                              },
-                              minWidth: 150.0,
-                              height: 48.0,
-                              color: Colors.redAccent,
-                              textColor: Colors.white,
-                              child: const AutoSizeText(
-                                "Check Out",
-                                style: TextStyle(fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              side: const BorderSide(color: Colors.red, width: 2),
-              minimumSize: const Size(150, 50),
-            ),
-            child: const Text(
-              "Check Out",
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-    const SizedBox(height: 10),
-  ],
-),
 
-                    ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            flex: 3,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  model.greeting ?? "",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${model.dashboard.empName.toString().toUpperCase()},",overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Text( model.dashboard.lastLogType=="IN"?
+                                                'Last Check-In at ${model.dashboard.lastLogTime.toString()}':"You're not check-in yet",
+                                                  style: const TextStyle(fontSize: 16),
+                                                  textAlign: TextAlign.center,
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child:   ClipRRect(
+                                              borderRadius: BorderRadius.circular(8.0),
+                                              child: Image.asset(
+                                                fit: BoxFit.fill,
+                                                model.imageurl ?? "",
+                                              ),
+                                            ),
+                                          )
+
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Center(
+                                        child: OutlinedButton(
+                                          onPressed: () {
+                                            String logtype= model.dashboard.lastLogType=="IN" ? "OUT" :"IN";
+                                            Logger().i(logtype);
+                                            model.employeeLog(logtype,context);
+                                          },
+                                          style: OutlinedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                            ),
+                                            side: BorderSide(color:model.dashboard.lastLogType=="OUT" ? Colors.green:Colors.red,width: 2), // Set the border color
+                                            minimumSize: const Size(150, 50), // Set the minimum button size
+                                          ),
+                                          child:model.isBusy == true ?LoadingAnimationWidget.hexagonDots(
+                                            color:Colors.blueAccent,
+                                            size: 18,
+                                          ) :Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(model.dashboard.lastLogType=="OUT" ? 'assets/images/check-in.png':'assets/images/check-out.png',scale: 20),
+                                              const SizedBox(width: 8),
+                                              Text(model.dashboard.lastLogType=="OUT" ? 'Check-In':'Check-Out',style: TextStyle(color:model.dashboard.lastLogType=="OUT" ? Colors.green:Colors.red),),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              )
+                                  : const Center(
+          child:  Card(
+          child: ListTile(
+            leading: Icon(Icons.error,color: Colors.redAccent,),
+          title: Text('Employee is not created for this user.\nPlease Contact to Administrator',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w900),
+
+          ),
+        ), ),
+    ),
                               const SizedBox(
                                 height: 10.0,
                               ),
@@ -358,7 +272,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             context,
                                             Routes.addFarmerScreen,
                                             arguments:
-                                                const AddFarmerScreenArguments(
+                                                 AddFarmerScreenArguments(qrdata: aadharData(),
                                                     farmerid: ""),
                                           );
                                         },
@@ -555,16 +469,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             ],
                           ),
                         )
+              )
 
-            ) : const Center(
-              child:  Card(
-                  child: ListTile(
-                    leading: Icon(Icons.error,color: Colors.redAccent,),
-                    title: Text('Employee is not created for this user.\nPlease Contact to Administrator',style: TextStyle(fontSize: 28,fontWeight: FontWeight.w900),
-
-                  ),
-                ), ),
-            ),
           ),
         ),
       ),),

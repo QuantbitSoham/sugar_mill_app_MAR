@@ -135,8 +135,8 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                                         child: TextFormField(
                                           controller: model.usernameController,
                                           focusNode: model.focusNode,
-                                          inputFormatters: [LengthLimitingTextInputFormatter(10)],                                          keyboardType: TextInputType.phone,
-                                          decoration: InputDecoration(
+                                          // inputFormatters: [LengthLimitingTextInputFormatter(10)],                                          keyboardType: TextInputType.phone,
+                                                                                                                                                      decoration: InputDecoration(
                                             labelText: 'Mobile Number',
                                             filled: true,
                                             hintText: 'Enter the mobile number',

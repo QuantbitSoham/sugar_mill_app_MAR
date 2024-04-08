@@ -1,9 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-
-import '../../../constants.dart';
-import '../../../router.router.dart';
 import '../../../widgets/cdrop_down_widget.dart';
 import '../../../widgets/error_widget.dart';
 import '../../../widgets/full_screen_loader.dart';
@@ -70,7 +68,7 @@ class ListSamplingScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          const SizedBox(width: 10,),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -83,7 +81,7 @@ class ListSamplingScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          const SizedBox(width: 10,),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -103,152 +101,117 @@ class ListSamplingScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    padding: const EdgeInsets.all(10),
-                    color: Colors.grey,
-                    child: const ListTile(
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          AutoSizeText(
-                            'Season',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.white), // Set text color to white
-                          ),
-                          AutoSizeText(
-                            'Village',
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: Colors.white, // Set text color to white
-                            ),
-                          ),
-                        ],
-                      ),
-                      leading: SizedBox(
-                        // width: getWidth(context) / 5,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            AutoSizeText(
-                              'Plot No.',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.white), // Set text color to white
-                            ),
-                            AutoSizeText(
-                              'Plantation Status',
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 8,
-                                color: Colors.white, // Set text color to white
-                              ),
-                            ),
-                          ],
+                  padding: const EdgeInsets.all(10),
+                  color: Colors.grey,
+                  child: const ListTile(
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        AutoSizeText(
+                          'Village/route',
+                          maxLines: 2,
+                          style: TextStyle(color: Colors.white),
                         ),
-                      ),
-                      title: Text(
-                        'Name',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white), // Set text color to white
-                      ),
-                      subtitle: Text(
-                        'Form Number',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white), // Set text color to white
-                      ),
-                    )),
+                       AutoSizeText(
+                          'Crop Variety',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    leading:AutoSizeText(
+                      'Plot Number',
+                       overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    title: AutoSizeText(
+                      'Farmer Name',
+                      style: TextStyle(color: Colors.white),
+                      minFontSize: 8,
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                         Expanded(
+                          child: AutoSizeText(
+                            'Average Brixs',
+                              overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        Expanded(
+                          child: AutoSizeText(
+                            'Plantation Date',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                       
+                         
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 25,
                 ),
                 model.filtersamplingList.isNotEmpty
                     ? Expanded(
-                        child: ListView.builder(
+                        child: ListView.separated(
                           itemCount: model.filtersamplingList.length,
                           itemBuilder: (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.only(
-                                  bottom: 16.0), // Add margin between containers
-            
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: ListTile(
-                                  tileColor: model.getTileColor(model
-                                      .filtersamplingList[index]
-                                      .plantationStatus),
-                                  trailing: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      AutoSizeText(
-                                        model.filtersamplingList[index].season ??
-                                            '',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      AutoSizeText(
-                                        model.filtersamplingList[index]
-                                                .area ??
-                                            '',
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                          fontSize: 8,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  leading: SizedBox(
-                                    width: getWidth(context) / 4,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Expanded(
-                                          child: AutoSizeText(
-                                            model.filtersamplingList[index].id ??
-                                                '',
-                                            maxLines: 1,
-                                            minFontSize: 20,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: AutoSizeText(
-                                            model.filtersamplingList[index]
-                                                    .plantationStatus ??
-                                                "",
-                                            maxLines: 2,
-                                            style: const TextStyle(
-                                              fontSize: 8,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: ListTile(
+                                tileColor:const Color(0xFFD3E8FD),
+                                trailing: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    AutoSizeText(
+                                      model.filtersamplingList[index].route ?? '',
+                                      maxLines: 2,
                                     ),
-                                  ),
-                                  title: Text(
-                                    model.filtersamplingList[index].name
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 22),
-                                  ),
-                                  subtitle: Text(
-                                    model.filtersamplingList[index].formNumber ??
-                                        '',
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  onTap: () {
-                                    // Handle row click here
-                                    // _onRowClick(context, filteredList[index]);
-                                    model.onRowClick(
-                                        context, model.filtersamplingList[index]);
-                                  },
+                                    AutoSizeText(
+                                      model.filtersamplingList[index]
+                                              .cropVariety ??
+                                          '',
+                                    ),
+                                  ],
                                 ),
+                                leading:AutoSizeText(
+                                  model.filtersamplingList[index]
+                                      .id.toString(),
+                                      minFontSize: 20,
+                                ),
+                               
+                                title: AutoSizeText(
+                                  model.filtersamplingList[index].growerName ?? '', maxLines: 2,minFontSize: 10,
+                                ),
+                                subtitle: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AutoSizeText(
+                                      model.filtersamplingList[index].averageBrix.toString(),maxLines: 2,
+                                    ),
+                               const SizedBox(width: 15),
+                                    AutoSizeText(DateFormat('dd-MM-yyyy').format(DateTime.parse(model.filtersamplingList[index].plantattionRatooningDate ??
+                                        '')),
+                                      maxLines: 2,
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  model.onRowClick(
+                                      context, model.filtersamplingList[index]);
+                                },
                               ),
+                            );
+                           
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Divider(
+                              color: Colors.white, // Color of the line
+                              thickness: 0, // Thickness of the line
                             );
                           },
                         ),

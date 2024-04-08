@@ -11,7 +11,7 @@ class ListAgriService {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Agriculture Development?fields=["crop_type","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"]]',
+        '$apiBaseUrl/api/resource/Agriculture Development?fields=["route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["sales_type","!=","Drip"]]',
         options: Options(
           method: 'GET',
           headers: headers,
@@ -40,7 +40,7 @@ class ListAgriService {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Agriculture Development?fields=["crop_type","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["village","Like","$village%"],["grower_name","Like","%$name%"]]',
+        '$apiBaseUrl/api/resource/Agriculture Development?fields=["route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["village","Like","$village%"],["grower_name","Like","%$name%"],["sales_type","!=","Drip"]]',
         options: Options(
           method: 'GET',
           headers: headers,
