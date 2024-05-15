@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
@@ -45,10 +46,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                 ],
               ),
             ),
-            child: fullScreenLoader(
-              context: context,
-              loader: model.isloading,
-              child: Padding(
+            child:  Padding(
                 padding: const EdgeInsets.fromLTRB(
                   25,
                   100,
@@ -233,7 +231,12 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                                                     context);
                                               }
                                             },
-                                            child: const Text(
+                                            child: model.isloading
+                                                ? LoadingAnimationWidget.hexagonDots(
+                                              color: Colors.white,
+                                              size: 18,
+                                            )
+                                                : const Text(
                                               'Login',
                                               style: TextStyle(
                                                   fontSize: 20,
@@ -278,7 +281,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
             ),
           ),
         ),
-      ),
+
     );
   }
 }

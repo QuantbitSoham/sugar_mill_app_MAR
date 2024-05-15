@@ -57,6 +57,7 @@ class FarmerViewModel extends BaseViewModel {
     villageList = await FarmerService().fetchVillages();
     bankList = await FarmerService().fetchBanks();
     role=await FarmerService().role();
+
     Logger().i(role);
     farmerData.branch="Bedkihal";
     Logger().i(villageList.length);
@@ -92,7 +93,7 @@ class FarmerViewModel extends BaseViewModel {
           ? DateFormat('dd-MM-yyyy').format(DateTime.parse(farmerData.dateOfBirth ?? ""))
           : farmerData.dateOfBirth ?? "";
       dobController.text =formattedDate;
-
+      isVisible();
       ageController.text = farmerData.age ?? "";
       bankAccounts.addAll(farmerData.bankDetails?.toList() ?? []);
       for (BankDetails bank in bankAccounts) {
@@ -125,6 +126,14 @@ class FarmerViewModel extends BaseViewModel {
     farmerData.supplierGroup = "CANE";
     setBusy(false);
   }
+
+  bool isVisible(){
+    if(farmerData.workflowState == 'Approved' && role==true&&isEdit==true){
+      return true;
+    }
+    return false;
+  }
+
 
   void onSavePressed(BuildContext context) async {
     // if (farmerData.workflowState == "Approved") {
@@ -963,7 +972,7 @@ nursery=false;
 
   void resetBankVariables() {
     idbankedit=false;
-    farmer = false;
+    farmer = farmerData.isFarmer==1 ?true:false ;
     harvester = false;
     transporter = false;
     drip=false;

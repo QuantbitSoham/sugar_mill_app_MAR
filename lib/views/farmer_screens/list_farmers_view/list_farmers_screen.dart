@@ -30,7 +30,7 @@ class ListFarmersScreen extends StatelessWidget {
            );}, icon: Icon(Icons.qr_code))
           ],
         ),
-        body: fullScreenLoader(
+        body:   fullScreenLoader(
           child: RefreshIndicator(
             onRefresh: model.refresh,
             child: Column(
@@ -82,6 +82,7 @@ class ListFarmersScreen extends StatelessWidget {
                                   width: getWidth(context) / 4,
                                   child: TextField(
                                     // controller: model.villageController,
+                                    keyboardType: TextInputType.number,
                                     onChanged: (value) {
                                       model.villageController.text = value;
                                       model.filterList(

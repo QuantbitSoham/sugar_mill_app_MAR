@@ -148,7 +148,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              model.dashboard.empName!="" ?
+                              model.dashboard.empName!=null ?
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),

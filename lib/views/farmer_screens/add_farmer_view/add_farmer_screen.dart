@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
@@ -858,19 +859,24 @@ class AddFarmerScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CtextButton(
-                          text: 'Cancel',
-                          onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
-                        ),
-                        CtextButton(
-                          onPressed: () => model.onSavePressed(context),
-                          text: 'Save', buttonColor: Colors.green,
-                        ),
 
-                      ],
+                    Visibility(
+                      visible: !model.isVisible(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CtextButton(
+                            text: 'Cancel',
+                            onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
+                          ),
+
+                          CtextButton(
+                            onPressed: () => model.onSavePressed(context),
+                            text: 'Save', buttonColor: Colors.green,
+                          ),
+
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -925,7 +931,7 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                                         },
                                       ),
                                     ),
-                                    if(model.role != "Slip Boy")
+                                    if(model.role ==false)
                                     Expanded(
                                       child: CheckboxListTile(
                                                                   title: const Text("Har"),
@@ -941,7 +947,7 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                                 
                                 Row(
                                   children: [
-                                      if(model.role != "Slip Boy")
+                                    if(model.role ==false)
                                     Expanded(
                                       child: CheckboxListTile(
                                         title: const Text("Tra"),
@@ -952,7 +958,7 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                                         },
                                       ),
                                     ),
-                                      if(model.role != "Slip Boy")
+                                    if(model.role ==false)
                                       Expanded(
                                         child:CheckboxListTile(
                                   title: const Text("Nur"),
@@ -965,7 +971,7 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                                       ),
                                   ],
                                 ),
-                                if(model.role != "Slip Boy")
+                              if(model.role ==false)
                                 CheckboxListTile(
                                                                     title: const Text("Drip"),
                                                                     value: model.drip,
