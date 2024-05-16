@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -249,9 +248,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               )
                                   : const Center(
           child:  Card(
+            color:Colors.white,
+          elevation: 1,
           child: ListTile(
-            leading: Icon(Icons.error,color: Colors.redAccent,),
-          title: Text('Employee is not created for this user.\nPlease Contact to Administrator',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w900),
+            leading: Icon(Icons.error,color: Colors.redAccent,size: 50),
+          title: Text('Employee is not created for this user.\nPlease Contact to HR Admin.',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w900),
 
           ),
         ), ),

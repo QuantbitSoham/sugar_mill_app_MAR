@@ -41,23 +41,32 @@ class AddCropSmaplingModel extends BaseViewModel {
       cropsamplingdata =
           await AddCropSmaplingServices().getCropSampling(samplingId) ??
               CropSampling();
+      print(cropsamplingdata.toJson());
       plotList = (await AddCropSmaplingServices().fetchcanelistwithfilter(cropsamplingdata.season ?? "",cropsamplingdata.area ?? "",cropsamplingdata.growerCode ?? ""));
       brixbottmAreaController.text = cropsamplingdata.brixBottom?.toStringAsFixed(0) ?? "";
       brixmiddleController.text = cropsamplingdata.brixMiddle?.toStringAsFixed(0) ?? "";
       brixtopController.text = cropsamplingdata.brixTop?.toStringAsFixed(0) ?? "";
       noofpairsController.text = cropsamplingdata.noOfPairs?.toStringAsFixed(0) ?? "";
       for (AgriCane i in plotList) {
-         Logger().i(i.growerCode);
+         // Logger().i(i.growerCode);
         if (i.growerCode == cropsamplingdata.growerCode) {
           selectedfarcode = i.vendorCode;
-          Logger().i(selectedfarcode);
+          // Logger().i(selectedfarcode);
           
           notifyListeners();
         }
       }
-      cropsamplingdata.plantattionRatooningDate = cropsamplingdata.plantattionRatooningDate != ""
-          ? DateFormat('dd-MM-yyyy').format(DateTime.parse(cropsamplingdata.plantattionRatooningDate ?? ""))
-          : "";
+      if (cropsamplingdata.plantattionRatooningDate != null) {
+        try {
+          DateTime parsedDate = DateTime.parse(cropsamplingdata.plantattionRatooningDate!);
+          cropsamplingdata.plantattionRatooningDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+        } catch (e) {
+          print('Invalid date format: ${cropsamplingdata.plantattionRatooningDate}');
+          cropsamplingdata.plantattionRatooningDate = ""; // Handle invalid date format
+        }
+      } else {
+        cropsamplingdata.plantattionRatooningDate = "";
+      }
       notifyListeners();
     }
     if (seasonlist.isEmpty) {

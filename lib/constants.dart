@@ -66,7 +66,7 @@ String apigetagrilist =
 ///Crop Sampling
 String apiPostCropSampling = "$apiBaseUrl/api/resource/Crop Sampling";
 String apiListSampling =
-    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety"]';
+    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name"]';
 
 ///TripSheet
 String apifetchplotnumber =

@@ -1,24 +1,18 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
-
 import 'package:sugar_mill_app/views/farmer_screens/add_farmer_view/add_farmer_model.dart';
 import 'package:sugar_mill_app/widgets/cdrop_down_widget.dart';
 import 'package:sugar_mill_app/widgets/ctext_button.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 import 'package:sugar_mill_app/widgets/view_docs_from_internet.dart';
 import 'package:sugar_mill_app/widgets/view_image.dart';
-
 import '../../../models/aadharData_model.dart';
 import '../qr_scanner.dart';
 
@@ -1018,9 +1012,10 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                                         controller: textEditingController,
                                         focusNode: focusNode,
                                         decoration: const InputDecoration(
-                                          labelText: 'Bank',
+                                          labelText: 'Bank*',
                                         ),
                                         onChanged: (String value) {},
+                                        validator: model.validateBankName,
                                       );
                                     },
                                     optionsViewBuilder: (BuildContext contpext,
@@ -1119,6 +1114,7 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                       ),
                       TextButton(
                         onPressed: () async {
+                          if (model.bankformKey.currentState!.validate()) {
                           if (model.farmer == false) {
                             Fluttertoast.showToast(
                               msg: "Please select the farmer service",
@@ -1139,7 +1135,7 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                             return;
                           }
 
-                          if (model.bankformKey.currentState!.validate()) {
+
                             await model.validateForm(context, index);
                            
                           }

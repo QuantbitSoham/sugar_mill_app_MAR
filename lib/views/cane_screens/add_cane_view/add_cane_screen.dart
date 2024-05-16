@@ -186,11 +186,11 @@ class AddCaneScreen extends StatelessWidget {
                                   items: model.plantationStatus.map((val) {
                                     return DropdownMenuItem<String>(
                                       value: val,
-                                      child: AutoSizeText(val),
+                                      child: AutoSizeText(val,style: TextStyle(color: Colors.black),),
                                     );
                                   }).toList(),
-                                  onChanged: (value) =>
-                                      model.setSelectedplantation(value),
+
+                                  onChanged:null,
                                   validator: model.validatePlantationStatus,
                                 ),
                               )),

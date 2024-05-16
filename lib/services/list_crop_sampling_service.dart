@@ -40,17 +40,17 @@ class ListCropSamplingServices {
       String season) async {
     try {
       var headers = {'Cookie': await getTocken()};
-
-      var dio = Dio();
+var url=        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name"]&filters=[["season","like","$season%"]]&order_by=creation desc';
+    var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety"]&filters=[["season","like","$season%"]]&order_by=creation desc',
+        url,
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-      Logger().i(response);
-      Logger().i(response.realUri);
+      Logger().i(url);
+
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));

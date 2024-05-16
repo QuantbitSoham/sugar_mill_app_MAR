@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/crop_sampling.dart';
@@ -35,9 +36,10 @@ class AddCropSmaplingServices {
         Fluttertoast.showToast(msg: "UNABLE TO Crop Sampling!");
         return false;
       }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured $e ");
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
+
     }
     return false;
   }
@@ -63,9 +65,10 @@ class AddCropSmaplingServices {
         Fluttertoast.showToast(msg: "UNABLE TO UPDATE Crop Sampling!");
         return false;
       }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Error accorded $e ");
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
+
     }
     return false;
   }
@@ -98,11 +101,12 @@ class AddCropSmaplingServices {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+
     }
+    return[];
   }
 
   Future<List<villagemodel>> fetchVillages() async {
@@ -127,15 +131,16 @@ class AddCropSmaplingServices {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+
     }
+    return[];
   }
 
 
-  Future<CropSampling?> getCropSampling(String id) async {
+  Future<CropSampling?> getCropSampling(String? id) async {
     try {
       var dio = Dio();
       var response = await dio.request(
@@ -153,9 +158,10 @@ class AddCropSmaplingServices {
         // print(response.statusMessage);
         return null;
       }
-    } catch (e) {
-      Logger().i(e);
-      Fluttertoast.showToast(msg: "Error while fetching user");
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return null;
   }
@@ -165,15 +171,15 @@ class AddCropSmaplingServices {
 
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
-
-      var response = await dio.request(
-        '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["area","like","$village%"],["grower_code","like","$farmercode%"]]&limit_page_length=999999',
+var url=        '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["area","like","$village%"],["grower_code","like","$farmercode%"]]&limit_page_length=999999';
+    var response = await dio.request(
+      url,
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-Logger().i(response.realUri.toString());
+Logger().i(url.toString());
       if (response.statusCode == 200) {
         var jsonData = json.encode(response.data);
         Map<String, dynamic> jsonDataMap = json.decode(jsonData);
@@ -187,10 +193,12 @@ Logger().i(response.realUri.toString());
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
-      return [];
+
     }
+    return[];
   }
 
   Future<List<caneFarmer>> fetchfarmerListwithfilter(String village) async {
@@ -218,10 +226,12 @@ Logger().i(response.realUri.toString());
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
-      return [];
+
     }
+    return[];
   }
   
   Future<samplingformula?> fetchsamplingFormula() async {
@@ -243,8 +253,10 @@ Logger().i(response.realUri.toString());
         // print(response.statusMessage);
         return null;
       }
-    } catch (e) {
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
+
     }
     return null;
   }

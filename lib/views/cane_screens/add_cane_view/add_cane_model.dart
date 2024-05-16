@@ -14,6 +14,7 @@ import 'package:sugar_mill_app/views/cane_screens/list_cane_view/list_cane_scree
 import '../../../constants.dart';
 import '../../../models/cane.dart';
 import '../../../models/village_model.dart';
+import '../../../services/add_farmer_service.dart';
 import '../../../widgets/cdate_custom.dart';
 
 class CaneViewModel extends BaseViewModel {
@@ -26,6 +27,7 @@ class CaneViewModel extends BaseViewModel {
   Cane canedata = Cane();
   List<String> plantlist = [""];
   bool isCheck = false;
+  bool role=false;
   List<String> seasonlist = [""];
   final List<String> yesno = ["Yes", "No"];
   final List<String> yesnomachine = ["YES", "NO"];
@@ -85,6 +87,7 @@ class CaneViewModel extends BaseViewModel {
     Logger().i(villageList.length);
     canedata.plantName = "Bedkihal";
     canedata.plantationStatus = "New";
+    role=await FarmerService().role();
     Logger().i(caneId);
     if (caneId != "") {
       isEdit = true;

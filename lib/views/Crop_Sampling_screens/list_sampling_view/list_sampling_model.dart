@@ -62,7 +62,7 @@ Future<void> refresh() async {
       context,
       Routes.addCropSamplingScreen,
       arguments: AddCropSamplingScreenArguments(
-          samplingId: samplingList?.name.toString() ?? ""),
+          samplingId: samplingList?.name ?? ""),
     );
     // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
     //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));
