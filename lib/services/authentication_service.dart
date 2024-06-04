@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sugar_mill_app/constants.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Authentication {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -36,9 +36,11 @@ class Authentication {
       } else {
         return false;
       }
-    } catch (e) {
-      Logger().e('Error occurred during login request: $e');
-      return false;
+    } on DioException catch (e) {
+      // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return false;
   }
 }

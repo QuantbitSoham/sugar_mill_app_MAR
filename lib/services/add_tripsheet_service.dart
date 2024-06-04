@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/trip_crop_harvesting_model.dart';
@@ -31,9 +32,10 @@ class AddTripSheetServices {
         // print(response.statusMessage);
         return null;
       }
-    } on DioException catch (e) {
-      Logger().i(e.response);
-      Fluttertoast.showToast(msg: "Error while fetching user");
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return null;
   }
@@ -60,12 +62,12 @@ class AddTripSheetServices {
         return false;
       }
     } on DioException catch (e) {
-        Fluttertoast.showToast(msg: e.response?.data['exception']);
-        Logger().e(e.response?.data['exception']);
-        return false;
-      }
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
 
+    }
 
+return false;
   }
 
   Future<bool> addTripSheet(Tripsheet trip) async {
@@ -133,11 +135,11 @@ class AddTripSheetServices {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
-    }
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
+    } return[];
   }
 
 
@@ -164,9 +166,10 @@ class AddTripSheetServices {
         // print(response.statusMessage);
         return null;
       }
-    } catch (e) {
-      Logger().i(e);
-      // Fluttertoast.showToast(msg: "Error while fetching user");
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return null;
   }
@@ -195,8 +198,10 @@ class AddTripSheetServices {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
 
     return [];
@@ -229,11 +234,12 @@ class AddTripSheetServices {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<caneRoute>> fetchRoute() async {
@@ -257,8 +263,10 @@ class AddTripSheetServices {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
 
     return [];
@@ -285,8 +293,10 @@ class AddTripSheetServices {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
 
     return [];
@@ -313,8 +323,10 @@ class AddTripSheetServices {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
 
     return [];

@@ -5,8 +5,6 @@ import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/views/farmer_screens/list_farmers_view/list_farmers_model.dart';
 import 'package:sugar_mill_app/views/farmer_screens/qr_scanner.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
-import '../../../models/aadharData_model.dart';
-import '../../../router.router.dart';
 import '../../../widgets/error_widget.dart';
 
 class ListFarmersScreen extends StatelessWidget {
@@ -27,7 +25,7 @@ class ListFarmersScreen extends StatelessWidget {
                builder: (context) => QRCodeScanner(
                ),
              ),
-           );}, icon: Icon(Icons.qr_code))
+           );}, icon: const Icon(Icons.qr_code))
           ],
         ),
         body:   fullScreenLoader(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/cane.dart';
@@ -40,8 +41,9 @@ class AddCaneService {
         return "";
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(msg: e.response?.data["exception"]);
-      Logger().e(e.response?.data["exception"]);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return "";
   }
@@ -67,8 +69,8 @@ class AddCaneService {
         return false;
       }
     }on DioException catch (e) {
-      Fluttertoast.showToast(msg: e.response?.data["exception"]);
-      Logger().e(e.response?.data["exception"]);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
     }
     return false;
   }
@@ -95,10 +97,11 @@ class AddCaneService {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-    }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
 
+    }
     return [];
   }
 
@@ -127,10 +130,12 @@ class AddCaneService {
         Logger().e(response.statusMessage);
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      return [];
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchSeason() async {
@@ -160,11 +165,11 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Season");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Season!");
-      return [];
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
     }
+    return [];
   }
 
   Future<List<villagemodel>> fetchVillages() async {
@@ -189,11 +194,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchPlant() async {
@@ -224,11 +230,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch plant");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchCaneVariety() async {
@@ -259,11 +266,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Cane Variety");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchplantationsystem() async {
@@ -294,11 +302,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Plantation System");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchirrigationmethod() async {
@@ -329,11 +338,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Irrigation Method");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchIrrigationSource() async {
@@ -364,11 +374,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Irrigation Source");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchseedMaterial() async {
@@ -399,11 +410,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Seed Material");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchCropType() async {
@@ -434,11 +446,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to Crop Type");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<String>> fetchSoilType() async {
@@ -469,11 +482,12 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to Soil Type");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<bool> updateCane(Cane cane) async {
@@ -500,9 +514,10 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "UNABLE TO Cane Master !");
         return false;
       }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured $e ");
-      Logger().e(e);
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return false;
   }
@@ -525,9 +540,10 @@ class AddCaneService {
         // print(response.statusMessage);
         return null;
       }
-    } catch (e) {
-      Logger().i(e);
-      Fluttertoast.showToast(msg: "Error while fetching user");
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return null;
   }

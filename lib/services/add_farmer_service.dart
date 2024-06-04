@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/constants.dart';
@@ -36,18 +37,19 @@ class FarmerService {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<List<BankMaster>> fetchBanks() async {
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Bank Master?fields=["bank_and_branch","branch","ifsc_code"]&limit_page_length=9999',
+        '$apiBaseUrl/api/resource/Bank Master?fields=["bank_and_branch","branch","ifsc_code","name"]&limit_page_length=9999',
         options: Options(
           method: 'GET',
           headers: {'Cookie': await getTocken()},
@@ -64,11 +66,12 @@ class FarmerService {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    } catch (e) {
-      Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Access!");
-      return [];
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
+    return [];
   }
 
   Future<bool> methodcall(String? docname) async {
@@ -90,9 +93,10 @@ class FarmerService {
         Fluttertoast.showToast(msg: "UNABLE TO vendor code genrated!");
         return false;
       }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured $e ");
-      Logger().e(e);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return false;
   }
@@ -117,9 +121,10 @@ class FarmerService {
         Fluttertoast.showToast(msg: "UNABLE TO vendor code genrated!");
         return false;
       }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured $e ");
-      Logger().e(e);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return false;
   }
@@ -227,10 +232,11 @@ Future<aadharData?> aadharCardData(var qrData) async {
       } else {
         Logger().i(response.statusMessage);
       }
-    } catch (e) {
-      Logger().e(e);
-    }
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
 
+    }
     return "";
   }
 
@@ -253,9 +259,10 @@ Future<aadharData?> aadharCardData(var qrData) async {
         }
         return null;
       }
-    } catch (e) {
-      Logger().i(e);
-      Fluttertoast.showToast(msg: "Error while fetching user");
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return null;
   }
@@ -281,9 +288,10 @@ Future<aadharData?> aadharCardData(var qrData) async {
         Fluttertoast.showToast(msg: "UNABLE TO UPDATE FARMER!");
         return false;
       }
-    } on DioException catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured ${e.response?.data['exception']} ");
-      Logger().e(e.response?.data['exception']);
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return false;
   }

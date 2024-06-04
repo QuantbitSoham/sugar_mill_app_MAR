@@ -45,7 +45,7 @@ class CtextButton extends StatelessWidget {
           // const SizedBox(width: 10),
           Text(
             text,
-            style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
+            style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 18),
           ),
         ],
       ),

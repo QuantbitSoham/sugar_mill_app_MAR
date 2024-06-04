@@ -373,7 +373,10 @@ calculatebaseAmount();
     }
     Logger().i(agridata.salesType);
     Logger().i(sales);
-    supplierList = await AddAgriServices().fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
+    if( agridata.salesType !="Fertilizer"){
+      supplierList = await AddAgriServices().fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
+    }
+
     if (supplierList.isEmpty && agridata.salesType != 'Fertilizer') {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -28,7 +28,7 @@ class FarmerViewModel extends BaseViewModel {
   TextEditingController ageController = TextEditingController();
   TextEditingController villageController = TextEditingController();
   List<BankDetails> bankAccounts = [];
-  final List<String> items = ['Tran', 'Har', 'Far', 'Mem','Drip','Nursery'];
+  final List<String> items = ['Tran', 'Har', 'Far', 'Mem', 'Drip', 'Nursery'];
   final List<String> plantlist = ['Bedkihal', 'Nagpur'];
   final List<String> vendorGroupList = ['Cane'];
   final List<String> roles = ['Farmer', 'Harvester', 'Transporter'];
@@ -44,7 +44,7 @@ class FarmerViewModel extends BaseViewModel {
   late String branch = "";
   late String passbookattch = "";
   bool isPassbookAdded = false;
-  bool role=false;
+  bool role = false;
 
   bool isEdit = false;
 
@@ -52,32 +52,38 @@ class FarmerViewModel extends BaseViewModel {
 
   List<String> get selectedItems => _selectedItems;
 
-  initialise(BuildContext context, String farmerid,aadharData qrdata) async {
+  initialise(BuildContext context, String farmerid, aadharData qrdata) async {
     setBusy(true);
     villageList = await FarmerService().fetchVillages();
     bankList = await FarmerService().fetchBanks();
-    role=await FarmerService().role();
+    role = await FarmerService().role();
 
     Logger().i(role);
-    farmerData.branch="Bedkihal";
+    farmerData.branch = "Bedkihal";
     Logger().i(villageList.length);
     farmerId = farmerid;
     //setting aleardy available data
-    if(qrdata.name !=null){
-      farmerData.supplierName=qrdata.name;
-      farmerData.dateOfBirth=qrdata.dob;
-      farmerData.aadhaarNumber="********${qrdata.aadhaarLast4Digit}";
+    if (qrdata.name != null) {
+      farmerData.supplierName = qrdata.name;
+      farmerData.dateOfBirth = qrdata.dob;
+      farmerData.aadhaarNumber = "********${qrdata.aadhaarLast4Digit}";
       _formatAadhar(farmerData.aadhaarNumber.toString());
       supplierNameController.text = farmerData.supplierName ?? "";
       aadharNumberController.text =
           _formatAadhar(farmerData.aadhaarNumber ?? "");
-      dobController.text =farmerData.dateOfBirth.toString();
+      dobController.text = farmerData.dateOfBirth.toString();
       onDobChanged(dobController.text);
-      farmerData.taluka=qrdata.subdistrict;
-      farmerData.village=qrdata.postoffice;
-      String gender="";
-      if(qrdata.gender =="M"){gender='Male';}else if(qrdata.gender =="F"){gender='Female';}else{gender='Other';}
-      farmerData.gender=gender;
+      farmerData.taluka = qrdata.subdistrict;
+      farmerData.village = qrdata.postoffice;
+      String gender = "";
+      if (qrdata.gender == "M") {
+        gender = 'Male';
+      } else if (qrdata.gender == "F") {
+        gender = 'Female';
+      } else {
+        gender = 'Other';
+      }
+      farmerData.gender = gender;
     }
     if (farmerId != "") {
       isEdit = true;
@@ -88,11 +94,12 @@ class FarmerViewModel extends BaseViewModel {
       aadharNumberController.text =
           _formatAadhar(farmerData.aadhaarNumber ?? "");
       mobileNumberController.text = farmerData.mobileNumber ?? "";
-      panNumberController.text=farmerData.panNumber ?? "";
-      String? formattedDate= farmerData.dateOfBirth != null
-          ? DateFormat('dd-MM-yyyy').format(DateTime.parse(farmerData.dateOfBirth ?? ""))
+      panNumberController.text = farmerData.panNumber ?? "";
+      String? formattedDate = farmerData.dateOfBirth != null
+          ? DateFormat('dd-MM-yyyy')
+              .format(DateTime.parse(farmerData.dateOfBirth ?? ""))
           : farmerData.dateOfBirth ?? "";
-      dobController.text =formattedDate;
+      dobController.text = formattedDate;
       isVisible();
       ageController.text = farmerData.age ?? "";
       bankAccounts.addAll(farmerData.bankDetails?.toList() ?? []);
@@ -127,38 +134,60 @@ class FarmerViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  bool isVisible(){
-    if(farmerData.workflowState == 'Approved' && role==true&&isEdit==true){
+  bool isVisible() {
+    if (farmerData.workflowState == 'Approved' &&
+        role == true &&
+        isEdit == true) {
       return true;
     }
     return false;
   }
 
+  Color getColorForStatus(String status) {
+    switch (status) {
+      case 'New':
+        return Colors.blueAccent; // Light Blue Grey for Lead
+      // Light Green for Interested
+      case 'Approved':
+        return Colors.green;
+      case 'Rejected':
+        return Colors.redAccent.shade700; // Dark Grey for Converted
+      case 'Pending For Agriculture Officer':
+        return Colors.red.shade700;
+      case 'Pending':
+        return Colors.red.shade700;
+      default:
+        return Colors.grey; // Default Grey for unknown status
+    }
+  }
 
   void onSavePressed(BuildContext context) async {
     // if (farmerData.workflowState == "Approved") {
     //   Fluttertoast.showToast(msg: "Can not edit approved document!");
     //   return;
     // }
- 
-    if(isEdit==true){if(farmerData.aadhaarCard== null && files.adharCard == null){
 
-      Fluttertoast.showToast(msg: "Please upload aadhaar card");
-      return;
-    }}else{if(files.adharCard == null){
-      Fluttertoast.showToast(msg: "Please upload aadhaar card");
-      return;
-    }}
+    if (isEdit == true) {
+      if (farmerData.aadhaarCard == null && files.adharCard == null) {
+        Fluttertoast.showToast(msg: "Please upload aadhaar card");
+        return;
+      }
+    } else {
+      if (files.adharCard == null) {
+        Fluttertoast.showToast(msg: "Please upload aadhaar card");
+        return;
+      }
+    }
     Logger().i(farmerData.isHarvester);
-   // if(farmerData.isHarvester == 1){ if(isEdit==true){if(farmerData.panCard == null && files.panCard == null){
-   //    Fluttertoast.showToast(msg: "Please upload pan card");
-   //    return;
-   //  }}else{if(files.panCard == null){
-   //    Fluttertoast.showToast(msg: "Please upload pan card");
-   //    return;
-   //  }}}
+    // if(farmerData.isHarvester == 1){ if(isEdit==true){if(farmerData.panCard == null && files.panCard == null){
+    //    Fluttertoast.showToast(msg: "Please upload pan card");
+    //    return;
+    //  }}else{if(files.panCard == null){
+    //    Fluttertoast.showToast(msg: "Please upload pan card");
+    //    return;
+    //  }}}
 
-    if(bankAccounts.isEmpty){
+    if (bankAccounts.isEmpty) {
       Fluttertoast.showToast(msg: "Please fill the Bank details");
       return;
     }
@@ -176,9 +205,14 @@ class FarmerViewModel extends BaseViewModel {
       bool res = false;
       if (isEdit == true) {
         Logger().i(farmerData.workflowState);
-if(farmerData.workflowState=="New" || farmerData.workflowState=="Approved"||farmerData.workflowState=="Rejected" ){ farmerData.workflowState = "Pending For Agriculture Officer";}
-if(farmerData.workflowState=="Pending"){farmerData.workflowState = "Pending";}
-
+        if (farmerData.workflowState == "New" ||
+            farmerData.workflowState == "Approved" ||
+            farmerData.workflowState == "Rejected") {
+          farmerData.workflowState = "Pending For Agriculture Officer";
+        }
+        if (farmerData.workflowState == "Pending") {
+          farmerData.workflowState = "Pending";
+        }
 
         Logger().i(farmerData.toJson());
         res = await FarmerService().updateFarmer(farmerData);
@@ -252,13 +286,14 @@ if(farmerData.workflowState=="Pending"){farmerData.workflowState = "Pending";}
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////pan number////////////////////////////////
   String? validatePanNumber(String? value) {
-    if(farmerData.isHarvester == 1){
-    if (value == null || value.isEmpty) {
-      return 'Please enter PAN number';
+    if (farmerData.isHarvester == 1) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter PAN number';
+      }
+      if (value.replaceAll(' ', '').length != 10) {
+        return 'PAN number should be exactly 10 characters';
+      }
     }
-    if (value.replaceAll(' ', '').length != 10) {
-      return 'PAN number should be exactly 10 characters';
-    }}
     // Additional validation rules can be added if needed.
     return null;
   }
@@ -384,7 +419,7 @@ if(farmerData.workflowState=="Pending"){farmerData.workflowState = "Pending";}
     }
   }
 
-String errorMessage = '';
+  String errorMessage = '';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// for gender //////////////////////////////////////////////////
@@ -410,13 +445,10 @@ String errorMessage = '';
     }
   }
 
-
-
   void setSelectedPlant(String? plant) {
     farmerData.branch = plant;
     notifyListeners();
   }
-
 
   String? selectedVendorGroup;
   void setSelectedVendorGroup(String? vender) {
@@ -424,7 +456,6 @@ String errorMessage = '';
     farmerData.supplierGroup = vender;
     notifyListeners();
   }
-
 
   String? selectedVillage;
   String? selectedoffice;
@@ -452,10 +483,7 @@ String errorMessage = '';
 
   void setSelectedBank(BankMaster bank) async {
     bankName = bank.bankAndBranch ?? "";
-    // Logger().i(bank);
-    // final selectedRouteData =
-    //     bankList.firstWhere((bankData) => bankData.bankAndBranch == bank);
-    // Logger().i(selectedRouteData);
+
     branchifscCode = bank.ifscCode ?? "";
     notifyListeners();
   }
@@ -469,54 +497,16 @@ String errorMessage = '';
   //
   // List<String> get selectedItems => _selectedItems;
   String? selectedRole;
-  // String? get SelectedRole => selectedRole;
-  // void setSelectedRole(String? role) {
-  //   selectedRole = role;
-  //   notifyListeners();
-  // }
 
-  //////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////// for user role ////////////////////////////////
 
-  // void toggleRole(String item) {
-  //   if (roles?.contains(item)) {
-  //     roles?.remove(item);
-  //     // 'Transporter', 'Harvester', 'Farmer', 'Member'
-  //     if (item == roles[0]) {
-  //       bankAccounts.;
-  //     }
-  //     if (item == roles[1]) {
-  //       farmerData.isMember = 0;
-  //     }
-  //   } else {
-  //     _selectedItems.add(item);
-  //     if (item == roles[0]) {
-  //       farmerData.isFarmer = 1;
-  //     }
-  //     if (item == roles[1]) {
-  //       farmerData.isMember = 1;
-  //     }
-  //   }
-  //   notifyListeners();
-  // }
-  // final List<String> roles = ['Transporter'];
-  
   Set<String> selectedRoleforservice = <String>{};
   String? _selectedRole;
 
   String? get SelectedRole => _selectedRole;
 
-  // void setSelectedRole(String? role) {
-  //   if (role != null) {
-  //     _selectedRole = role;
-  //     notifyListeners();
-  //     // Do something with the selected role, like navigating to the next screen
-  //     // Example:
-  //     // _navigationService.navigateTo(NextScreenRoute, arguments: _selectedRole);
-  //   }
-  // }
 
- bool isLoading = false;
+
+  bool isLoading = false;
   bool transporter = false;
   bool harvester = false;
   bool farmer = false;
@@ -543,6 +533,7 @@ String errorMessage = '';
     drip = value;
     notifyListeners();
   }
+
   void setNursery(bool value) {
     nursery = value;
     notifyListeners();
@@ -630,7 +621,6 @@ String errorMessage = '';
         notifyListeners();
       }
     }
-
   }
   ///////////////////////////////////////////////////////////////////////
 
@@ -666,24 +656,23 @@ String errorMessage = '';
         File? compressedFile = await compressFile(fileFromXFile(result));
 
         passbookattch = compressedFile?.path ?? "";
-        Fluttertoast.showToast(backgroundColor:  const Color(0xFF006C50),
+        Fluttertoast.showToast(
+            backgroundColor: const Color(0xFF006C50),
             msg: "Passbook attached successfully.");
         setBusy(false);
       }
     } catch (e) {
       Fluttertoast.showToast(
           msg: 'Error while picking an image or document: $e');
-          Logger().e(e);
+      Logger().e(e);
     }
     notifyListeners();
   }
 
   // Function to upload the selected PDF file (Aadhar card)
   Future<void> uploadFiles() async {
-
     String aadharUrl = await FarmerService().uploadDocs(files.adharCard);
     if (aadharUrl == "" && isEdit == false) {
-
       // Fluttertoast.showToast(msg: "Failed to upload Aadhar");
     }
     String panUrl = await FarmerService().uploadDocs(files.panCard);
@@ -698,7 +687,7 @@ String errorMessage = '';
 
     farmerData.aadhaarCard =
         aadharUrl == "" ? farmerData.aadhaarCard : aadharUrl;
-     farmerData.panCard = panUrl == "" ? farmerData.panCard : panUrl;
+    farmerData.panCard = panUrl == "" ? farmerData.panCard : panUrl;
 
     farmerData.consentLetter =
         letterUrl == "" ? farmerData.consentLetter : letterUrl;
@@ -754,16 +743,15 @@ String errorMessage = '';
     return null;
   }
 
- String? validateAge(String? value) {
-   if (value == null || value.isEmpty) {
+  String? validateAge(String? value) {
+    if (value == null || value.isEmpty) {
       return 'Please Enter Age';
     }
-    if (value.length==3) {
+    if (value.length == 3) {
       return 'Please Enter Valid Age';
     }
     Logger().i(value.length);
     return null;
-    
   }
 
   String? validatename(String? value) {
@@ -802,8 +790,8 @@ String errorMessage = '';
   }
 
   Future<void> validateForm(BuildContext context, int index) async {
-
-    if (bankAccounts.any((account) => account.accountNumber == accountNumber && idbankedit == false)) {
+    if (bankAccounts.any((account) =>
+        account.accountNumber == accountNumber && idbankedit == false)) {
       Fluttertoast.showToast(
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.red,
@@ -814,7 +802,8 @@ String errorMessage = '';
       return;
     }
 
-    if (bankAccounts.any((account) => account.bankPassbook == passbookattch && idbankedit == false)) {
+    if (bankAccounts.any((account) =>
+        account.bankPassbook == passbookattch && idbankedit == false)) {
       Fluttertoast.showToast(
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.red,
@@ -836,32 +825,33 @@ String errorMessage = '';
     }
 
     setBusy(true); // Set the loading state
- Navigator.pop(context);
+    Navigator.pop(context);
     try {
       await uploadpassbook(index);
       submitBankAccount(index);
-    setBusy(false);
+      setBusy(false);
 //  if (context.mounted) {
 //         Navigator.pop(context);
 //       }
       Fluttertoast.showToast(
-         gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-          msg:idbankedit==true ?"Bank is edited succesfully":'Bank is added successfully', toastLength: Toast.LENGTH_LONG);
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          msg: idbankedit == true
+              ? "Bank is edited succesfully"
+              : 'Bank is added successfully',
+          toastLength: Toast.LENGTH_LONG);
       resetBankVariables();
       passbookattch = "";
       // Reset state variables, dismiss dialog, show toast, etc.
-
     } catch (e) {
       Logger().e(e);
-       setBusy(false);
+      setBusy(false);
       // Handle any errors here...
     } finally {
       setBusy(false); // Set the loading state
     }
-  
-}
+  }
 
   bool getRoleValue(String role, int index) {
     if (index >= 0 && index < bankAccounts.length) {
@@ -904,7 +894,6 @@ String errorMessage = '';
   }
 
   void submitBankAccount(int index) {
-
     if (index != -1) {
       bankAccounts[index].farmer = farmer ? 1 : 0;
       bankAccounts[index].harvester = harvester ? 1 : 0;
@@ -915,7 +904,6 @@ String errorMessage = '';
       bankAccounts[index].branchifscCode = branchifscCode;
       bankAccounts[index].accountNumber = accountNumber;
       bankAccounts[index].bankPassbook = passbookattch;
-      
 
       notifyListeners();
       return;
@@ -925,27 +913,28 @@ String errorMessage = '';
         farmer: farmer ? 1 : 0,
         harvester: harvester ? 1 : 0,
         transporter: transporter ? 1 : 0,
-        drip: drip ? 1:0,
-        nursery: nursery? 1 :0,
+        drip: drip ? 1 : 0,
+        nursery: nursery ? 1 : 0,
         bankName: bankName,
         branchifscCode: branchifscCode,
         accountNumber: accountNumber,
         bankPassbook: passbookattch));
     notifyListeners();
   }
-bool idbankedit=false;
+
+  bool idbankedit = false;
   void setValuesToBankVaribles(int index) {
     if (index != -1) {
       if (index >= bankAccounts.length) {
         return;
       }
-      idbankedit=true;
+      idbankedit = true;
       // Reset all roles to false
       farmer = false;
       harvester = false;
       transporter = false;
-drip=false;
-nursery=false;
+      drip = false;
+      nursery = false;
       if (bankAccounts[index].farmer == 1) {
         farmer = true;
       }
@@ -971,12 +960,12 @@ nursery=false;
   }
 
   void resetBankVariables() {
-    idbankedit=false;
-    farmer = farmerData.isFarmer==1 ?true:false ;
+    idbankedit = false;
+    farmer = farmerData.isFarmer == 1 ? true : false;
     harvester = false;
     transporter = false;
-    drip=false;
-    nursery=false;
+    drip = false;
+    nursery = false;
     bankName = "";
     branchifscCode = "";
     accountNumber = "";
@@ -1019,7 +1008,7 @@ nursery=false;
     if (value!.isEmpty) {
       return 'Please enter a branch IFSC code';
     }
-   
+
     return null;
   }
 
@@ -1031,10 +1020,8 @@ nursery=false;
     return null;
   }
 
-
-
   void updateFarmerName(String value) {
-    supplierNameController.text=value;
+    supplierNameController.text = value;
     farmerData.supplierName = supplierNameController.text;
     notifyListeners();
   }

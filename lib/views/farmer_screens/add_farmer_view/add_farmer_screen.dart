@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -14,39 +15,57 @@ import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 import 'package:sugar_mill_app/widgets/view_docs_from_internet.dart';
 import 'package:sugar_mill_app/widgets/view_image.dart';
 import '../../../models/aadharData_model.dart';
-import '../qr_scanner.dart';
 
 class AddFarmerScreen extends StatelessWidget {
   final aadharData qrdata;
   final String farmerid;
-  const AddFarmerScreen({super.key, required this.farmerid, required this.qrdata});
+  const AddFarmerScreen(
+      {super.key, required this.farmerid, required this.qrdata});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FarmerViewModel>.reactive(
       viewModelBuilder: () => FarmerViewModel(),
-      onViewModelReady: (model) => model.initialise(context, farmerid,qrdata),
+      onViewModelReady: (model) => model.initialise(context, farmerid, qrdata),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: model.isEdit == true
-              ? Text(model.farmerData.existingSupplierCode ?? "")
-              : const Text('Farmer Form'),
-          actions: [
-            IconButton(onPressed: (){Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => QRCodeScanner(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              model.isEdit == true
+                  ? Text(model.farmerData.existingSupplierCode ?? "")
+                  : const Text('New Farmer'),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: model
+                        .getColorForStatus(
+                            model.farmerData.workflowState.toString())
+                        .withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: AutoSizeText(
+                    model.farmerData.workflowState ?? "",
+                    style: TextStyle(
+                      color: model.getColorForStatus(
+                          model.farmerData.workflowState.toString()),
+                      fontWeight: FontWeight.bold,
+                    ),
+                minFontSize: 5,
+                  ),
                 ),
               ),
-            );}, icon: Icon(Icons.qr_code))
-          ],
+            ],
+          ),
         ),
         body: fullScreenLoader(
           child: SingleChildScrollView(
             child: Form(
               key: model.formKey,
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
                     Row(
@@ -119,20 +138,17 @@ class AddFarmerScreen extends StatelessWidget {
                                     labelText: 'Vendor Code'),
                               )),
 
-            TextFormField(
-              textCapitalization: TextCapitalization.sentences,
-              controller: model.supplierNameController,
-              decoration: const InputDecoration(
-                labelText: 'Vendor Name *',
-                hintText: 'Enter the Vendor name',
-              ),
-              inputFormatters: [
-
-                UppercaseTextFormatter()
-              ],
-              validator: model.validatename,
-              onChanged: model.updateFarmerName,
-            ),
+                    TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      controller: model.supplierNameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Vendor Name *',
+                        hintText: 'Enter the Vendor name',
+                      ),
+                      inputFormatters: [UppercaseTextFormatter()],
+                      validator: model.validatename,
+                      onChanged: model.updateFarmerName,
+                    ),
 
                     // //mobile number
                     // const Text(
@@ -285,39 +301,41 @@ class AddFarmerScreen extends StatelessWidget {
                     // ),
 
                     Row(children: [
-                      model.isEdit ==false ?
-                      Expanded(
-                        child: TextFormField(
-                          controller: model.mobileNumberController,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(10),
-                          ],
-                          keyboardType: TextInputType.phone,
-                          decoration: const InputDecoration(
-                            labelText: 'Mobile Number *',
-                            hintText: 'Enter 10-digit mobile number',
-                          ),
-                          validator: model.validateMobileNumber,
-                          onChanged: model.onMobileNumberChanged,
-                        ),
-                      ):Expanded(
-                        child: TextFormField(
-                          textCapitalization: TextCapitalization.sentences,
-                          controller: model.panNumberController,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(11),
-                            UppercaseTextFormatter()
-                          ],
-                          keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                            labelText: 'PAN Number',
-                            hintText: 'Enter 10-character PAN number',
-                          ),
-                          // validator: model.validatePanNumber,
-                          onChanged: model.onPanNumberChanged,
-                        ),
-                      ),
+                      model.isEdit == false
+                          ? Expanded(
+                              child: TextFormField(
+                                controller: model.mobileNumberController,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                keyboardType: TextInputType.phone,
+                                decoration: const InputDecoration(
+                                  labelText: 'Mobile Number *',
+                                  hintText: 'Enter 10-digit mobile number',
+                                ),
+                                validator: model.validateMobileNumber,
+                                onChanged: model.onMobileNumberChanged,
+                              ),
+                            )
+                          : Expanded(
+                              child: TextFormField(
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                controller: model.panNumberController,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(11),
+                                  UppercaseTextFormatter()
+                                ],
+                                keyboardType: TextInputType.text,
+                                decoration: const InputDecoration(
+                                  labelText: 'PAN Number',
+                                  hintText: 'Enter 10-character PAN number',
+                                ),
+                                // validator: model.validatePanNumber,
+                                onChanged: model.onPanNumberChanged,
+                              ),
+                            ),
                       const SizedBox(
                         width: 15,
                       ),
@@ -421,20 +439,21 @@ class AddFarmerScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextFormField(
-                             inputFormatters: [
+                              inputFormatters: [
                                 LengthLimitingTextInputFormatter(2),
-                            
                               ],
                               keyboardType: TextInputType.number,
-                            controller: model.ageController,
-                            decoration:  InputDecoration(labelText: 'Age',hintText: 'Enter the age',),
-                            validator: (value) =>
-                                value!.isEmpty ? 'Please enter an age' : null,
-                            onChanged: (value) {
-                              
+                              controller: model.ageController,
+                              decoration: const InputDecoration(
+                                labelText: 'Age',
+                                hintText: 'Enter the age',
+                              ),
+                              validator: (value) =>
+                                  value!.isEmpty ? 'Please enter an age' : null,
+                              onChanged: (value) {
                                 model.farmerData.age = value.toString();
-                                model.dobController.clear();}
-                          ),
+                                model.dobController.clear();
+                              }),
                         ),
                       ],
                     ),
@@ -489,7 +508,6 @@ class AddFarmerScreen extends StatelessWidget {
                                   ),
                                   Text(item),
                                 ],
-
                               ],
                             ),
                           ),
@@ -631,26 +649,26 @@ class AddFarmerScreen extends StatelessWidget {
                               columnSpacing: 12.0,
                               // ignore: deprecated_member_use
                               dataRowHeight: 40.0,
-                              columns:  [
+                              columns: [
                                 const DataColumn(
                                   label: Text('Far.'),
                                 ),
-                                 if(model.role ==false)
-                                const DataColumn(
-                                  label: Text('Har.'),
-                                ),
-                                 if(model.role ==false)
-                                const DataColumn(
-                                  label: Text('Trans.'),
-                                ),
-                                if(model.role ==false)
-                                const DataColumn(
-                                  label: Text('Drip'),
-                                ),
-                                if(model.role ==false)
-                                const DataColumn(
-                                  label: Text('Nursery'),
-                                ),
+                                if (model.role == false)
+                                  const DataColumn(
+                                    label: Text('Har.'),
+                                  ),
+                                if (model.role == false)
+                                  const DataColumn(
+                                    label: Text('Trans.'),
+                                  ),
+                                if (model.role == false)
+                                  const DataColumn(
+                                    label: Text('Drip'),
+                                  ),
+                                if (model.role == false)
+                                  const DataColumn(
+                                    label: Text('Nursery'),
+                                  ),
                                 const DataColumn(
                                   label: Text('Bank Name'),
                                 ),
@@ -663,13 +681,11 @@ class AddFarmerScreen extends StatelessWidget {
                                 const DataColumn(
                                   label: Text('Bank Passbook'),
                                 ),
-                                if(model.farmerData.readOnlyCount!=1)
                                 const DataColumn(
                                   label: Text('Action'),
                                   // Add a new DataColumn for the button
                                   numeric: false,
                                 ),
-                                 if(model.farmerData.readOnlyCount!=1)
                                 const DataColumn(
                                   label: Text('Delete'),
                                   // Add a new DataColumn for the button
@@ -691,47 +707,45 @@ class AddFarmerScreen extends StatelessWidget {
                                         );
                                       },
                                     )),
-                                    if(model.role ==false)
-                                    DataCell(Checkbox(
-                                      value:
-                                          model.bankAccounts[index].harvester ==
-                                              1,
-                                      onChanged: (bool? newValue) {
-                                        model.setRole(
-                                            "Harvester", newValue ?? false);
-                                      },
-                                    )),
-                                     if(model.role ==false)
-                                    DataCell(Checkbox(
-                                      value: model.bankAccounts[index]
-                                              .transporter ==
-                                          1,
-                                      onChanged: (bool? newValue) {
-                                        model.setRole(
-                                            "Transporter", newValue ?? false);
-                                      },
-                                    )),
-                                  if(model.role ==false)
-                                    DataCell(Checkbox(
-                                      value: model.bankAccounts[index]
-                                          .drip ==
-                                          1,
-                                      onChanged: (bool? newValue) {
-                                        model.setRole(
-                                            "Drip", newValue ?? false);
-                                      },
-                                    )),
-                                     if(model.role ==false)
-                                    DataCell(Checkbox(
-                                      value: model.bankAccounts[index]
-                                          .nursery ==
-                                          1,
-                                      onChanged: (bool? newValue) {
-                                        model.setRole(
-                                            "Nursery", newValue ?? false);
-                                      },
-                                    )),
-
+                                    if (model.role == false)
+                                      DataCell(Checkbox(
+                                        value: model.bankAccounts[index]
+                                                .harvester ==
+                                            1,
+                                        onChanged: (bool? newValue) {
+                                          model.setRole(
+                                              "Harvester", newValue ?? false);
+                                        },
+                                      )),
+                                    if (model.role == false)
+                                      DataCell(Checkbox(
+                                        value: model.bankAccounts[index]
+                                                .transporter ==
+                                            1,
+                                        onChanged: (bool? newValue) {
+                                          model.setRole(
+                                              "Transporter", newValue ?? false);
+                                        },
+                                      )),
+                                    if (model.role == false)
+                                      DataCell(Checkbox(
+                                        value:
+                                            model.bankAccounts[index].drip == 1,
+                                        onChanged: (bool? newValue) {
+                                          model.setRole(
+                                              "Drip", newValue ?? false);
+                                        },
+                                      )),
+                                    if (model.role == false)
+                                      DataCell(Checkbox(
+                                        value:
+                                            model.bankAccounts[index].nursery ==
+                                                1,
+                                        onChanged: (bool? newValue) {
+                                          model.setRole(
+                                              "Nursery", newValue ?? false);
+                                        },
+                                      )),
                                     DataCell(Text(model
                                         .bankAccounts[index].bankName
                                         .toString())),
@@ -754,42 +768,13 @@ class AddFarmerScreen extends StatelessWidget {
                                               ),
                                             ),
                                           );
-                                          //   Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //       builder: (BuildContext context) =>
-                                          //           model.bankAccounts[index]
-                                          //                           .bankPassbook?[
-                                          //                       0] !=
-                                          //                   '/'
-                                          //               ? ViewImageInternet(
-                                          //                   url: model
-                                          //                           .bankAccounts[
-                                          //                               index]
-                                          //                           .bankPassbook ??
-                                          //                       "",
-                                          //                 )
-                                          //               : ViewImage(
-                                          //                   image: Image.file(
-                                          //                     File(model
-                                          //                             .bankAccounts[
-                                          //                                 index]
-                                          //                             .bankPassbook ??
-                                          //                         ""),
-                                          //                   ),
-                                          //                 ),
-                                          //     ),
-                                          //   );
                                         },
-                                        child: Text(model
-                                            .bankAccounts[index].bankPassbook
-                                            .toString()
-                                            .split("/")
-                                            .last))),
-                                    // DataCell(Text(model
-                                    //     .bankAccounts[index].
-                                    //     .toString())),
-                                     if(model.farmerData.readOnlyCount!=1)
+                                        child: Text(model.bankAccounts[index]
+                                                .bankPassbook
+                                                ?.toString()
+                                                .split("/")
+                                                .last ??
+                                            "Not Available"))),
                                     DataCell(
                                       SizedBox(
                                         height: 24.0,
@@ -802,7 +787,6 @@ class AddFarmerScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                     if(model.farmerData.readOnlyCount!=1)
                                     DataCell(IconButton(
                                       onPressed: () {
                                         showDialog(
@@ -845,13 +829,13 @@ class AddFarmerScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),
-                     if(model.farmerData.readOnlyCount!=1)
+
                     ElevatedButton(
                       onPressed: () => getBankDetails(context, model, -1),
                       child: const Text('Add Bank Account *'),
                     ),
                     const SizedBox(
-                      height: 10.0,
+                      height: 20.0,
                     ),
 
                     Visibility(
@@ -859,16 +843,23 @@ class AddFarmerScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CtextButton(
-                            text: 'Cancel',
-                            onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
+                          Expanded(
+                            child: CtextButton(
+                              text: 'Cancel',
+                              onPressed: () => Navigator.of(context).pop(),
+                              buttonColor: Colors.red,
+                            ),
                           ),
-
-                          CtextButton(
-                            onPressed: () => model.onSavePressed(context),
-                            text: 'Save', buttonColor: Colors.green,
+                          SizedBox(
+                            width: 20,
                           ),
-
+                          Expanded(
+                            child: CtextButton(
+                              onPressed: () => model.onSavePressed(context),
+                              text: 'Save',
+                              buttonColor: Colors.green,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -884,24 +875,27 @@ class AddFarmerScreen extends StatelessWidget {
     );
   }
 
-getBankDetails(BuildContext context, FarmerViewModel model, int index) {
-  if (index == -1) {
-    model.resetBankVariables(); // Add this function to reset variables
-  } else {
-    model.setValuesToBankVaribles(index);
-  }
+  getBankDetails(BuildContext context, FarmerViewModel model, int index) {
+    if (index == -1) {
+      model.resetBankVariables(); // Add this function to reset variables
+    } else {
+      model.setValuesToBankVaribles(index);
+    }
 
-  SchedulerBinding.instance.addPostFrameCallback(
-    (_) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return  SingleChildScrollView(
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return SingleChildScrollView(
                   child: AlertDialog(
-                    title: Text(model.idbankedit == true ? 'Edit Bank Account' : 'Add Bank Account'),
+                    alignment: Alignment.center,
+                    title: Text(model.idbankedit == true
+                        ? 'Edit Bank Account'
+                        : 'Add Bank Account'),
                     content: fullScreenLoader(
                       loader: model.isBusy,
                       context: context,
@@ -912,251 +906,262 @@ getBankDetails(BuildContext context, FarmerViewModel model, int index) {
                           child: Column(
                             children: [
                               Row(
-                                  children: [
+                                children: [
+                                  Expanded(
+                                    child: CheckboxListTile(
+                                      title: const Text("Far."),
+                                      value: model.farmer,
+                                      onChanged: (bool? newValue) {
+                                        setState(() => model.setRole(
+                                            "Farmer", newValue ?? false));
+                                      },
+                                    ),
+                                  ),
+                                  if (model.role == false)
                                     Expanded(
                                       child: CheckboxListTile(
-                                    
-                                        title: const Text("Far."),
-                                        value: model.farmer,
-                                        
+                                        title: const Text("Har."),
+                                        value: model.harvester,
                                         onChanged: (bool? newValue) {
-                                          setState(() =>
-                                              model.setRole("Farmer", newValue ?? false));
+                                          setState(() => model.setRole(
+                                              "Harvester", newValue ?? false));
                                         },
                                       ),
                                     ),
-                                    if(model.role ==false)
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  if (model.role == false)
                                     Expanded(
                                       child: CheckboxListTile(
-                                                                  title: const Text("Har"),
-                                                                  value: model.harvester,
-                                                                  onChanged: (bool? newValue) {
-                                      setState(() => model.setRole(
-                                          "Harvester", newValue ?? false));
-                                                                  },
-                                                                ),
-                                    ),
-                                  ],
-                                ),
-                                
-                                Row(
-                                  children: [
-                                    if(model.role ==false)
-                                    Expanded(
-                                      child: CheckboxListTile(
-                                        title: const Text("Tra"),
+                                        title: const Text("Tran."),
                                         value: model.transporter,
                                         onChanged: (bool? newValue) {
                                           setState(() => model.setRole(
-                                              "Transporter", newValue ?? false));
+                                              "Transporter",
+                                              newValue ?? false));
                                         },
                                       ),
                                     ),
-                                    if(model.role ==false)
-                                      Expanded(
-                                        child:CheckboxListTile(
-                                  title: const Text("Nur"),
-                                  value: model.nursery,
+                                  if (model.role == false)
+                                    Expanded(
+                                      child: CheckboxListTile(
+                                        title: const Text("Nur."),
+                                        value: model.nursery,
+                                        onChanged: (bool? newValue) {
+                                          setState(() => model.setRole(
+                                              "Nursery", newValue ?? false));
+                                        },
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              if (model.role == false)
+                                CheckboxListTile(
+                                  title: const Text("Drip"),
+                                  value: model.drip,
                                   onChanged: (bool? newValue) {
                                     setState(() => model.setRole(
-                                        "Nursery", newValue ?? false));
+                                        "Drip", newValue ?? false));
                                   },
                                 ),
+                              Expanded(
+                                child: Autocomplete<String>(
+                                  key: Key(index == -1
+                                      ? ""
+                                      : model.bankAccounts[index].bankName ??
+                                          ""),
+                                  initialValue: TextEditingValue(
+                                      text: index == -1
+                                          ? ""
+                                          : model.bankAccounts[index]
+                                                  .bankName ??
+                                              ""),
+                                  optionsBuilder:
+                                      (TextEditingValue textEditingValue) {
+                                    if (textEditingValue.text.isEmpty) {
+                                      return const Iterable<String>.empty();
+                                    }
+                                    return model.bankList
+                                        .map((bank) => bank.name ?? "")
+                                        .toList()
+                                        .where((bank) => bank
+                                            .toLowerCase()
+                                            .contains(textEditingValue.text
+                                                .toLowerCase()));
+                                  },
+                                  onSelected: (String routeName) {
+                                    // Find the corresponding route object
+                                    final bankData = model.bankList.firstWhere(
+                                        (bank) =>
+                                            bank.name == routeName);
+                                    model.setSelectedBank(
+                                        bankData); // Pass the route
+                                  },
+                                  fieldViewBuilder: (BuildContext context,
+                                      TextEditingController
+                                          textEditingController,
+                                      FocusNode focusNode,
+                                      VoidCallback onFieldSubmitted) {
+                                    return TextFormField(
+
+                                      maxLines: 2,
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Bank Name*',
                                       ),
-                                  ],
-                                ),
-                              if(model.role ==false)
-                                CheckboxListTile(
-                                                                    title: const Text("Drip"),
-                                                                    value: model.drip,
-                                                                    onChanged: (bool? newValue) {
-                                                                      setState(() => model.setRole(
-                                          "Drip", newValue ?? false));
-                                                                    },
-                                                                  ),
-                                Expanded(
-                                  child: Autocomplete<String>(
-                                    key: Key(index == -1
-                                        ? ""
-                                        : model.bankAccounts[index].bankName ?? ""),
-                                    initialValue: TextEditingValue(
-                                        text: index == -1
-                                            ? ""
-                                            : model.bankAccounts[index].bankName ??
-                                                ""),
-                                    optionsBuilder:
-                                        (TextEditingValue textEditingValue) {
-                                      if (textEditingValue.text.isEmpty) {
-                                        return const Iterable<String>.empty();
-                                      }
-                                      return model.bankList
-                                          .map((bank) => bank.bankAndBranch ?? "")
-                                          .toList()
-                                          .where((bank) => bank
-                                              .toLowerCase()
-                                              .contains(textEditingValue.text
-                                                  .toLowerCase()));
-                                    },
-                                    onSelected: (String routeName) {
-                                      // Find the corresponding route object
-                                      final bankData = model.bankList.firstWhere(
-                                          (bank) => bank.bankAndBranch == routeName);
-                                      model.setSelectedBank(
-                                          bankData); // Pass the route
-                                    },
-                                    fieldViewBuilder: (BuildContext context,
-                                        TextEditingController textEditingController,
-                                        FocusNode focusNode,
-                                        VoidCallback onFieldSubmitted) {
-                                      return TextFormField(
-                                        controller: textEditingController,
-                                        focusNode: focusNode,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Bank*',
-                                        ),
-                                        onChanged: (String value) {},
-                                        validator: model.validateBankName,
-                                      );
-                                    },
-                                    optionsViewBuilder: (BuildContext contpext,
-                                        AutocompleteOnSelected<String> onSelected,
-                                        Iterable<String> options) {
-                                      return Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Material(
-                                          elevation: 4.0,
-                                          child: Container(
-                                            constraints:
-                                                const BoxConstraints(maxHeight: 200),
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: options.length,
-                                              itemBuilder:
-                                                  (BuildContext context, int index) {
-                                                final String option =
-                                                    options.elementAt(index);
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    onSelected(option);
-                                                  },
-                                                  child: ListTile(
-                                                    title: Text(option),
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                      onChanged: (String value) {},
+                                      validator: model.validateBankName,
+                                    );
+                                  },
+                                  optionsViewBuilder: (BuildContext contpext,
+                                      AutocompleteOnSelected<String> onSelected,
+                                      Iterable<String> options) {
+                                    return Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Material(
+                                        elevation: 4.0,
+                                        child: Container(
+                                          constraints: const BoxConstraints(
+                                              maxHeight: 200),
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: options.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              final String option =
+                                              options.elementAt(index);
+                                              final routeData = model.bankList
+                                                  .firstWhere((route) =>
+                                              route.name == option);
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  onSelected(option);
+                                                },
+                                                child: ListTile(
+                                                  title: Text(routeData.bankAndBranch ?? "N/A"),
+                                                  subtitle: Text(routeData.name ?? "N/A"),
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
-                                      );
-                                    },
-                                    optionsMaxHeight: 200,
-                                  ),
+                                      ),
+                                    );
+                                  },
+                                  optionsMaxHeight: 200,
                                 ),
-                                Expanded(
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  initialValue:
+                                      index == -1 ? null : model.accountNumber,
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Account Number *',
+                                  ),
+                                  onChanged: (value) {
+                                    model.accountNumber = value;
+                                  },
+                                  validator: model.validateAccountNumber,
+                                ),
+                              ),
+                              Visibility(
+                                visible: model.branchifscCode != "",
+                                child: Expanded(
                                   child: TextFormField(
-                                    initialValue:
-                                        index == -1 ? null : model.accountNumber,
-                                    
-                                    keyboardType: TextInputType.number,
+                                    readOnly: true,
+                                    initialValue: model.branchifscCode,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(11),
+                                      UppercaseTextFormatter(),
+                                    ],
                                     decoration: const InputDecoration(
-                                      labelText: 'Account Number *',
+                                      labelText: 'Branch IFSC Code',
                                     ),
                                     onChanged: (value) {
-                                      model.accountNumber = value;
+                                      model.branchifscCode = value;
                                     },
-                                    validator: model.validateAccountNumber,
+                                    validator: model.validateBranchIfscCode,
                                   ),
                                 ),
-                                Visibility(
-                                  visible: model.branchifscCode != "",
-                                  child: Expanded(
-                                    child: TextFormField(
-                                      readOnly: true,
-                                      initialValue: model.branchifscCode,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(11),
-                                        UppercaseTextFormatter(),
-                                      ],
-                                      decoration: const InputDecoration(
-                                        labelText: 'Branch IFSC Code',
-                                      ),
-                                      onChanged: (value) {
-                                        model.branchifscCode = value;
-                                      },
-                                      validator: model.validateBranchIfscCode,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: ElevatedButton(
-                                  onPressed: () {
-                                     setState(() => pickDocforpassbook(kBankpdf, context, model));
-                                      },
-                                  child: model.passbookattch != ""
-                                      ? Text(
-                                          'Passbook: ${model.passbookattch.split('/').last}',
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      : const Text('Attach Passbook',),
-                                )),
-                              ],
-                           
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      setState(() => pickDocforpassbook(
+                                          kBankpdf, context, model));
+                                    },
+                                    icon: Icon(Icons.attachment),
+                                    label: model.passbookattch != ""
+                                        ? Text(
+                                            'Passbook: ${model.passbookattch.split('/').last}',
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        : const Text(
+                                            'Click here to attach passbook',
+                                          ),
+                                  )),
+                            ],
                           ),
                         ),
                       ),
                     ),
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    actionsOverflowButtonSpacing: 20,
                     actions: [
-                      TextButton(
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Cancel', style: TextStyle(color: Colors.redAccent)),
+                        child: const Text('Cancel',
+                            style: TextStyle(color: Colors.redAccent)),
                       ),
-                      TextButton(
+
+                      ElevatedButton(
                         onPressed: () async {
                           if (model.bankformKey.currentState!.validate()) {
-                          if (model.farmer == false) {
-                            Fluttertoast.showToast(
-                              msg: "Please select the farmer service",
-                              gravity: ToastGravity.CENTER,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                            );
-                            return;
-                          }
+                            if (model.farmer == false && model.role == true) {
+                              Fluttertoast.showToast(
+                                msg: "Please select the farmer service",
+                                gravity: ToastGravity.CENTER,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                              return;
+                            }
 
-                          if (model.passbookattch == "") {
-                            Fluttertoast.showToast(
-                              msg: "Please attach the passbook",
-                              gravity: ToastGravity.CENTER,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                            );
-                            return;
-                          }
-
+                            if (model.passbookattch == "") {
+                              Fluttertoast.showToast(
+                                msg: "Please attach the passbook",
+                                gravity: ToastGravity.CENTER,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                              return;
+                            }
 
                             await model.validateForm(context, index);
-                           
                           }
                         },
-                        child:Text(
-                                model.idbankedit == true ? 'Edit' : 'Add',
-                                style: TextStyle(color: Colors.green),
-                              ),
+                        child: Text(
+                          model.idbankedit == true ? 'Edit' : 'Add',
+                          style: const TextStyle(color: Colors.green),
+                        ),
                       ),
                     ],
                   ),
-                
-              );
-            },
-          );
-        },
-      );
-    },
-  );
-}
-
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
 
   void pickDoc(String filetype, BuildContext context, FarmerViewModel model) {
     showDialog(

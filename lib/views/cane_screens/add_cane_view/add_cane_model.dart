@@ -124,6 +124,12 @@ class CaneViewModel extends BaseViewModel {
     setBusy(false);
   }
 
+  bool isVisible(){
+    if(canedata.name != 0 && role==true&&isEdit==true){
+      return true;
+    }
+    return false;
+  }
 
 void showSuccessDialog(BuildContext context,String? name) {
   showDialog(

@@ -1,10 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/views/cane_screens/add_cane_view/add_cane_model.dart';
-
 import '../../../widgets/cdrop_down_widget.dart';
 import '../../../widgets/ctext_button.dart';
 import '../../../widgets/full_screen_loader.dart';
@@ -542,7 +540,7 @@ class AddCaneScreen extends StatelessWidget {
   onChanged: model.setsurveyNumber,
   inputFormatters: [
     FilteringTextInputFormatter.allow(
-      RegExp(r'[0-9@#$%^&8()_+={}[/]|\\:;"\<>,.?/-]'), // Allow only numbers, '/', '.', and '-'
+      RegExp(r'[0-9@#$%^&8()_+={}[/]|\\:;"\<>,.?/-]'),
     ),
     
   ],
@@ -628,30 +626,7 @@ class AddCaneScreen extends StatelessWidget {
                                   optionsMaxHeight: 200,
                                 ),
                               ),
-                              // Expanded(
-                              //   child: CdropDown(
-                              //     dropdownButton:
-                              //         DropdownButtonFormField<String>(
-                              //       isExpanded: true,
-                              //       value: model.canedata.cropVariety,
-                              //       // Replace null with the selected value if needed
-                              //       decoration: const InputDecoration(
-                              //         labelText: 'Crop Variety',
-                              //       ),
-                              //       hint: const Text('Select Crop Variety'),
-                              //       items: model.canevarietyList.map((val) {
-                              //         return DropdownMenuItem<String>(
-                              //           value: val,
-                              //           child: Text(val),
-                              //         );
-                              //       }).toList(),
-                              //       onChanged: (value) =>
-                              //           model.setselectedcropVariety(value),
-                              //       validator: model.validateCropVariety,
-                              //       menuMaxHeight: 200,
-                              //     ),
-                              //   ),
-                              // ),
+
                             ],
                           ),
                           Row(
@@ -955,19 +930,22 @@ class AddCaneScreen extends StatelessWidget {
                             ],
                           ),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
+                          Visibility(
+                            visible: !model.isVisible(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
 
-                              CtextButton(
-                                text: 'Cancel',
-                                onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
-                              ),
-                              CtextButton(
-                                onPressed: () => model.onSavePressed(context),
-                                text: 'Save', buttonColor: Colors.green,
-                              ),
-                            ],
+                                CtextButton(
+                                  text: 'Cancel',
+                                  onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
+                                ),
+                                CtextButton(
+                                  onPressed: () => model.onSavePressed(context),
+                                  text: 'Save', buttonColor: Colors.green,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

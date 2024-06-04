@@ -1,12 +1,9 @@
-import 'dart:convert';
-import 'dart:ui';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
-import 'package:sugar_mill_app/models/checkin.dart';
 import '../constants.dart';
 import '../models/dashboard_model.dart';
-import '../models/employee.dart';
 
 class CheckInServices {
 
@@ -29,8 +26,9 @@ class CheckInServices {
         return null;
       }
     } on DioException catch (e) {
-      Logger().i(e.response);
-      // Fluttertoast.showToast(msg: "Error while fetching user");
+      // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return null;
   }
@@ -61,9 +59,10 @@ class CheckInServices {
         Fluttertoast.showToast(msg: "UNABLE TO checkin");
         return false;
       }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Error accoured $e ");
-      Logger().e(e);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
     }
     return false;
   }
