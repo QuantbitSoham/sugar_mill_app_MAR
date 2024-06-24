@@ -40,8 +40,9 @@ class FarmerViewModel extends BaseViewModel {
   late String accountNumber;
   late String branchifscCode = "";
   late String bankName;
+
   late String farmerId;
-  late String branch = "";
+  late String bankandbranch;
   late String passbookattch = "";
   bool isPassbookAdded = false;
   bool role = false;
@@ -482,15 +483,16 @@ class FarmerViewModel extends BaseViewModel {
   }
 
   void setSelectedBank(BankMaster bank) async {
-    bankName = bank.bankAndBranch ?? "";
-
+    bankandbranch=bank.bankAndBranch ?? "";
+    bankName = bank.name ?? "";
     branchifscCode = bank.ifscCode ?? "";
+    Logger().i(bank.toJson());
     notifyListeners();
   }
 
   void setSelectedBranch(String? bankbranch) {
-    branch = bankbranch ?? "";
-    Logger().i(branchifscCode);
+    bankandbranch = bankbranch ?? "";
+
   }
 
   // final List<String> _selectedItems = [];
@@ -693,39 +695,70 @@ class FarmerViewModel extends BaseViewModel {
         letterUrl == "" ? farmerData.consentLetter : letterUrl;
   }
 
-  Future<void> uploadpassbook(int index) async {
+
+  Future<void> uploadPassbook(int index) async {
     print("INDEX IS: $index");
-    if (index == -1) {
-      // bankPassbookUrls.add("");
-      String bankUrl = await FarmerService().uploadDocs(File(passbookattch));
+
+    try {
+      if (passbookattch.isEmpty) {
+        Fluttertoast.showToast(
+          msg: "No passbook attachment provided",
+          toastLength: Toast.LENGTH_LONG,
+        );
+        return;
+      }
+
+      final file = File(passbookattch);
+      if (!await file.exists()) {
+        Fluttertoast.showToast(
+          msg: "Passbook file does not exist",
+          toastLength: Toast.LENGTH_LONG,
+        );
+        return;
+      }
+
+      String bankUrl = await FarmerService().uploadDocs(file);
       if (bankUrl.isNotEmpty) {
-        bankPassbookUrls.add(bankUrl);
+        if (index == -1) {
+          bankPassbookUrls.add(bankUrl);
+        } else {
+          bankPassbookUrls[index] = bankUrl;
+        }
         passbookattch = bankUrl; // Update the attachment URL
       } else {
         Fluttertoast.showToast(msg: "Failed to upload Bank");
       }
-    } else {
-      String bankUrl = await FarmerService().uploadDocs(File(passbookattch));
-      if (bankUrl.isNotEmpty) {
-        bankPassbookUrls[index] = (bankUrl);
-        passbookattch = bankUrl; // Update the attachment URL
-      } else {
-        Fluttertoast.showToast(msg: "Failed to upload Bank");
-      }
+    } catch (e) {
+      Logger().e(e);
+      Fluttertoast.showToast(
+        msg: "Error uploading passbook: $e",
+        toastLength: Toast.LENGTH_LONG,
+      );
     }
-    // int i = 0;
-    // for (File? passbook in files.bankPassbooks) {
-    //   if (passbook != null) {
-    //     String bankUrl = await FarmerService().uploadDocs(passbook);
-    //     if (bankUrl.isNotEmpty) {
-    //       bankPassbookUrls[i] = bankUrl; // Update the attachment URL
-    //     } else {
-    //       Fluttertoast.showToast(msg: "Failed to upload Bank");
-    //     }
-    //   }
-    //   i++;
-    // }
   }
+
+  // Future<void> uploadpassbook(int index) async {
+  //   print("INDEX IS: $index");
+  //   if (index == -1) {
+  //     // bankPassbookUrls.add("");
+  //     String bankUrl = await FarmerService().uploadDocs(File(passbookattch));
+  //     if (bankUrl.isNotEmpty) {
+  //       bankPassbookUrls.add(bankUrl);
+  //       passbookattch = bankUrl; // Update the attachment URL
+  //     } else {
+  //       Fluttertoast.showToast(msg: "Failed to upload Bank");
+  //     }
+  //   } else {
+  //     String bankUrl = await FarmerService().uploadDocs(File(passbookattch));
+  //     if (bankUrl.isNotEmpty) {
+  //       bankPassbookUrls[index] = (bankUrl);
+  //       passbookattch = bankUrl; // Update the attachment URL
+  //     } else {
+  //       Fluttertoast.showToast(msg: "Failed to upload Bank");
+  //     }
+  //   }
+  //
+  // }
 
   // Function to check if a PDF file is selected
   bool isFileSelected(String fileType) {
@@ -791,7 +824,7 @@ class FarmerViewModel extends BaseViewModel {
 
   Future<void> validateForm(BuildContext context, int index) async {
     if (bankAccounts.any((account) =>
-        account.accountNumber == accountNumber && idbankedit == false)) {
+    account.accountNumber == accountNumber && idbankedit == false)) {
       Fluttertoast.showToast(
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.red,
@@ -803,7 +836,7 @@ class FarmerViewModel extends BaseViewModel {
     }
 
     if (bankAccounts.any((account) =>
-        account.bankPassbook == passbookattch && idbankedit == false)) {
+    account.bankPassbook == passbookattch && idbankedit == false)) {
       Fluttertoast.showToast(
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.red,
@@ -827,23 +860,25 @@ class FarmerViewModel extends BaseViewModel {
     setBusy(true); // Set the loading state
     Navigator.pop(context);
     try {
-      await uploadpassbook(index);
+      Logger().i(passbookattch);
+      if (index != -1) {
+        Logger().i(bankAccounts[index].bankPassbook);
+      }
+      await uploadPassbook(index);
       submitBankAccount(index);
       setBusy(false);
-//  if (context.mounted) {
-//         Navigator.pop(context);
-//       }
+
       Fluttertoast.showToast(
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          msg: idbankedit == true
-              ? "Bank is edited succesfully"
-              : 'Bank is added successfully',
-          toastLength: Toast.LENGTH_LONG);
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        msg: idbankedit == true
+            ? "Bank is edited successfully"
+            : 'Bank is added successfully',
+        toastLength: Toast.LENGTH_LONG,
+      );
       resetBankVariables();
       passbookattch = "";
-      // Reset state variables, dismiss dialog, show toast, etc.
     } catch (e) {
       Logger().e(e);
       setBusy(false);
@@ -852,6 +887,7 @@ class FarmerViewModel extends BaseViewModel {
       setBusy(false); // Set the loading state
     }
   }
+
 
   bool getRoleValue(String role, int index) {
     if (index >= 0 && index < bankAccounts.length) {
@@ -900,11 +936,11 @@ class FarmerViewModel extends BaseViewModel {
       bankAccounts[index].transporter = transporter ? 1 : 0;
       bankAccounts[index].drip = drip ? 1 : 0;
       bankAccounts[index].nursery = nursery ? 1 : 0;
-      bankAccounts[index].bankName = bankName;
+      bankAccounts[index].bankAndBranch = bankandbranch;
+      bankAccounts[index].name=bankName;
       bankAccounts[index].branchifscCode = branchifscCode;
       bankAccounts[index].accountNumber = accountNumber;
       bankAccounts[index].bankPassbook = passbookattch;
-
       notifyListeners();
       return;
     }
@@ -916,6 +952,7 @@ class FarmerViewModel extends BaseViewModel {
         drip: drip ? 1 : 0,
         nursery: nursery ? 1 : 0,
         bankName: bankName,
+        bankAndBranch: bankandbranch,
         branchifscCode: branchifscCode,
         accountNumber: accountNumber,
         bankPassbook: passbookattch));
@@ -951,7 +988,8 @@ class FarmerViewModel extends BaseViewModel {
         nursery = true;
       }
       print("SELECED: ${bankAccounts[index].bankAndBranch}");
-      bankName = bankAccounts[index].bankName!;
+      bankandbranch = bankAccounts[index].bankAndBranch ?? "";
+      bankName = bankAccounts[index].bankName ?? "";
       branchifscCode = bankAccounts[index].branchifscCode!;
       accountNumber = bankAccounts[index].accountNumber!;
       passbookattch = bankAccounts[index].bankPassbook ?? "";
@@ -969,7 +1007,7 @@ class FarmerViewModel extends BaseViewModel {
     bankName = "";
     branchifscCode = "";
     accountNumber = "";
-    branch = "";
+    bankandbranch = "";
     passbookattch = "";
   }
 

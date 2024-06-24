@@ -8,9 +8,9 @@ import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/models/agri.dart';
 import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_screen.dart';
 import '../../../models/agri_cane_model.dart';
+import '../../../models/agri_masters.dart';
 import '../../../models/cane_farmer.dart';
 import '../../../models/dose_type.dart';
-import '../../../models/fertilizeritem.dart';
 import '../../../models/tripsheet_water_supplier.dart';
 import '../../../models/village_model.dart';
 import '../../../services/add_agri_services.dart';
@@ -36,10 +36,10 @@ class AgriViewModel extends BaseViewModel {
   List<String> saleslist = ["Nursery", "Fertilizer"];
   List<AgriCane> canelistwithfilter = [];
   List<caneFarmer> farmerList = [];
-  List<FertilizerItemList> itemList = [];
+  List<ItemList> itemList = [];
   List<FertilizerItemList> fertilizeritemlist=[];
   List<WaterSupplierList> supplierList = [];
-List<villagemodel> villagelist=[];
+List<Village> villagelist=[];
   String? selectedplot;
   String? season;
   String? selectedVendorname;
@@ -53,23 +53,36 @@ List<villagemodel> villagelist=[];
   String? selectedgrowername;
   String? farmercode;
   TextEditingController datecontroller = TextEditingController();
-
+  AgriMasters masters=AgriMasters();
   final List<String> _selectedItems = [];
   List<String> get selectedItems => _selectedItems;
   late String agriId;
 
   initialise(BuildContext context, String agriid) async {
     setBusy(true);
-    seasonlist = await AddAgriServices().fetchSeason();
-    itemList = await AddAgriServices().fetchItemlist();
-    fertilizeritemlist=await AddAgriServices().fetchItemwithfilter();
-villagelist=await AddAgriServices().fetchVillages();
+    masters=await AddAgriServices().getMasters() ?? AgriMasters();
+    seasonlist=masters.season ?? [];
+    itemList=masters.itemList ?? [];
+    fertilizeritemlist=masters.fertilizerItemList ?? [];
+    villagelist=masters.village ?? [];
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonlist.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+    );
+    agridata.season=latestSeason;
+//     seasonlist = await AddAgriServices().fetchSeason();
+//     itemList = await AddAgriServices().fetchItemlist();
+//     fertilizeritemlist=await AddAgriServices().fetchItemwithfilter();
+// villagelist=await AddAgriServices().fetchVillages();
     if (agriid != "") {
       isEdit = true;
       agridata = await AddAgriServices().getAgri(agriid) ?? Agri();
       notifyListeners();
-      Logger().i(agridata.village);
-      farmerList=await AddAgriServices().fetchfarmerListwithfilter(agridata.village ?? "");
+
+      farmerList=await AddAgriServices().fetchfarmerListwithfilter(agridata.farmerVillage ?? "");
       supplierList = await AddAgriServices().fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
       developmentAreaController.text = agridata.developmentArea.toString();
       for (caneFarmer i in farmerList) {
@@ -90,7 +103,7 @@ villagelist=await AddAgriServices().fetchVillages();
           : agridata.date ?? "";
       // agridata.date = formattedDate;
       datecontroller.text = formattedDate;
-      canelistwithfilter = (await AddAgriServices().fetchcanelistwithfilter(agridata.season ?? "",agridata.village ?? "",farmercode ?? ""));
+      canelistwithfilter = (await AddAgriServices().fetchcanelistwithfilter(agridata.season ?? "",agridata.farmerVillage ?? "",farmercode ?? ""));
       Logger().i(canelistwithfilter);
       agricultureDevelopmentItem
           .addAll(agridata.agricultureDevelopmentItem?.toList() ?? []);
@@ -590,14 +603,14 @@ String? selectedVillage;
 
   void setSelectedVillage(BuildContext context,String? village) async {
     selectedVillage = village;
-    agridata.village = selectedVillage;
-    farmerList=await AddAgriServices().fetchfarmerListwithfilter(agridata.village ?? "");
+    agridata.farmerVillage = selectedVillage;
+    farmerList=await AddAgriServices().fetchfarmerListwithfilter(agridata.farmerVillage ?? "");
     if (farmerList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
           content: Text(
-            'There is no farmer available for ${agridata.village}',
+            'There is no farmer available for ${agridata.farmerVillage}',
             style: const TextStyle(color: Colors.white, fontSize: 15),
           ),
           duration: const Duration(seconds: 3), // Adjust the duration as needed
@@ -965,7 +978,7 @@ String? selectedVillage;
     itemName = bankData.itemName ?? "";
     weight=bankData.weightPerUnit?? 0.0;
     itemTaxTemp=bankData.itemTaxTemp ?? "";
-    taxNumber=bankData.taxNumber ?? 0.0;
+    // taxNumber=bankData.taxNumber ?? 0.0;
     actualQty=bankData.actualQty ?? "";
     rate=bankData.rate ?? 0.0;
     notifyListeners();

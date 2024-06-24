@@ -20,7 +20,7 @@ class AddCaneScreen extends StatelessWidget {
               appBar: AppBar(
                 title: model.isEdit == true
                     ? Text(model.canedata.name.toString())
-                    : const Text('Cane Registration'),
+                    : const Text('New Cane Registration'),
               ),
               body: fullScreenLoader(
                 child: SingleChildScrollView(
@@ -184,7 +184,7 @@ class AddCaneScreen extends StatelessWidget {
                                   items: model.plantationStatus.map((val) {
                                     return DropdownMenuItem<String>(
                                       value: val,
-                                      child: AutoSizeText(val,style: TextStyle(color: Colors.black),),
+                                      child: AutoSizeText(val,style: const TextStyle(color: Colors.black),),
                                     );
                                   }).toList(),
 
@@ -202,22 +202,21 @@ class AddCaneScreen extends StatelessWidget {
                                 initialValue: TextEditingValue(
                                   text: model.canedata.vendorCode ?? "",
                                 ),
-                                optionsBuilder:
-                                    (TextEditingValue textEditingValue) {
+                                optionsBuilder: (TextEditingValue textEditingValue) {
                                   if (textEditingValue.text.isEmpty) {
                                     return const Iterable<String>.empty();
                                   }
+                                  final searchText = textEditingValue.text.toLowerCase();
                                   return model.farmerList
                                       .where((grower) =>
-                                          (grower.supplierName ?? "")
-                                              .toLowerCase()
-                                              .contains(textEditingValue.text
-                                                  .toLowerCase()))
-                                      .map((grower) =>
-                                          grower.existingSupplierCode ?? "")
+                                  (grower.supplierName?.toLowerCase().contains(searchText) ?? false) ||
+                                      (grower.existingSupplierCode?.toLowerCase().contains(searchText) ?? false))
+                                      .map((grower) => grower.existingSupplierCode ?? "")
                                       .toList();
+
                                 },
-                                onSelected: model.setSelectedgrowercode,
+
+                                onSelected: model.setSelectedGrowerCode,
                                 fieldViewBuilder: (BuildContext context,
                                     TextEditingController textEditingController,
                                     FocusNode focusNode,
@@ -293,7 +292,7 @@ class AddCaneScreen extends StatelessWidget {
                                     );
                                   }).toList(),
                                   onChanged: (value) =>
-                                      model.setSelectedDevelopmentplot(value),
+                                      model.setSelectedDevelopmentPlot(value),
                                 ),
                               ),
                             ),
@@ -307,7 +306,7 @@ class AddCaneScreen extends StatelessWidget {
                             validator: (value) => value!.isEmpty
                                 ? 'Please enter a Grower Name'
                                 : null,
-                            onChanged: model.setSelectedgrowername,
+                            onChanged: model.setSelectedGrowerName,
                           ),
                           //mobile number
                           Row(
@@ -392,7 +391,7 @@ class AddCaneScreen extends StatelessWidget {
                                     final routeData = model.routeList
                                         .firstWhere((route) =>
                                             route.route == routeName);
-                                    model.setselectedRoute(
+                                    model.setSelectedRoute(
                                         routeData); // Pass the route
                                   },
                                   fieldViewBuilder: (BuildContext context,
@@ -469,7 +468,7 @@ class AddCaneScreen extends StatelessWidget {
                                   // using the setroutekm function with the new value.
                                   double? parsedValue =
                                       double.tryParse(newValue) ?? 0;
-                                  model.setroutekm(parsedValue);
+                                  model.setRouteKm(parsedValue);
                                 },
                               )),
                             ],
@@ -487,7 +486,7 @@ class AddCaneScreen extends StatelessWidget {
                                     decoration: const InputDecoration(
                                       labelText: 'Circle Office',
                                     ),
-                                    onChanged: model.setSelectedcircleoffice,
+                                    onChanged: model.setSelectedCircleOffice,
                                   ),
                                 ),
                               ),
@@ -537,7 +536,7 @@ class AddCaneScreen extends StatelessWidget {
   ),
   validator: (value) =>
       value!.isEmpty ? 'Please enter a Survey Number' : null,
-  onChanged: model.setsurveyNumber,
+  onChanged: model.setSurveyNumber,
   inputFormatters: [
     FilteringTextInputFormatter.allow(
       RegExp(r'[0-9@#$%^&8()_+={}[/]|\\:;"\<>,.?/-]'),
@@ -571,7 +570,7 @@ class AddCaneScreen extends StatelessWidget {
                                                 .toLowerCase()));
                                   },
                                   onSelected: (value) =>
-                                      model.setselectedcropVariety(value),
+                                      model.setSelectedCropVariety(value),
                                   fieldViewBuilder: (BuildContext context,
                                       TextEditingController
                                           textEditingController,
@@ -651,7 +650,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) => model
-                                        .setselectedPlantationSystem(value),
+                                        .setSelectedPlantationSystem(value),
                                     validator: model.validatePlantationSystem,
                                   ),
                                 ),
@@ -679,7 +678,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) => model
-                                        .setSelectedirrigationsource(value),
+                                        .setSelectedIrrigationSource(value),
                                     validator: model.validateirrigationSource,
                                   ),
                                 ),
@@ -759,7 +758,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) =>
-                                        model.setSelectedcroptype(value),
+                                        model.setSelectedCropType(value),
                                     validator: model.validateCropType,
                                   ),
                                 ),
@@ -770,13 +769,13 @@ class AddCaneScreen extends StatelessWidget {
                               Expanded(
                                 child: TextFormField(
 
-                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                   controller: model.areainAcrsController,
                                   decoration: const InputDecoration(
                                     labelText: 'Area In Acrs *',
                                   ),
                                   validator: model.validateAreaInAcrs,
-                                  onChanged: model.setSelectedareainacrs,
+                                  onChanged: model.setSelectedAreaInAcrs,
                                 ),
                               ),
                             ],
@@ -794,8 +793,8 @@ class AddCaneScreen extends StatelessWidget {
                                         ? model.errorMessage
                                         : null,
                                   ),
-                                  validator: model.validateplantationdate,
-                                  onChanged: model.onplantationdateChanged,
+                                  validator: model.validatePlantationDate,
+                                  onChanged: model.onPlantationDateChanged,
                                   // Format the date before displaying it in the TextFormField
                                 ),
                               ),
@@ -812,7 +811,7 @@ class AddCaneScreen extends StatelessWidget {
                                             ? model.errorMessageforbasel
                                             : null,
                                   ),
-                                  onChanged: model.onBaseldateChanged,
+                                  onChanged: model.onBaselDateChanged,
                                 ),
                               ),
                             ],
@@ -841,7 +840,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) => model
-                                        .setSelectedirrigationmethod(value),
+                                        .setSelectedIrrigationMethod(value),
                                     validator: model.validateirrigationMethod,
                                   ),
                                 ),
@@ -865,7 +864,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) =>
-                                        model.setselectedSeedMaterial(value),
+                                        model.setSelectedSeedMaterial(value),
                                     validator: model.validateSeedMaterial,
                                   ),
                                 ),
@@ -896,7 +895,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) =>
-                                        model.setSelectedisMachine(value),
+                                        model.setSelectedIsMachine(value),
                                   ),
                                 ),
                               ),
@@ -923,7 +922,7 @@ class AddCaneScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (value) =>
-                                        model.setSelectedseedType(value),
+                                        model.setSelectedSeedType(value),
                                   ),
                                 ),
                               ),
@@ -932,17 +931,25 @@ class AddCaneScreen extends StatelessWidget {
 
                           Visibility(
                             visible: !model.isVisible(),
-                            child: Row(
+                            child:Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-
-                                CtextButton(
-                                  text: 'Cancel',
-                                  onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
+                                Expanded(
+                                  child: CtextButton(
+                                    text: 'Cancel',
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    buttonColor: Colors.red,
+                                  ),
                                 ),
-                                CtextButton(
-                                  onPressed: () => model.onSavePressed(context),
-                                  text: 'Save', buttonColor: Colors.green,
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                  child: CtextButton(
+                                    onPressed: () => model.onSavePressed(context),
+                                    text: 'Save',
+                                    buttonColor: Colors.green,
+                                  ),
                                 ),
                               ],
                             ),

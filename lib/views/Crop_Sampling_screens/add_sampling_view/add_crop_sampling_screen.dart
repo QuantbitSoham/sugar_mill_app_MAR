@@ -487,15 +487,23 @@ class AddCropSamplingScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CtextButton(
-                            text: 'Cancel',
-                            onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
+                          Expanded(
+                            child: CtextButton(
+                              text: 'Cancel',
+                              onPressed: () => Navigator.of(context).pop(),
+                              buttonColor: Colors.red,
+                            ),
                           ),
-                          CtextButton(
-                            onPressed: () => model.onSavePressed(context),
-                            text: 'Save', buttonColor: Colors.green,
+                          SizedBox(
+                            width: 20,
                           ),
-
+                          Expanded(
+                            child: CtextButton(
+                              onPressed: () => model.onSavePressed(context),
+                              text: 'Save',
+                              buttonColor: Colors.green,
+                            ),
+                          ),
                         ],
                       ),
                     ]),

@@ -16,10 +16,12 @@ class Agri {
   String? supplierName;
   String? branch;
   String? village;
+  String? farmerVillage;
   String? cropType;
   String? cropVariety;
   String? date;
   double? area;
+
   double? developmentArea;
   String? route;
   int? basel;
@@ -63,6 +65,7 @@ class Agri {
         this.supplierName,
         this.branch,
         this.village,
+        this.farmerVillage,
         this.cropType,
         this.cropVariety,
         this.date,
@@ -110,6 +113,7 @@ class Agri {
     supplierName = json['supplier_name'];
     branch = json['branch'];
     village = json['village'];
+    farmerVillage=json["farmer_village"];
     cropType = json['crop_type'];
     cropVariety = json['crop_variety'];
     date = json['date'];
@@ -176,6 +180,7 @@ class Agri {
     data['supplier_name'] = supplierName;
     data['branch'] = branch;
     data['village'] = village;
+    data["farmer_village"]=farmerVillage;
     data['crop_type'] = cropType;
     data['crop_variety'] = cropVariety;
     data['date'] = date;

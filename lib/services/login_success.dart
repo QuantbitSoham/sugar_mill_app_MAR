@@ -1,15 +1,16 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import '../constants.dart';
 
 class login {
-  Future<List<String>> fetchVillages() async {
+  Future<List<String>> fetchSeason() async {
     try {
       var dio = Dio();
       var response = await dio.request(
-        apiVillageListGet,
+        apifetchSeason,
         options: Options(
           method: 'GET',
           headers: {'Cookie': await getTocken()},
@@ -20,8 +21,9 @@ class login {
         var jsonData = json.encode(response.data);
         Map<String, dynamic> jsonDataMap = json.decode(jsonData);
         List<dynamic> dataList = jsonDataMap["data"];
+        Logger().i(dataList);
         List<String> namesList =
-            dataList.map((item) => item["name"].toString()).toList();
+        dataList.map((item) => item["name"].toString()).toList();
         return namesList;
       }
 
@@ -33,7 +35,7 @@ class login {
         return [];
       }
     }on DioException catch (e) {
-      // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e.response?.data.toString());
 
     }

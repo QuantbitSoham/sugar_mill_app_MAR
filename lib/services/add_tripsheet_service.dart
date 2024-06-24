@@ -6,12 +6,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/trip_crop_harvesting_model.dart';
 import 'package:sugar_mill_app/models/tripsheet.dart';
+import 'package:sugar_mill_app/models/tripsheet_master.dart';
 
 import '../constants.dart';
 import '../models/cane_route.dart';
 import '../models/cartlist.dart';
-import '../models/tripsheet_transport_model.dart';
-import '../models/tripsheet_water_supplier.dart';
+
+
 
 class AddTripSheetServices {
   Future<Tripsheet?> getTripsheet(String id) async {
@@ -107,6 +108,33 @@ return false;
     }
 
   }
+
+  Future<TripSheetMasters?> getMasters() async {
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+          '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.tripSheetMasters',
+          options: Options(
+            method: 'GET',
+            headers: {'Cookie': await getTocken()},
+          ),
+      );
+      if (response.statusCode == 200) {
+        Logger().i(response.data["data"]);
+        return TripSheetMasters.fromJson(response.data["data"]);
+      } else {
+        // print(response.statusMessage);
+        return null;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
+    }
+    return null;
+  }
+
+
 
   Future<List<String>> fetchSeason() async {
     try {
@@ -242,7 +270,7 @@ return false;
     return [];
   }
 
-  Future<List<caneRoute>> fetchRoute() async {
+  Future<List<CaneRoute>> fetchRoute() async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
@@ -255,8 +283,8 @@ return false;
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<caneRoute> routeList = List.from(jsonData['data'])
-            .map<caneRoute>((data) => caneRoute.fromJson(data))
+        List<CaneRoute> routeList = List.from(jsonData['data'])
+            .map<CaneRoute>((data) => CaneRoute.fromJson(data))
             .toList();
         return routeList;
       } else {

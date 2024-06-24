@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +8,10 @@ getHeight(context) => (MediaQuery.of(context).size.height);
 getWidth(context) => (MediaQuery.of(context).size.width);
 
 Color lightBlack = Colors.black.withOpacity(0.5);
+
 String name = "Quant Sugar";
 const kAadharpdf = "AadharCard";
 const kPanpdf = "PanCard";
-
 const kBankpdf = "BankPassbook";
 const kConcentpdf = "ConcentLetter";
 // const apiBaseUrl = "https://erpvppl.erpdata.in";
@@ -108,7 +107,7 @@ String getValueFromResponse(String response, String key) {
 void logout(BuildContext context) async {
   final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
   final SharedPreferences prefs = await prefs0;
-  prefs.clear();
+  prefs.remove("Cookie");
   if (context.mounted) {
     Navigator.popAndPushNamed(context, Routes.loginViewScreen);
   }

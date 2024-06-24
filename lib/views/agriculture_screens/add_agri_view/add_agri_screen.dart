@@ -22,7 +22,7 @@ class AddAgriScreen extends StatelessWidget {
             appBar: AppBar(
               title: model.isEdit == true
                   ? Text(model.agridata.name ?? "")
-                  : const Text('Agriculture development'),
+                  : const Text('New Agriculture development'),
             ),
             body: fullScreenLoader(
               child: SingleChildScrollView(
@@ -83,9 +83,9 @@ class AddAgriScreen extends StatelessWidget {
                         ],
                       ),
                       Autocomplete<String>(
-                        key: Key(model.agridata.village ?? "03"),
+                        key: Key(model.agridata.farmerVillage ?? "03"),
                         initialValue: TextEditingValue(
-                          text: model.agridata.village ?? "",
+                          text: model.agridata.farmerVillage ?? "",
                         ),
                         optionsBuilder:
                             (TextEditingValue textEditingValue) {
@@ -166,21 +166,20 @@ class AddAgriScreen extends StatelessWidget {
                             initialValue: TextEditingValue(
                               text: model.agridata.growerName ?? "",
                             ),
-                            optionsBuilder:
-                                (TextEditingValue textEditingValue) {
+                            optionsBuilder: (TextEditingValue textEditingValue) {
                               if (textEditingValue.text.isEmpty) {
                                 return const Iterable<String>.empty();
                               }
+                              final searchText = textEditingValue.text.toLowerCase();
                               return model.farmerList
                                   .where((grower) =>
-                                  (grower.supplierName ?? "")
-                                      .toLowerCase()
-                                      .contains(textEditingValue.text
-                                      .toLowerCase()))
-                                  .map((grower) =>
-                              grower.supplierName ?? "")
+                              (grower.supplierName?.toLowerCase().contains(searchText) ?? false) ||
+                                  (grower.existingSupplierCode?.toLowerCase().contains(searchText) ?? false))
+                                  .map((grower) => grower.supplierName ?? "")
                                   .toList();
+
                             },
+
                             onSelected:(String? value){ model.setSelectedgrowername(context,value);},
                             fieldViewBuilder: (BuildContext context,
                                 TextEditingController textEditingController,
@@ -1189,14 +1188,22 @@ validator: model.validateSupplier,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          
-                          CtextButton(
-                            text: 'Cancel',
-                            onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red,
+                          Expanded(
+                            child: CtextButton(
+                              text: 'Cancel',
+                              onPressed: () => Navigator.of(context).pop(),
+                              buttonColor: Colors.red,
+                            ),
                           ),
-                          CtextButton(
-                            onPressed: () => model.onSavePressed(context),
-                            text: 'Save', buttonColor: Colors.green,
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: CtextButton(
+                              onPressed: () => model.onSavePressed(context),
+                              text: 'Save',
+                              buttonColor: Colors.green,
+                            ),
                           ),
                         ],
                       ),
@@ -1325,19 +1332,18 @@ validator: model.validateSupplier,
                                       : model.grantor[index]
                                               .suretyExistingCode ??
                                           ""),
-                              optionsBuilder:
-                                  (TextEditingValue textEditingValue) {
+                              optionsBuilder: (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
+                                final searchText = textEditingValue.text.toLowerCase();
                                 return model.farmerList
-                                    .map((bank) =>
-                                        bank.supplierName ?? "")
-                                    .toList()
-                                    .where((bank) => bank
-                                        .toLowerCase()
-                                        .contains(textEditingValue.text
-                                            .toLowerCase()));
+                                    .where((grower) =>
+                                (grower.supplierName?.toLowerCase().contains(searchText) ?? false) ||
+                                    (grower.existingSupplierCode?.toLowerCase().contains(searchText) ?? false))
+                                    .map((grower) => grower.supplierName ?? "")
+                                    .toList();
+
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
@@ -1474,19 +1480,20 @@ validator: model.validateSupplier,
                                       : model.agricultureDevelopmentItem[index]
                                               .itemCode ??
                                           ""),
-                              optionsBuilder:
-                                  (TextEditingValue textEditingValue) {
+                              optionsBuilder: (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
+                                final searchText = textEditingValue.text.toLowerCase();
                                 return model.fertilizeritemlist
-                                    .map((bank) => bank.itemName ?? "")
-                                    .toList()
-                                    .where((bank) => bank
-                                        .toLowerCase()
-                                        .contains(textEditingValue.text
-                                            .toLowerCase()));
+                                    .where((grower) =>
+                                (grower.itemName?.toLowerCase().contains(searchText) ?? false) ||
+                                    (grower.itemCode?.toLowerCase().contains(searchText) ?? false))
+                                    .map((grower) => grower.itemName ?? "")
+                                    .toList();
+
                               },
+
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final bankData = model.itemList.firstWhere(
@@ -1529,13 +1536,18 @@ validator: model.validateSupplier,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
+                                          final routeData = model.itemList
+                                              .firstWhere((route) =>
+                                          route.itemName ==
+                                              option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
                                             },
                                             child: ListTile(
                                               title: Text(option),
+                                              subtitle: Text(routeData.itemCode.toString()),
                                             ),
                                           );
                                         },
@@ -1633,18 +1645,18 @@ validator: model.validateSupplier,
                                       : model.agricultureDevelopmentItem2[index]
                                               .itemCode ??
                                           ""),
-                              optionsBuilder:
-                                  (TextEditingValue textEditingValue) {
+                              optionsBuilder: (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
+                                final searchText = textEditingValue.text.toLowerCase();
                                 return model.itemList
-                                    .map((bank) => bank.itemName ?? "")
-                                    .toList()
-                                    .where((bank) => bank
-                                        .toLowerCase()
-                                        .contains(textEditingValue.text
-                                            .toLowerCase()));
+                                    .where((grower) =>
+                                (grower.itemName?.toLowerCase().contains(searchText) ?? false) ||
+                                    (grower.itemCode?.toLowerCase().contains(searchText) ?? false))
+                                    .map((grower) => grower.itemName ?? "")
+                                    .toList();
+
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
@@ -1688,13 +1700,18 @@ validator: model.validateSupplier,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
+                                          final routeData = model.itemList
+                                              .firstWhere((route) =>
+                                          route.itemName ==
+                                              option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
                                             },
                                             child: ListTile(
                                               title: AutoSizeText(option),
+                                              subtitle: Text(routeData.itemCode.toString()),
                                             ),
                                           );
                                         },

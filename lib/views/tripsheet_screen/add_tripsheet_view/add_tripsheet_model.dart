@@ -9,8 +9,7 @@ import 'package:sugar_mill_app/views/tripsheet_screen/add_tripsheet_list/add_tri
 import '../../../constants.dart';
 import '../../../models/cane_route.dart';
 import '../../../models/cartlist.dart';
-import '../../../models/tripsheet_transport_model.dart';
-import '../../../models/tripsheet_water_supplier.dart';
+import '../../../models/tripsheet_master.dart';
 import '../../../services/add_tripsheet_service.dart';
 
 class AddTripSheetModel extends BaseViewModel {
@@ -22,7 +21,8 @@ class AddTripSheetModel extends BaseViewModel {
   TextEditingController slipnoController = TextEditingController();
   TextEditingController deductionController = TextEditingController();
   TextEditingController watershareController = TextEditingController();
-  final List<String> deductionType = ["",
+  final List<String> deductionType = [
+    "",
     "Matured Cane",
     "Burn Cane",
     "Unmatured Cane"
@@ -48,9 +48,9 @@ class AddTripSheetModel extends BaseViewModel {
     "2nd trailor upper rope",
     "TL Middle Rope 2"
   ];
-  CartInfo cartinfo=CartInfo();
+  CartInfo cartinfo = CartInfo();
   List<WaterSupplierList> waterSupplier = [];
-  List<caneRoute> routeList = [];
+  List<CaneRoute> routeList = [];
   List<TransportInfo> transportList = [];
   String? farmerCode;
   String? farmerName;
@@ -75,8 +75,8 @@ class AddTripSheetModel extends BaseViewModel {
   bool isEdit = false;
   Tripsheet tripSheetData = Tripsheet();
   String? selectedCaneRoute;
-  bool isSelectTransporter =false;
-
+  bool isSelectTransporter = false;
+  TripSheetMasters masters = TripSheetMasters();
   void onSavePressed(BuildContext context) async {
     setBusy(true);
     bool res = false;
@@ -88,7 +88,7 @@ class AddTripSheetModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-            Navigator.pop(context, const MaterialRoute(page: ListTripsheet)); 
+            Navigator.pop(context, const MaterialRoute(page: ListTripsheet));
           }
         }
       } else {
@@ -97,7 +97,7 @@ class AddTripSheetModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-           Navigator.pop(context, const MaterialRoute(page: ListTripsheet)); 
+            Navigator.pop(context, const MaterialRoute(page: ListTripsheet));
           }
         }
       }
@@ -108,20 +108,37 @@ class AddTripSheetModel extends BaseViewModel {
   initialise(BuildContext context, String tripId) async {
     setBusy(true);
     plotList = await AddTripSheetServices().fetchPlot("");
-    season = await AddTripSheetServices().fetchSeason();
-    plantList = await AddTripSheetServices().fetchPlant();
-    routeList = await AddTripSheetServices().fetchRoute();
-    transportList = await AddTripSheetServices().fetchTransport();
-    waterSupplier = await AddTripSheetServices().fetchWaterSupplier();
-    tripSheetData.branch="Bedkihal";
+    masters = await AddTripSheetServices().getMasters() ?? TripSheetMasters();
+    season = masters.season ?? [];
+    plantList = masters.plant ?? [];
+    routeList = masters.caneRoute ?? [];
+    transportList = masters.transportInfo ?? [];
+    waterSupplier = masters.waterSupplierList ?? [];
+    // season = await AddTripSheetServices().fetchSeason();
+    // plantList = await AddTripSheetServices().fetchPlant();
+    // routeList = await AddTripSheetServices().fetchRoute();
+    // transportList = await AddTripSheetServices().fetchTransport();
+    // waterSupplier = await AddTripSheetServices().fetchWaterSupplier();
+    tripSheetData.branch = "Bedkihal";
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = season.firstWhere(
+      (season) => season.startsWith("$currentYear-"),
+      orElse: () => season
+          .last, // If no season matches the current year, take the last one
+    );
+    tripSheetData.season = latestSeason;
     if (tripId != "") {
       isEdit = true;
       tripSheetData =
           await AddTripSheetServices().getTripsheet(tripId) ?? Tripsheet();
-      cartinfo=await AddTripSheetServices().cartinfo(tripSheetData.cartno.toString()) ?? CartInfo();
+      cartinfo = await AddTripSheetServices()
+              .cartinfo(tripSheetData.cartno.toString()) ??
+          CartInfo();
 
       // selectedCaneRoute = tripSheetData.routeName;
-      for (caneRoute i in routeList) {
+      for (CaneRoute i in routeList) {
         if (i.name == tripSheetData.routeName) {
           selectedCaneRoute = i.route;
           notifyListeners();
@@ -139,16 +156,18 @@ class AddTripSheetModel extends BaseViewModel {
         if (i.name == tripSheetData.waterSupplier) {
           watersuppliercode = i.existingSupplierCode;
           notifyListeners();
-          Logger().i( i.existingSupplierCode);
+          Logger().i(i.existingSupplierCode);
         }
       }
-      String? formattedDate= tripSheetData.plantationDate != null
-          ? DateFormat('dd-MM-yyyy').format(DateTime.parse(tripSheetData.plantationDate ?? ""))
+      String? formattedDate = tripSheetData.plantationDate != null
+          ? DateFormat('dd-MM-yyyy')
+              .format(DateTime.parse(tripSheetData.plantationDate ?? ""))
           : tripSheetData.plantationDate ?? "";
       plantingDateController.text = formattedDate;
       notifyListeners();
       slipnoController.text = tripSheetData.slipNo.toString();
-      deductionController.text = tripSheetData.deduction?.toStringAsFixed(0) ?? "0";
+      deductionController.text =
+          tripSheetData.deduction?.toStringAsFixed(0) ?? "0";
       watershareController.text = tripSheetData.waterShare.toString();
     }
     if (season.isEmpty) {
@@ -255,7 +274,7 @@ class AddTripSheetModel extends BaseViewModel {
     routename = selectedGrowerData.route;
     dist = double.tryParse(selectedGrowerData.routeKm ?? "");
     final selectedrouteData =
-    routeList.firstWhere((growerData) => growerData.name == routename);
+        routeList.firstWhere((growerData) => growerData.name == routename);
     selectedCaneRoute = selectedrouteData.route;
     selectedfarcode = selectedGrowerData.vendorCode;
     Logger().i(selectedfarcode);
@@ -272,8 +291,7 @@ class AddTripSheetModel extends BaseViewModel {
     notifyListeners();
   }
 
-
-  void setSelectedRoute(caneRoute route) {
+  void setSelectedRoute(CaneRoute route) {
     selectedCaneRoute = route.route;
     tripSheetData.routeName = route.name;
     tripSheetData.distance = route.distanceKm;
@@ -288,7 +306,7 @@ class AddTripSheetModel extends BaseViewModel {
     transName = selectedGrowerData.transporterName;
     vehicleType = selectedGrowerData.vehicleType;
     tripSheetData.transporter = selectedGrowerData.transporterCode;
-Logger().i(selectedGrowerData.transporterCode.toString());
+    Logger().i(selectedGrowerData.transporterCode.toString());
     Logger().i(vehicleType);
     eNo = selectedGrowerData.vehicleNo;
     trl_1 = selectedGrowerData.trolly1;
@@ -300,7 +318,7 @@ Logger().i(selectedGrowerData.transporterCode.toString());
     tripSheetData.tolly2 = tri_2;
     tripSheetData.transporterName = transName;
     tripSheetData.vehicleType = vehicleType;
-    tripSheetData.cartno= null;
+    tripSheetData.cartno = null;
     // cartinfo=await AddTripSheetServices().cartinfo(tripSheetData.transporterCode ?? "",tripSheetData.vehicleType ?? "",tripSheetData.season ?? "");
     // Logger().i(cartlist.length);
     notifyListeners();
@@ -462,23 +480,25 @@ Logger().i(selectedGrowerData.transporterCode.toString());
     Logger().i(tripSheetData.rope);
     notifyListeners();
   }
-String? transcode;
+
+  String? transcode;
   String? oldtransportercode;
   String? transname;
-  void setSelectedCartNo(String? cartNo) async{
-    cartinfo=await AddTripSheetServices().cartinfo(cartNo.toString()) ?? CartInfo();
+  void setSelectedCartNo(String? cartNo) async {
+    cartinfo =
+        await AddTripSheetServices().cartinfo(cartNo.toString()) ?? CartInfo();
     tripSheetData.cartno = double.tryParse(cartNo ?? "");
-    tripSheetData.transporterCode=cartinfo.transporterCode;
-    tripSheetData.oldTransporterCode=cartinfo.hTNo;
-    tripSheetData.transporter=cartinfo.transporter;
-    tripSheetData.transporterName=cartinfo.transporterName;
-    tripSheetData.vehicleType=cartinfo.vehicleType;
-    tripSheetData.gangType=cartinfo.gangType;
-    tripSheetData.harvesterNameH=cartinfo.harvesterName;
-    tripSheetData.harvesterName=cartinfo.harvesterName;
-    tripSheetData.harvesterCodeOld=cartinfo.hTNo;
-    tripSheetData.harvestingCodeHt=cartinfo.harvesterCode;
-    tripSheetData.harvesterCodeH=cartinfo.harvester;
+    tripSheetData.transporterCode = cartinfo.transporterCode;
+    tripSheetData.oldTransporterCode = cartinfo.hTNo;
+    tripSheetData.transporter = cartinfo.transporter;
+    tripSheetData.transporterName = cartinfo.transporterName;
+    tripSheetData.vehicleType = cartinfo.vehicleType;
+    tripSheetData.gangType = cartinfo.gangType;
+    tripSheetData.harvesterNameH = cartinfo.harvesterName;
+    tripSheetData.harvesterName = cartinfo.harvesterName;
+    tripSheetData.harvesterCodeOld = cartinfo.hTNo;
+    tripSheetData.harvestingCodeHt = cartinfo.harvesterCode;
+    tripSheetData.harvesterCodeH = cartinfo.harvester;
     notifyListeners();
   }
 
@@ -489,12 +509,14 @@ String? transcode;
     }
     return null;
   }
+
   String? validatePlant(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please select Plantr';
     }
     return null;
   }
+
   String? validatePlotNo(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please select plot Number';
@@ -522,6 +544,7 @@ String? transcode;
     }
     return null;
   }
+
   String? validateTrans(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please select the Transporter';

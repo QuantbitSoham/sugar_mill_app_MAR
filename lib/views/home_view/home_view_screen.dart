@@ -115,7 +115,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            model.logout(context); // Close the dialog
+                            logout(context); // Close the dialog
                           },
                           child: const Text('Logout'),
                         ),

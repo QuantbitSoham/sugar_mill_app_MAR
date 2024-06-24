@@ -8,15 +8,15 @@ import 'package:sugar_mill_app/models/agri_cane_model.dart';
 
 import '../constants.dart';
 import '../models/agri.dart';
+import '../models/agri_masters.dart';
 import '../models/cane_farmer.dart';
 import '../models/dose_type.dart';
-import '../models/fertilizeritem.dart';
 import '../models/item.dart';
 import '../models/tripsheet_water_supplier.dart';
 import '../models/village_model.dart';
 
 class AddAgriServices {
-  Future<List<villagemodel>> fetchVillages() async {
+  Future<List<Village>> fetchVillages() async {
     try {
       var dio = Dio();
       var response = await dio.request(
@@ -29,8 +29,8 @@ class AddAgriServices {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<villagemodel> dataList = List.from(jsonData['data'])
-            .map<villagemodel>((data) => villagemodel.fromJson(data))
+        List<Village> dataList = List.from(jsonData['data'])
+            .map<Village>((data) => Village.fromJson(data))
             .toList();
 
         return dataList;
@@ -166,6 +166,32 @@ class AddAgriServices {
 
     }
     return false;
+  }
+
+  Future<AgriMasters?> getMasters() async {
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.agriMasters',
+        options: Options(
+          method: 'GET',
+          headers: {'Cookie': await getTocken()},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Logger().i(response.data["message"]);
+        return AgriMasters.fromJson(response.data["message"]);
+      } else {
+        // print(response.statusMessage);
+        return null;
+      }
+    }on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
+    }
+    return null;
   }
 
 
@@ -416,7 +442,7 @@ Logger().i(response.realUri);
     return [];
   }
 
-  Future<List<FertilizerItemList>> fetchItemlist() async {
+  Future<List<ItemList>> fetchItemlist() async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
@@ -431,8 +457,8 @@ Logger().i(response.realUri);
         var jsonData = json.encode(response.data);
         Map<String, dynamic> jsonDataMap = json.decode(jsonData);
         List<dynamic> dataList = jsonDataMap['message'];
-        List<FertilizerItemList> farmerList =
-        dataList.map<FertilizerItemList>((data) => FertilizerItemList.fromJson(data)).toList();
+        List<ItemList> farmerList =
+        dataList.map<ItemList>((data) => ItemList.fromJson(data)).toList();
         Logger().i(farmerList);
         return farmerList;
       } else {

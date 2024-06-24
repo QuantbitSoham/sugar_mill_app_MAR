@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sugar_mill_app/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
       onViewModelReady: (model) => model.initialise(),
       builder: (context, model, child) => Scaffold(
         body: Container(
+          height: getHeight(context),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -196,6 +198,17 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                                         validator: (value) =>
                                             model.validatePassword(value),
                                       ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStatePropertyAll(Colors.blueAccent),
+                                          activeColor: Colors.blueAccent,
+                                          value: model.rememberMe,
+                                          onChanged:model.changeRememberMe,
+                                        ),
+                                        const Text('Remember me', style: const TextStyle(color: Colors.black54,fontSize: 15))
+                                      ],
                                     ),
                                     const SizedBox(height: 16.0),
                                     SizedBox(

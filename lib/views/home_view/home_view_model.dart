@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:sugar_mill_app/constants.dart';
 
 import 'package:sugar_mill_app/models/checkin.dart';
 import 'package:sugar_mill_app/models/employee.dart';
@@ -19,36 +20,20 @@ class HomeViewModel extends BaseViewModel {
   Employee employee = Employee();
   Dashboard dashboard=Dashboard();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-  List<String> villageList = [""];
+  List<String> season = [""];
   List<Employee> empList = [];
   List<Checkin> checkinList = [];
 
    String? greeting;
   String? imageurl;
 
-  void logout(BuildContext context) async {
-    final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-    final SharedPreferences prefs = await prefs0;
-    prefs.clear();
-    if (context.mounted) {
-      Navigator.popAndPushNamed(context, Routes.loginViewScreen);
-    }
-  }
-
-
 
   initialise(BuildContext context) async {
     setBusy(true);
-    final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-    final SharedPreferences prefs = await prefs0;
-    villageList = await login().fetchVillages();
-    if (villageList.isEmpty) {
-      final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-      final SharedPreferences prefs = await prefs0;
-      prefs.clear();
-      if (context.mounted) {
-        Navigator.popAndPushNamed(context, Routes.loginViewScreen);
-      }
+
+    season = await login().fetchSeason();
+    if (season.isEmpty) {
+      logout(context);
     }
 handleGreeting();
 handleImage();

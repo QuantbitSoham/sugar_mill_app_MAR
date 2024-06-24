@@ -35,25 +35,26 @@ class AddFarmerScreen extends StatelessWidget {
               model.isEdit == true
                   ? Text(model.farmerData.existingSupplierCode ?? "")
                   : const Text('New Farmer'),
-              const SizedBox(width: 5),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: model
-                        .getColorForStatus(
-                            model.farmerData.workflowState.toString())
-                        .withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: AutoSizeText(
-                    model.farmerData.workflowState ?? "",
-                    style: TextStyle(
-                      color: model.getColorForStatus(
-                          model.farmerData.workflowState.toString()),
-                      fontWeight: FontWeight.bold,
-                    ),
-                minFontSize: 5,
+              if(model.isEdit == true)
+              const SizedBox(width: 10),
+              if(model.isEdit == true)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: model
+                      .getColorForStatus(
+                          model.farmerData.workflowState.toString())
+                      .withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  model.farmerData.workflowState ?? "",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: model.getColorForStatus(
+                        model.farmerData.workflowState.toString()),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -440,7 +441,7 @@ class AddFarmerScreen extends StatelessWidget {
                         Expanded(
                           child: TextFormField(
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(2),
+                                LengthLimitingTextInputFormatter(3),
                               ],
                               keyboardType: TextInputType.number,
                               controller: model.ageController,
@@ -535,7 +536,7 @@ class AddFarmerScreen extends StatelessWidget {
                                         'Aadhar File: ${model.files.getFile(kAadharpdf)?.path.split("/").last}',
                                         overflow: TextOverflow.ellipsis,
                                       )
-                                    : const Text('Attach Aadhar *'),
+                                    : const Text('Attach Aaddhar *'),
                           ),
                         ),
                         const SizedBox(
@@ -747,7 +748,7 @@ class AddFarmerScreen extends StatelessWidget {
                                         },
                                       )),
                                     DataCell(Text(model
-                                        .bankAccounts[index].bankName
+                                        .bankAccounts[index].bankAndBranch
                                         .toString())),
                                     DataCell(Text(model
                                         .bankAccounts[index].branchifscCode
@@ -970,42 +971,33 @@ class AddFarmerScreen extends StatelessWidget {
                                 child: Autocomplete<String>(
                                   key: Key(index == -1
                                       ? ""
-                                      : model.bankAccounts[index].bankName ??
-                                          ""),
+                                      : model.bankAccounts[index].bankAndBranch ?? ""),
                                   initialValue: TextEditingValue(
                                       text: index == -1
                                           ? ""
-                                          : model.bankAccounts[index]
-                                                  .bankName ??
-                                              ""),
-                                  optionsBuilder:
-                                      (TextEditingValue textEditingValue) {
+                                          : model.bankAccounts[index].bankAndBranch ?? ""),
+                                  optionsBuilder: (TextEditingValue textEditingValue) {
                                     if (textEditingValue.text.isEmpty) {
                                       return const Iterable<String>.empty();
                                     }
+                                    final searchText = textEditingValue.text.toLowerCase();
                                     return model.bankList
-                                        .map((bank) => bank.name ?? "")
-                                        .toList()
-                                        .where((bank) => bank
-                                            .toLowerCase()
-                                            .contains(textEditingValue.text
-                                                .toLowerCase()));
+                                        .where((bank) =>
+                                    (bank.bankAndBranch?.toLowerCase().contains(searchText) ?? false) ||
+                                        (bank.name?.toLowerCase().contains(searchText) ?? false))
+                                        .map((bank) => bank.bankAndBranch ?? "")
+                                        .toList();
                                   },
                                   onSelected: (String routeName) {
-                                    // Find the corresponding route object
                                     final bankData = model.bankList.firstWhere(
-                                        (bank) =>
-                                            bank.name == routeName);
-                                    model.setSelectedBank(
-                                        bankData); // Pass the route
+                                            (bank) => bank.bankAndBranch == routeName);
+                                    model.setSelectedBank(bankData); // Pass the route
                                   },
                                   fieldViewBuilder: (BuildContext context,
-                                      TextEditingController
-                                          textEditingController,
+                                      TextEditingController textEditingController,
                                       FocusNode focusNode,
                                       VoidCallback onFieldSubmitted) {
                                     return TextFormField(
-
                                       maxLines: 2,
                                       controller: textEditingController,
                                       focusNode: focusNode,
@@ -1016,7 +1008,7 @@ class AddFarmerScreen extends StatelessWidget {
                                       validator: model.validateBankName,
                                     );
                                   },
-                                  optionsViewBuilder: (BuildContext contpext,
+                                  optionsViewBuilder: (BuildContext context,
                                       AutocompleteOnSelected<String> onSelected,
                                       Iterable<String> options) {
                                     return Align(
@@ -1024,18 +1016,14 @@ class AddFarmerScreen extends StatelessWidget {
                                       child: Material(
                                         elevation: 4.0,
                                         child: Container(
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 200),
+                                          constraints: const BoxConstraints(maxHeight: 200),
                                           child: ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: options.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              final String option =
-                                              options.elementAt(index);
-                                              final routeData = model.bankList
-                                                  .firstWhere((route) =>
-                                              route.name == option);
+                                            itemBuilder: (BuildContext context, int index) {
+                                              final String option = options.elementAt(index);
+                                              final routeData = model.bankList.firstWhere(
+                                                      (route) => route.bankAndBranch == option);
                                               return GestureDetector(
                                                 onTap: () {
                                                   onSelected(option);
@@ -1053,7 +1041,8 @@ class AddFarmerScreen extends StatelessWidget {
                                   },
                                   optionsMaxHeight: 200,
                                 ),
-                              ),
+                              )
+,
                               Expanded(
                                 child: TextFormField(
                                   initialValue:

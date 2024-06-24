@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/cane.dart';
 import 'package:sugar_mill_app/models/cane_farmer.dart';
+import 'package:sugar_mill_app/models/cane_masters.dart';
 import 'package:sugar_mill_app/models/cane_route.dart';
 
 import '../constants.dart';
@@ -75,7 +76,7 @@ class AddCaneService {
     return false;
   }
 
-  Future<List<caneRoute>> fetchroute() async {
+  Future<List<CaneRoute>> fetchroute() async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
@@ -89,8 +90,8 @@ class AddCaneService {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<caneRoute> routelist = List.from(jsonData['data'])
-            .map<caneRoute>((data) => caneRoute.fromJson(data))
+        List<CaneRoute> routelist = List.from(jsonData['data'])
+            .map<CaneRoute>((data) => CaneRoute.fromJson(data))
             .toList();
         return routelist;
       } else {
@@ -172,7 +173,7 @@ class AddCaneService {
     return [];
   }
 
-  Future<List<villagemodel>> fetchVillages() async {
+  Future<List<Village>> fetchVillages() async {
     try {
       var dio = Dio();
       var response = await dio.request(
@@ -185,8 +186,8 @@ class AddCaneService {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<villagemodel> dataList = List.from(jsonData['data'])
-            .map<villagemodel>((data) => villagemodel.fromJson(data))
+        List<Village> dataList = List.from(jsonData['data'])
+            .map<Village>((data) => Village.fromJson(data))
             .toList();
 
         return dataList;
@@ -521,6 +522,33 @@ class AddCaneService {
     }
     return false;
   }
+
+  Future<CaneMasters?> getMasters() async {
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.caneMasters',
+        options: Options(
+          method: 'GET',
+          headers: {'Cookie': await getTocken()},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Logger().i(response.data["data"]);
+        return CaneMasters.fromJson(response.data["data"]);
+      } else {
+        // print(response.statusMessage);
+        return null;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
+    }
+    return null;
+  }
+
 
   Future<Cane?> getCane(String id) async {
     try {
