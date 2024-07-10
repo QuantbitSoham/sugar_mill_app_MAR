@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/agri_cane_model.dart';
-
 import '../constants.dart';
 import '../models/agri.dart';
 import '../models/agri_masters.dart';
@@ -13,7 +11,7 @@ import '../models/cane_farmer.dart';
 import '../models/dose_type.dart';
 import '../models/item.dart';
 import '../models/tripsheet_water_supplier.dart';
-import '../models/village_model.dart';
+
 
 class AddAgriServices {
   Future<List<Village>> fetchVillages() async {
@@ -46,7 +44,7 @@ class AddAgriServices {
     return [];
   }
 
-  Future<List<caneFarmer>> fetchfarmerListwithfilter(String village) async {
+  Future<List<caneFarmer>> fetchFarmerListWithFilter(String village) async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
@@ -231,22 +229,22 @@ class AddAgriServices {
     return [];
   }
 
-  Future<List<DoseTypeModel>> fetchdosetype(
+  Future<List<DoseTypeModel>> fetchDoseType(
       String basel,
-      String preearth,
+      String preEarth,
       String earth,
       String rainy,
       String ratoon1,
       String ratoon2,
-      String croptype,
-      String cropvariety,
-      double developmentarea,
-      double areafixed,
-      double areagunta) async {
+      String cropType,
+      String cropVariety,
+      double developmentArea,
+      double areaFixed,
+      double areaGunta) async {
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.calculation?self=AgricultureDevelopment(new-agriculture-development-1)&doctype=Agriculture Development&basel=$basel&preeathing=$preearth&earth=$earth&rainy=$rainy&ratoon1=$ratoon1&ratoon2=$ratoon2&area=$developmentarea&croptype=$croptype&cropvariety=$cropvariety&areafixed=$areafixed&areagunta=$areagunta',
+        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.calculation?self=AgricultureDevelopment(new-agriculture-development-1)&doctype=Agriculture Development&basel=$basel&preeathing=$preEarth&earth=$earth&rainy=$rainy&ratoon1=$ratoon1&ratoon2=$ratoon2&area=$developmentArea&croptype=$cropType&cropvariety=$cropVariety&areafixed=$areaFixed&areagunta=$areaGunta',
         options: Options(
           method: 'GET',
           headers: {'Cookie': await getTocken()},
@@ -275,11 +273,11 @@ Logger().i(response.realUri);
     return [];
   }
 
-  Future<List<AgriCane>> fetchcanelistwithfilter(String season,String village,String farmercode) async {
+  Future<List<AgriCane>> fetchCaneListWithFilter(String season,String village,String farmerCode) async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
-      String url='$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["village","like","$village%"],["grower_code","like","$farmercode%"]]&limit_page_length=99999';
+      String url='$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["village","like","$village%"],["grower_code","like","$farmerCode%"]]&limit_page_length=99999';
       Logger().i(url);
       var response = await dio.request(
         url,

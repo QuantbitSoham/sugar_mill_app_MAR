@@ -12,7 +12,6 @@ import '../../../models/agri_masters.dart';
 import '../../../models/cane_farmer.dart';
 import '../../../models/dose_type.dart';
 import '../../../models/tripsheet_water_supplier.dart';
-import '../../../models/village_model.dart';
 import '../../../services/add_agri_services.dart';
 
 class AgriViewModel extends BaseViewModel {
@@ -82,7 +81,7 @@ List<Village> villagelist=[];
       agridata = await AddAgriServices().getAgri(agriid) ?? Agri();
       notifyListeners();
 
-      farmerList=await AddAgriServices().fetchfarmerListwithfilter(agridata.farmerVillage ?? "");
+      farmerList=await AddAgriServices().fetchFarmerListWithFilter(agridata.farmerVillage ?? "");
       supplierList = await AddAgriServices().fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
       developmentAreaController.text = agridata.developmentArea.toString();
       for (caneFarmer i in farmerList) {
@@ -103,7 +102,7 @@ List<Village> villagelist=[];
           : agridata.date ?? "";
       // agridata.date = formattedDate;
       datecontroller.text = formattedDate;
-      canelistwithfilter = (await AddAgriServices().fetchcanelistwithfilter(agridata.season ?? "",agridata.farmerVillage ?? "",farmercode ?? ""));
+      canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(agridata.season ?? "",agridata.farmerVillage ?? "",farmercode ?? ""));
       Logger().i(canelistwithfilter);
       agricultureDevelopmentItem
           .addAll(agridata.agricultureDevelopmentItem?.toList() ?? []);
@@ -217,7 +216,7 @@ List<Village> villagelist=[];
     String ratoon1 = agridata.ratoon1 == 1 ? 'Ratoon 1' : 'False';
     String ratoon2 = agridata.ratoon2 == 1 ? 'Ratoon 2' : 'False';
 
-    doseList = await AddAgriServices().fetchdosetype(
+    doseList = await AddAgriServices().fetchDoseType(
         basel,
         preearth,
         earth,
@@ -604,7 +603,7 @@ String? selectedVillage;
   void setSelectedVillage(BuildContext context,String? village) async {
     selectedVillage = village;
     agridata.farmerVillage = selectedVillage;
-    farmerList=await AddAgriServices().fetchfarmerListwithfilter(agridata.farmerVillage ?? "");
+    farmerList=await AddAgriServices().fetchFarmerListWithFilter(agridata.farmerVillage ?? "");
     if (farmerList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -631,7 +630,7 @@ String? selectedVillage;
     agridata.vendorCode = selectedgrowerData.existingSupplierCode;
     agridata.growerName = selectedgrowername;
     Logger().i(selectedgrowername);
-    canelistwithfilter = (await AddAgriServices().fetchcanelistwithfilter(agridata.season ?? "",agridata.village ?? "",farmercode ?? ""));
+    canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(agridata.season ?? "",agridata.village ?? "",farmercode ?? ""));
     if (canelistwithfilter.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -997,7 +996,7 @@ String? selectedVillage;
     villagelist.firstWhere((bankData) => bankData.name == village);
     Logger().i(selectedRouteData);
     suretyvillage = selectedRouteData.name ?? "";
-    farmerList=await AddAgriServices().fetchfarmerListwithfilter(suretyvillage ?? "");
+    farmerList=await AddAgriServices().fetchFarmerListWithFilter(suretyvillage ?? "");
     notifyListeners();
   }
 

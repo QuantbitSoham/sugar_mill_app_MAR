@@ -11,9 +11,11 @@ class ListAgriService {
   Future<List<AgriListModel>> getAgriListByNameFilter(String name) async {
     try {
       var headers = {'Cookie': await getTocken()};
+      var url = '$apiBaseUrl/api/resource/Agriculture Development?fields=["route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["sales_type","!=","Drip"]]';
       var dio = Dio();
+      print(url);
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Agriculture Development?fields=["route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["sales_type","!=","Drip"]]',
+       url,
         options: Options(
           method: 'GET',
           headers: headers,
@@ -25,6 +27,7 @@ class ListAgriService {
         List<AgriListModel> farmersList = List.from(jsonData['data'])
             .map<AgriListModel>((data) => AgriListModel.fromJson(data))
             .toList();
+
         return farmersList;
       } else {
         Logger().e(response.statusMessage);
@@ -33,6 +36,7 @@ class ListAgriService {
     } on DioException catch (e) {
       Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e.response?.data.toString());
+      print(e.response?.data.toString());
 
     }
 

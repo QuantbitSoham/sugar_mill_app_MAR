@@ -56,15 +56,15 @@ class ListAgriScreen extends StatelessWidget {
                                   labelText: 'Season',
                                 ),
                                 hint: const Text('Select Season'),
-                                value: model.seasoncontroller.text,
-                                items: model.seasonlist.map((val) {
+                                value: model.seasonController.text,
+                                items: model.seasonList.map((val) {
                                   return DropdownMenuItem<String>(
                                     value: val,
                                     child: AutoSizeText(val),
                                   );
                                 }).toList(),
                                 onChanged: (value) {
-                                  model.seasoncontroller.text = value ?? "";
+                                  model.seasonController.text = value ?? "";
                                   model.filterListBySeason(
                                       name: value);
                                 },
@@ -75,8 +75,8 @@ class ListAgriScreen extends StatelessWidget {
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
-                                model.villagecontroller.text = value;
-                                model.getAgriListByvillagefarmernameFilter(
+                                model.villageController.text = value;
+                                model.getAgriListByVillageFarmerNameFilter(
                                     village: value);
                               },
                               decoration: const InputDecoration(
@@ -88,8 +88,8 @@ class ListAgriScreen extends StatelessWidget {
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
-                                model.namecontroller.text = value;
-                                model.getAgriListByvillagefarmernameFilter(
+                                model.nameController.text = value;
+                                model.getAgriListByVillageFarmerNameFilter(
                                     name: value);
                               },
                               decoration: const InputDecoration(
@@ -157,10 +157,10 @@ class ListAgriScreen extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
-                model.filteredagriList.isNotEmpty
+                model.filteredAgriList.isNotEmpty
                     ? Expanded(
                         child: ListView.separated(
-                          itemCount: model.filteredagriList.length,
+                          itemCount: model.filteredAgriList.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
@@ -171,36 +171,36 @@ class ListAgriScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     AutoSizeText(
-                                      model.filteredagriList[index].village ?? '',
+                                      model.filteredAgriList[index].village ?? '',
                                       maxLines: 2,
                                     ),
                                     AutoSizeText(
-                                      model.filteredagriList[index]
+                                      model.filteredAgriList[index]
                                               .cropVariety ??
                                           '',
                                     ),
                                   ],
                                 ),
                                 leading:AutoSizeText(
-                                  model.filteredagriList[index]
+                                  model.filteredAgriList[index]
                                       .caneRegistrationId.toString(),
                                       minFontSize: 20,
                                 ),
                                
                                 title: AutoSizeText(
-                                  model.filteredagriList[index].growerName ?? '', maxLines: 2,minFontSize: 10,
+                                  model.filteredAgriList[index].growerName ?? '', maxLines: 2,minFontSize: 10,
                                 ),
                                 subtitle: Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: AutoSizeText(
-                                        model.filteredagriList[index].name.toString(),maxLines: 2,
+                                        model.filteredAgriList[index].name.toString(),maxLines: 2,
                                       ),
                                     ),
                                const SizedBox(width: 15),
                                     Expanded(
-                                      child: AutoSizeText(DateFormat('dd-MM-yyyy').format(DateTime.parse(model.filteredagriList[index].date ??
+                                      child: AutoSizeText(DateFormat('dd-MM-yyyy').format(DateTime.parse(model.filteredAgriList[index].date ??
                                           '')),
                                         maxLines: 2,
                                       ),
@@ -209,7 +209,7 @@ class ListAgriScreen extends StatelessWidget {
                                 ),
                                 onTap: () {
                                   model.onRowClick(
-                                      context, model.filteredagriList[index]);
+                                      context, model.filteredAgriList[index]);
                                 },
                               ),
                             );

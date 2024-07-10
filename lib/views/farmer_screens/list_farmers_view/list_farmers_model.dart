@@ -10,16 +10,16 @@ import '../../../models/aadharData_model.dart';
 class ListFarmersModel extends BaseViewModel {
   TextEditingController villageController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  FarmersListModel listmodel = FarmersListModel();
-  List<FarmersListModel> farmresList = [];
+  FarmersListModel farmerListModel = FarmersListModel();
+  List<FarmersListModel> farmersList = [];
   List<FarmersListModel> filteredList = [];
   String farmerNameFilter = "";
   String farmerVillageFilter = "";
 
   initialise(BuildContext context) async {
     setBusy(true);
-    farmresList = await ListFarmersService().getAllFarmersList();
-    filteredList = farmresList;
+    farmersList = await ListFarmersService().getAllFarmersList();
+    filteredList = farmersList;
     Logger().i(filteredList);
     setBusy(false);
 

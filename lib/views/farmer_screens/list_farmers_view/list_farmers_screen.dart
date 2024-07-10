@@ -151,7 +151,7 @@ class ListFarmersScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                model.farmresList.isNotEmpty
+                model.farmersList.isNotEmpty
                     ? Expanded(
                         child: ListView.separated(
                           itemCount: model.filteredList.length,
