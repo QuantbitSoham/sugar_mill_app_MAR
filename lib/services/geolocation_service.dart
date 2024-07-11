@@ -9,6 +9,7 @@ class GeolocationService {
     try {
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
+        permission = await Geolocator.requestPermission();
         Fluttertoast.showToast(msg: 'Location Serices are disabled');
         Future.error('Location services are disabled.');
         return null;
@@ -25,6 +26,7 @@ class GeolocationService {
       }
 
       if (permission == LocationPermission.deniedForever) {
+        permission = await Geolocator.requestPermission();
         Fluttertoast.showToast(
             msg:
                 'Location permissions are permanently denied, we cannot request permissions.');

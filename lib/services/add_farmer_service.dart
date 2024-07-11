@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/models/farmer.dart';
-
 import '../models/aadharData_model.dart';
-
 import '../models/bank_model.dart';
 import '../models/village_model.dart';
 
@@ -185,12 +182,10 @@ Future<aadharData?> aadharCardData(var qrData) async {
       }
     } catch (e) {
       if (e is DioException) {
-        if (e.response != null && e.response?.statusCode == 417) {
-          Fluttertoast.showToast(msg: "Duplicate Aadhar number!");
-        } else {
-          Fluttertoast.showToast(msg: "Error occurred ${e.response?.data["exception"].toString()}");
+
+          Fluttertoast.showToast(msg: "${e.response?.data["exception"].toString()}");
           Logger().e(e.message);
-        }
+        
       } else {
         Fluttertoast.showToast(msg: "Error occurred $e");
         Logger().e(e);

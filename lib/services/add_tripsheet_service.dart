@@ -13,7 +13,7 @@ import '../models/cartlist.dart';
 
 
 class AddTripSheetServices {
-  Future<Tripsheet?> getTripsheet(String id) async {
+  Future<TripSheet?> getTripsheet(String id) async {
     try {
       var dio = Dio();
       var response = await dio.request(
@@ -26,7 +26,7 @@ class AddTripSheetServices {
 
       if (response.statusCode == 200) {
         Logger().i(response.data["data"]);
-        return Tripsheet.fromJson(response.data["data"]);
+        return TripSheet.fromJson(response.data["data"]);
       } else {
         // print(response.statusMessage);
         return null;
@@ -39,7 +39,7 @@ class AddTripSheetServices {
     return null;
   }
 
-  Future<bool> updateTrip(Tripsheet trip) async {
+  Future<bool> updateTrip(TripSheet trip) async {
     try {
       // var data = json.encode({farmer});
       Logger().i(trip.name.toString());
@@ -69,7 +69,7 @@ class AddTripSheetServices {
 return false;
   }
 
-  Future<bool> addTripSheet(Tripsheet trip) async {
+  Future<bool> addTripSheet(TripSheet trip) async {
     var data = json.encode({
       "data": trip,
     });
@@ -118,7 +118,6 @@ return false;
           ),
       );
       if (response.statusCode == 200) {
-        Logger().i(response.data["data"]);
         return TripSheetMasters.fromJson(response.data["data"]);
       } else {
         // print(response.statusMessage);
@@ -295,6 +294,37 @@ return false;
 
     }
 
+    return [];
+  }
+
+  Future<List<TransportInfo>> fetchDummyTransport(String? season, String? plant) async {
+    try {
+      var headers = {'Cookie': await getTocken()};
+      var dio = Dio();
+      var url= '$apiBaseUrl/api/resource/H and T Contract?fields=["name","old_no","transporter_name","transporter_code","harvester_code","harvester_name","vehicle_type","vehicle_no","trolly_1","trolly_2","gang_type","dummy_contract"]&limit_page_length=9999999&filters=[["season","like","$season%"],["plant","like","$plant%"],["dummy_contract","=","1"]]';
+   print(url);
+    var response = await dio.request(
+    url,
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<TransportInfo> routeList = List.from(jsonData['data'])
+            .map<TransportInfo>((data) => TransportInfo.fromJson(data))
+            .toList();
+        return routeList;
+      } else {
+        Logger().e(response.statusMessage);
+        return [];
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
+
+    }
     return [];
   }
 

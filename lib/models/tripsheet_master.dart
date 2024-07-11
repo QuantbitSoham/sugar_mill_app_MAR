@@ -4,13 +4,15 @@ class TripSheetMasters {
   List<TransportInfo>? transportInfo;
   List<WaterSupplierList>? waterSupplierList;
   List<CaneRoute>? caneRoute;
+  List<VehicleType>? vehicleType;
 
   TripSheetMasters(
       {this.season,
         this.plant,
         this.transportInfo,
         this.waterSupplierList,
-        this.caneRoute});
+        this.caneRoute,
+        this.vehicleType});
 
   TripSheetMasters.fromJson(Map<String, dynamic> json) {
     season = json['season'].cast<String>();
@@ -18,37 +20,46 @@ class TripSheetMasters {
     if (json['Transport_Info'] != null) {
       transportInfo = <TransportInfo>[];
       json['Transport_Info'].forEach((v) {
-        transportInfo!.add(new TransportInfo.fromJson(v));
+        transportInfo!.add(TransportInfo.fromJson(v));
       });
     }
     if (json['Water_Supplier_List'] != null) {
       waterSupplierList = <WaterSupplierList>[];
       json['Water_Supplier_List'].forEach((v) {
-        waterSupplierList!.add(new WaterSupplierList.fromJson(v));
+        waterSupplierList!.add(WaterSupplierList.fromJson(v));
       });
     }
     if (json['cane_route'] != null) {
       caneRoute = <CaneRoute>[];
       json['cane_route'].forEach((v) {
-        caneRoute!.add(new CaneRoute.fromJson(v));
+        caneRoute!.add(CaneRoute.fromJson(v));
+      });
+    }
+    if (json['vehicle_type'] != null) {
+      vehicleType = <VehicleType>[];
+      json['vehicle_type'].forEach((v) {
+        vehicleType!.add(VehicleType.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['season'] = this.season;
-    data['plant'] = this.plant;
-    if (this.transportInfo != null) {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['season'] = season;
+    data['plant'] = plant;
+    if (transportInfo != null) {
       data['Transport_Info'] =
-          this.transportInfo!.map((v) => v.toJson()).toList();
+          transportInfo!.map((v) => v.toJson()).toList();
     }
-    if (this.waterSupplierList != null) {
+    if (waterSupplierList != null) {
       data['Water_Supplier_List'] =
-          this.waterSupplierList!.map((v) => v.toJson()).toList();
+          waterSupplierList!.map((v) => v.toJson()).toList();
     }
-    if (this.caneRoute != null) {
-      data['cane_route'] = this.caneRoute!.map((v) => v.toJson()).toList();
+    if (caneRoute != null) {
+      data['cane_route'] = caneRoute!.map((v) => v.toJson()).toList();
+    }
+    if (vehicleType != null) {
+      data['vehicle_type'] = vehicleType!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -57,6 +68,7 @@ class TripSheetMasters {
 class TransportInfo {
   String? name;
   String? oldNo;
+  int? dummyContract;
   String? transporterName;
   String? transporterCode;
   String? harvesterCode;
@@ -70,6 +82,7 @@ class TransportInfo {
   TransportInfo(
       {this.name,
         this.oldNo,
+        this.dummyContract,
         this.transporterName,
         this.transporterCode,
         this.harvesterCode,
@@ -83,6 +96,7 @@ class TransportInfo {
   TransportInfo.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     oldNo = json['old_no'];
+    dummyContract=json['dummy_contract'];
     transporterName = json['transporter_name'];
     transporterCode = json['transporter_code'];
     harvesterCode = json['harvester_code'];
@@ -95,18 +109,19 @@ class TransportInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['old_no'] = this.oldNo;
-    data['transporter_name'] = this.transporterName;
-    data['transporter_code'] = this.transporterCode;
-    data['harvester_code'] = this.harvesterCode;
-    data['harvester_name'] = this.harvesterName;
-    data['vehicle_type'] = this.vehicleType;
-    data['vehicle_no'] = this.vehicleNo;
-    data['trolly_1'] = this.trolly1;
-    data['trolly_2'] = this.trolly2;
-    data['gang_type'] = this.gangType;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['old_no'] = oldNo;
+    data['dummy_contract']=dummyContract;
+    data['transporter_name'] = transporterName;
+    data['transporter_code'] = transporterCode;
+    data['harvester_code'] = harvesterCode;
+    data['harvester_name'] = harvesterName;
+    data['vehicle_type'] = vehicleType;
+    data['vehicle_no'] = vehicleNo;
+    data['trolly_1'] = trolly1;
+    data['trolly_2'] = trolly2;
+    data['gang_type'] = gangType;
     return data;
   }
 }
@@ -125,10 +140,10 @@ class WaterSupplierList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['supplier_name'] = this.supplierName;
-    data['existing_supplier_code'] = this.existingSupplierCode;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['supplier_name'] = supplierName;
+    data['existing_supplier_code'] = existingSupplierCode;
     return data;
   }
 }
@@ -140,6 +155,8 @@ class CaneRoute {
   String? taluka;
   String? circleOffice;
   String? village;
+  int? applyFlatRate;
+  String? flatRate;
 
   CaneRoute(
       {this.route,
@@ -147,7 +164,9 @@ class CaneRoute {
         this.name,
         this.taluka,
         this.circleOffice,
-        this.village});
+        this.village,
+        this.applyFlatRate,
+        this.flatRate});
 
   CaneRoute.fromJson(Map<String, dynamic> json) {
     route = json['route'];
@@ -156,16 +175,39 @@ class CaneRoute {
     taluka = json['taluka'];
     circleOffice = json['circle_office'];
     village = json['village'];
+    applyFlatRate = json['apply_flat_rate'];
+    flatRate = json['flat_rate'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['route'] = this.route;
-    data['distance_km'] = this.distanceKm;
-    data['name'] = this.name;
-    data['taluka'] = this.taluka;
-    data['circle_office'] = this.circleOffice;
-    data['village'] = this.village;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['route'] = route;
+    data['distance_km'] = distanceKm;
+    data['name'] = name;
+    data['taluka'] = taluka;
+    data['circle_office'] = circleOffice;
+    data['village'] = village;
+    data['apply_flat_rate'] = applyFlatRate;
+    data['flat_rate'] = flatRate;
+    return data;
+  }
+}
+
+class VehicleType {
+  String? name;
+  int? applyFlatRate;
+
+  VehicleType({this.name, this.applyFlatRate});
+
+  VehicleType.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    applyFlatRate = json['apply_flat_rate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['apply_flat_rate'] = applyFlatRate;
     return data;
   }
 }

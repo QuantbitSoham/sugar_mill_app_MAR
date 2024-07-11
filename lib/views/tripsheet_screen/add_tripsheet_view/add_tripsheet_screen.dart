@@ -394,6 +394,32 @@ class AddTripsheetScreen extends StatelessWidget {
                         ],
                       ),
                       Row(
+                        children: [
+                          Expanded(
+
+                            child:
+
+
+                            CheckboxListTile(
+                                controlAffinity: ListTileControlAffinity.leading,title: Text('apply flat rate',style: TextStyle(fontWeight: FontWeight.bold),),value: model.applyFlatRate, onChanged: model.setselfTransporterAndHarvester),
+                          ),
+                          Expanded(
+
+                            child: TextFormField(
+                              readOnly: true,
+
+                              key: Key(model.tripSheetData.flatRate.toString()),
+                              initialValue:
+                              model.tripSheetData.flatRate?.toStringAsFixed(0) ??
+                                  "",
+                              decoration:
+                              const InputDecoration(labelText: 'Flat Rate'),
+
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
@@ -422,7 +448,7 @@ class AddTripsheetScreen extends StatelessWidget {
                           ),
                           Expanded(
                             child: TextFormField(
-                              keyboardType: TextInputType.numberWithOptions(
+                              keyboardType: const TextInputType.numberWithOptions(
                                   decimal: true),
                               controller: model.deductionController,
                               // onTap: () => model.selectDate(context),
@@ -434,20 +460,31 @@ class AddTripsheetScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      TextFormField(
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: true),
-                        key: Key(model.tripSheetData.cartno.toString()),
-                        initialValue:
-                            model.tripSheetData.cartno?.toStringAsFixed(0) ??
-                                "",
-                        decoration:
-                            const InputDecoration(labelText: 'Cart Number'),
-                        // validator: (value) => value!.isEmpty
-                        //     ? 'Please enter a Survey No'
-                        //     : null,
-                        onFieldSubmitted: model.setSelectedCartNo,
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,title: Text('Self',style: TextStyle(fontWeight: FontWeight.bold),),value: model.selfTransAndHarves, onChanged: model.setselfTransporterAndHarvester),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: TextFormField(
+                              keyboardType:
+                              const TextInputType.numberWithOptions(signed: true),
+                              key: Key(model.tripSheetData.cartno.toString()),
+                              initialValue:
+                              model.tripSheetData.cartno?.toStringAsFixed(0) ??
+                                  "",
+                              decoration:
+                              const InputDecoration(labelText: 'Cart Number'),
+
+                              onFieldSubmitted: model.setSelectedCartNo,
+                            ),
+                          ),
+                        ],
                       ),
+
                       const SizedBox(
                         width: 20.0,
                       ),
