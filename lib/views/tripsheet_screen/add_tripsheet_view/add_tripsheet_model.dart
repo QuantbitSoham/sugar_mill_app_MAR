@@ -73,7 +73,6 @@ class AddTripSheetModel extends BaseViewModel {
   String? gang;
   String? watersupplierName;
   bool isEdit = false;
-  bool selfTransAndHarves=false;
   bool applyFlatRate=false;
   TripSheet tripSheetData = TripSheet();
   String? selectedCaneRoute;
@@ -141,7 +140,7 @@ class AddTripSheetModel extends BaseViewModel {
       cartinfo = await AddTripSheetServices()
               .cartinfo(tripSheetData.cartno.toString()) ??
           CartInfo();
-      selfTransAndHarves=tripSheetData.selfTransporterAndHarvester==1 ?true :false;
+
       applyFlatRate=tripSheetData.applyFlatRate==1 ?true:false;
       // selectedCaneRoute = tripSheetData.routeName;
       for (CaneRoute i in routeList) {
@@ -306,22 +305,31 @@ class AddTripSheetModel extends BaseViewModel {
     tripSheetData.oldTransporterCode = traCode;
     final selectedGrowerData = transportList
         .firstWhere((growerData) => growerData.oldNo.toString() == traCode);
-    tripSheetData.transporterCode = selectedGrowerData.name;
-    transName = selectedGrowerData.transporterName;
-    vehicleType = selectedGrowerData.vehicleType;
-    tripSheetData.transporter = selectedGrowerData.transporterCode;
-    eNo = selectedGrowerData.vehicleNo;
-    trl_1 = selectedGrowerData.trolly1;
-    tri_2 = selectedGrowerData.trolly2;
-    gang = selectedGrowerData.gangType;
-    tripSheetData.vehicleNumber = eNo;
-    tripSheetData.gangType = gang;
-    tripSheetData.tolly1 = trl_1;
-    tripSheetData.tolly2 = tri_2;
-    tripSheetData.transporterName = transName;
-    tripSheetData.vehicleType = vehicleType;
-    tripSheetData.cartno = null;
-    boolFlatRte();
+    Logger().i(selectedGrowerData);
+    if(selectedGrowerData.oldNo.toString().toLowerCase()!="self"){
+      tripSheetData.transporterCode = selectedGrowerData.name;
+      transName = selectedGrowerData.transporterName;
+      vehicleType = selectedGrowerData.vehicleType;
+      tripSheetData.transporter = selectedGrowerData.transporterCode;
+      eNo = selectedGrowerData.vehicleNo;
+      trl_1 = selectedGrowerData.trolly1;
+      tri_2 = selectedGrowerData.trolly2;
+      gang = selectedGrowerData.gangType;
+      tripSheetData.vehicleNumber = eNo;
+      tripSheetData.gangType = gang;
+      tripSheetData.tolly1 = trl_1;
+      tripSheetData.tolly2 = tri_2;
+      tripSheetData.transporterName = transName;
+      tripSheetData.vehicleType = vehicleType;
+      tripSheetData.cartno = null;
+      boolFlatRte();
+    }else{
+      tripSheetData.transporterCode = selectedGrowerData.name;
+      tripSheetData.oldTransporterCode = selectedGrowerData.oldNo;
+      tripSheetData.transporter = tripSheetData.farmerCode;
+      tripSheetData.transporterName = tripSheetData.farmerName;
+    }
+
     // cartinfo=await AddTripSheetServices().cartinfo(tripSheetData.transporterCode ?? "",tripSheetData.vehicleType ?? "",tripSheetData.season ?? "");
     // Logger().i(cartlist.length);
     notifyListeners();
@@ -381,11 +389,20 @@ class AddTripSheetModel extends BaseViewModel {
     tripSheetData.harvesterCodeOld = hCode;
     final selectedGrowerData = transportList
         .firstWhere((growerData) => growerData.oldNo.toString() == hCode);
+    if(selectedGrowerData.oldNo.toString().toLowerCase()!="self") {
+      tripSheetData.harvestingCodeHt = selectedGrowerData.name;
+      harCode = selectedGrowerData.harvesterCode;
+      tripSheetData.harvesterCodeH = harCode;
+      harName = selectedGrowerData.harvesterName;
+      tripSheetData.harvesterNameH = harName;
+    }else{
+    tripSheetData.harvesterCodeOld = selectedGrowerData.oldNo;
+    tripSheetData.harvesterCode = selectedGrowerData.name;
     tripSheetData.harvestingCodeHt = selectedGrowerData.name;
-    harCode = selectedGrowerData.harvesterCode;
-    tripSheetData.harvesterCodeH = harCode;
-    harName = selectedGrowerData.harvesterName;
-    tripSheetData.harvesterNameH = harName;
+    tripSheetData.harvesterCode = tripSheetData.farmerCode;
+    tripSheetData.harvesterCodeH = tripSheetData.farmerCode;
+    tripSheetData.harvesterName = tripSheetData.farmerName;
+    tripSheetData.harvesterNameH = tripSheetData.farmerName;}
     notifyListeners();
   }
 
@@ -483,52 +500,6 @@ void setApplyFlatRate(bool? applyflatRate){
     tripSheetData.applyFlatRate=applyflatRate==true ?1:0;
     notifyListeners();
 }
-  void setselfTransporterAndHarvester(bool? selfTransporterAndHarvester) async {
-    selfTransAndHarves = selfTransporterAndHarvester ?? false;
-    tripSheetData.selfTransporterAndHarvester = selfTransAndHarves ? 1 : 0;
-
-    if (selfTransporterAndHarvester == true) {
-      List<TransportInfo> dummytransportList =
-          await AddTripSheetServices().fetchDummyTransport(tripSheetData.season, tripSheetData.branch);
-      if (dummytransportList.isNotEmpty) {
-        final selectedTransporter =
-        dummytransportList.firstWhere((growerData) => growerData.dummyContract == 1, orElse: () => TransportInfo());
-        print(selectedTransporter.toJson());
-
-        tripSheetData.transporterCode = selectedTransporter.name;
-        tripSheetData.harvesterCodeOld = selectedTransporter.oldNo;
-        tripSheetData.oldTransporterCode = selectedTransporter.oldNo;
-        tripSheetData.harvesterCode = selectedTransporter.name;
-        tripSheetData.harvestingCodeHt = selectedTransporter.name;
-        tripSheetData.transporter = tripSheetData.farmerCode;
-        tripSheetData.transporterName = tripSheetData.farmerName;
-        tripSheetData.harvesterCode = tripSheetData.farmerCode;
-        tripSheetData.harvesterCodeH = tripSheetData.farmerCode;
-        tripSheetData.harvesterName = tripSheetData.farmerName;
-        tripSheetData.harvesterNameH = tripSheetData.farmerName;
-        print(tripSheetData.toJson());
-      } else {
-        _clearSelfTransporterData();
-      }
-    } else {
-      _clearSelfTransporterData();
-    }
-
-    notifyListeners();
-  }
-
-  void _clearSelfTransporterData() {
-    tripSheetData.transporterCode = "";
-    tripSheetData.harvesterCodeOld = "";
-    tripSheetData.oldTransporterCode = "";
-    tripSheetData.harvesterCode = "";
-    tripSheetData.harvestingCodeHt = "";
-    tripSheetData.transporter = "";
-    tripSheetData.transporterName = "";
-    tripSheetData.harvesterCode = "";
-    tripSheetData.harvesterName = "";
-    tripSheetData.harvesterNameH = "";
-  }
 
 
   void setSelectedDeductionAmount(String? amt) {
@@ -550,21 +521,23 @@ void setApplyFlatRate(bool? applyflatRate){
   String? transcode;
   String? oldtransportercode;
   String? transname;
+
+
   void setSelectedCartNo(String? cartNo) async {
     cartinfo =
         await AddTripSheetServices().cartinfo(cartNo.toString()) ?? CartInfo();
     tripSheetData.cartno = double.tryParse(cartNo ?? "");
-    tripSheetData.transporterCode = cartinfo.transporterCode;
+    tripSheetData.transporterCode = cartinfo.name;
     tripSheetData.oldTransporterCode = cartinfo.hTNo;
-    tripSheetData.transporter = cartinfo.transporter;
+    tripSheetData.transporter = cartinfo.transporterCode;
     tripSheetData.transporterName = cartinfo.transporterName;
     tripSheetData.vehicleType = cartinfo.vehicleType;
     tripSheetData.gangType = cartinfo.gangType;
     tripSheetData.harvesterNameH = cartinfo.harvesterName;
     tripSheetData.harvesterName = cartinfo.harvesterName;
     tripSheetData.harvesterCodeOld = cartinfo.hTNo;
-    tripSheetData.harvestingCodeHt = cartinfo.harvesterCode;
-    tripSheetData.harvesterCodeH = cartinfo.harvester;
+    tripSheetData.harvestingCodeHt = cartinfo.name;
+    tripSheetData.harvesterCodeH = cartinfo.harvesterCode;
     boolFlatRte();
     notifyListeners();
   }

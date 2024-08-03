@@ -95,7 +95,7 @@ return false;
     } on DioException catch (e) {
       if (e.response?.statusCode == 409) {
         Fluttertoast.showToast(msg: 'Tripsheet of ${trip.slipNo} slip no is already exists.');
-        Logger().e(e.response?.statusCode);
+        Logger().e(e.response?.data);
         return false;
       } else {
         Fluttertoast.showToast(msg: e.response?.data['exception']);

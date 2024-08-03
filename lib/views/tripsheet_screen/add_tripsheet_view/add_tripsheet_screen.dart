@@ -393,18 +393,17 @@ class AddTripsheetScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if(model.tripSheetData.applyFlatRate ==1)
                       Row(
                         children: [
                           Expanded(
-
+flex: 3,
                             child:
-
-
                             CheckboxListTile(
-                                controlAffinity: ListTileControlAffinity.leading,title: Text('apply flat rate',style: TextStyle(fontWeight: FontWeight.bold),),value: model.applyFlatRate, onChanged: model.setselfTransporterAndHarvester),
+                                controlAffinity: ListTileControlAffinity.leading,title: const Text('Apply Flat Rate',style: TextStyle(fontWeight: FontWeight.bold),),value: model.applyFlatRate, onChanged: model.setApplyFlatRate),
                           ),
                           Expanded(
-
+flex: 2,
                             child: TextFormField(
                               readOnly: true,
 
@@ -460,29 +459,18 @@ class AddTripsheetScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: CheckboxListTile(
-                            controlAffinity: ListTileControlAffinity.leading,title: Text('Self',style: TextStyle(fontWeight: FontWeight.bold),),value: model.selfTransAndHarves, onChanged: model.setselfTransporterAndHarvester),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: TextFormField(
-                              keyboardType:
-                              const TextInputType.numberWithOptions(signed: true),
-                              key: Key(model.tripSheetData.cartno.toString()),
-                              initialValue:
-                              model.tripSheetData.cartno?.toStringAsFixed(0) ??
-                                  "",
-                              decoration:
-                              const InputDecoration(labelText: 'Cart Number'),
 
-                              onFieldSubmitted: model.setSelectedCartNo,
-                            ),
-                          ),
-                        ],
+                      TextFormField(
+                        keyboardType:
+                        const TextInputType.numberWithOptions(signed: true),
+                        key: Key(model.tripSheetData.cartno.toString()),
+                        initialValue:
+                        model.tripSheetData.cartno?.toStringAsFixed(0) ??
+                            "",
+                        decoration:
+                        const InputDecoration(labelText: 'Cart Number'),
+
+                        onFieldSubmitted: model.setSelectedCartNo,
                       ),
 
                       const SizedBox(

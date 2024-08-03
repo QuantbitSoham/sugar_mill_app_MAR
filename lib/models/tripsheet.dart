@@ -22,7 +22,6 @@ class TripSheet {
   double? flatRate;
   String? burnCane;
   double? deduction;
-  int? selfTransporterAndHarvester;
   double? cartno;
   String? transporterCode;
   String? oldTransporterCode;
@@ -78,7 +77,7 @@ class TripSheet {
         this.flatRate,
         this.burnCane,
         this.deduction,
-        this.selfTransporterAndHarvester,
+
         this.cartno,
         this.transporterCode,
         this.oldTransporterCode,
@@ -134,7 +133,6 @@ class TripSheet {
     flatRate = json['flat_rate'];
     burnCane = json['burn_cane'];
     deduction = json['deduction'];
-    selfTransporterAndHarvester = json['self_transporter_and_harvester'];
     cartno = json['cartno'];
     transporterCode = json['transporter_code'];
     oldTransporterCode = json['old_transporter_code'];
@@ -168,61 +166,61 @@ class TripSheet {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['date'] = this.date;
-    data['slip_no'] = this.slipNo;
-    data['season'] = this.season;
-    data['branch'] = this.branch;
-    data['plot_no'] = this.plotNo;
-    data['plat_no_id'] = this.platNoId;
-    data['farmer_code'] = this.farmerCode;
-    data['farmer_name'] = this.farmerName;
-    data['field_village'] = this.fieldVillage;
-    data['cane_variety'] = this.caneVariety;
-    data['plantation_date'] = this.plantationDate;
-    data['survery_no'] = this.surveryNo;
-    data['area_acre'] = this.areaAcre;
-    data['route_name'] = this.routeName;
-    data['apply_flat_rate'] = this.applyFlatRate;
-    data['distance'] = this.distance;
-    data['flat_rate'] = this.flatRate;
-    data['burn_cane'] = this.burnCane;
-    data['deduction'] = this.deduction;
-    data['self_transporter_and_harvester'] = this.selfTransporterAndHarvester;
-    data['cartno'] = this.cartno;
-    data['transporter_code'] = this.transporterCode;
-    data['old_transporter_code'] = this.oldTransporterCode;
-    data['transporter'] = this.transporter;
-    data['transporter_name'] = this.transporterName;
-    data['vehicle_type'] = this.vehicleType;
-    data['harvester_code'] = this.harvesterCode;
-    data['harvester_name'] = this.harvesterName;
-    data['harvesting_code__ht'] = this.harvestingCodeHt;
-    data['harvester_code_old'] = this.harvesterCodeOld;
-    data['harvester_code_h'] = this.harvesterCodeH;
-    data['harvester_name_h'] = this.harvesterNameH;
-    data['gang_type'] = this.gangType;
-    data['vehicle_number'] = this.vehicleNumber;
-    data['tolly_1'] = this.tolly1;
-    data['tolly_2'] = this.tolly2;
-    data['rope'] = this.rope;
-    data['water_supplier'] = this.waterSupplier;
-    data['water_supplier_name'] = this.waterSupplierName;
-    data['water_share'] = this.waterShare;
-    data['percentage'] = this.percentage;
-    data['slip_boy'] = this.slipBoy;
-    data['circle_office'] = this.circleOffice;
-    data['vendor_code'] = this.vendorCode;
-    data['bas_pali_flag'] = this.basPaliFlag;
-    data['tripsheet_no'] = this.tripsheetNo;
-    data['cane_weight_flag'] = this.caneWeightFlag;
-    data['can_slip_flag'] = this.canSlipFlag;
-    data['token_no'] = this.tokenNo;
-    data['doctype'] = this.doctype;
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['name'] = name;
+    data['owner'] = owner;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['date'] = date;
+    data['slip_no'] = slipNo;
+    data['season'] = season;
+    data['branch'] = branch;
+    data['plot_no'] = plotNo;
+    data['plat_no_id'] = platNoId;
+    data['farmer_code'] = farmerCode;
+    data['farmer_name'] = farmerName;
+    data['field_village'] = fieldVillage;
+    data['cane_variety'] = caneVariety;
+    data['plantation_date'] = plantationDate;
+    data['survery_no'] = surveryNo;
+    data['area_acre'] = areaAcre;
+    data['route_name'] = routeName;
+    data['apply_flat_rate'] = applyFlatRate;
+    data['distance'] = distance;
+    data['flat_rate'] = flatRate;
+    data['burn_cane'] = burnCane;
+    data['deduction'] = deduction;
+
+    data['cartno'] = cartno;
+    data['transporter_code'] = transporterCode;
+    data['old_transporter_code'] = oldTransporterCode;
+    data['transporter'] = transporter;
+    data['transporter_name'] = transporterName;
+    data['vehicle_type'] = vehicleType;
+    data['harvester_code'] = harvesterCode;
+    data['harvester_name'] = harvesterName;
+    data['harvesting_code__ht'] = harvestingCodeHt;
+    data['harvester_code_old'] = harvesterCodeOld;
+    data['harvester_code_h'] = harvesterCodeH;
+    data['harvester_name_h'] = harvesterNameH;
+    data['gang_type'] = gangType;
+    data['vehicle_number'] = vehicleNumber;
+    data['tolly_1'] = tolly1;
+    data['tolly_2'] = tolly2;
+    data['rope'] = rope;
+    data['water_supplier'] = waterSupplier;
+    data['water_supplier_name'] = waterSupplierName;
+    data['water_share'] = waterShare;
+    data['percentage'] = percentage;
+    data['slip_boy'] = slipBoy;
+    data['circle_office'] = circleOffice;
+    data['vendor_code'] = vendorCode;
+    data['bas_pali_flag'] = basPaliFlag;
+    data['tripsheet_no'] = tripsheetNo;
+    data['cane_weight_flag'] = caneWeightFlag;
+    data['can_slip_flag'] = canSlipFlag;
+    data['token_no'] = tokenNo;
+    data['doctype'] = doctype;
     return data;
   }
 }

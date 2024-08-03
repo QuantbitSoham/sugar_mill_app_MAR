@@ -1,6 +1,7 @@
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:sugar_mill_app/views/Crop_Sampling_screens/add_sampling_view/add_crop_sampling_screen.dart';
+import 'package:sugar_mill_app/views/Crop_Sampling_screens/list_completed_sampling_view/list_Completed_sampling_screen.dart';
 import 'package:sugar_mill_app/views/Crop_Sampling_screens/list_sampling_view/list_sampling_screen.dart';
 import 'package:sugar_mill_app/views/agriculture_screens/add_agri_view/add_agri_screen.dart';
 import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_screen.dart';
@@ -35,6 +36,7 @@ import 'views/farmer_screens/list_farmers_view/list_farmers_screen.dart';
     MaterialRoute(page: ListAgriScreen),
     // DetailedSamplingScreen
     MaterialRoute(page: AddCropSamplingScreen),
+    MaterialRoute(page: ListCompletedSamplingScreen),
     // ListSamplingScreen
     MaterialRoute(page: ListSamplingScreen),
     //Tripsheet Screen

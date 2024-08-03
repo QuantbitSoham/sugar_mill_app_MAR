@@ -6,7 +6,7 @@ import '../../../router.router.dart';
 import '../../../services/add_cane_service.dart';
 import '../../../services/list_crop_sampling_service.dart';
 
-class ListSamplingModel extends BaseViewModel {
+class ListCompletedSamplingModel extends BaseViewModel {
   TextEditingController namecontroller = TextEditingController();
   TextEditingController seasoncontroller = TextEditingController();
   TextEditingController villagecontroller = TextEditingController();
@@ -17,6 +17,7 @@ class ListSamplingModel extends BaseViewModel {
   String caneNameFilter = "";
   List<String> seasonlist = [""];
   TextEditingController idcontroller = TextEditingController();
+
   Color getTileColor(String? plantationStatus) {
     switch (plantationStatus) {
       case 'New':
@@ -40,9 +41,10 @@ class ListSamplingModel extends BaseViewModel {
     // Filter the list to get the latest season
     String latestSeason = seasonlist.firstWhere(
           (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+      orElse: () => seasonlist
+          .last, // If no season matches the current year, take the last one
     );
-    seasoncontroller.text=latestSeason;
+    seasoncontroller.text = latestSeason;
     // filtersamplingList = samplingList;
     await filterListBySeason(name: latestSeason);
     setBusy(false);
@@ -53,7 +55,8 @@ class ListSamplingModel extends BaseViewModel {
   }
 
   Future<void> refresh() async {
-    filtersamplingList= (await ListCropSamplingServices().getAllCropSamplingList());
+    filtersamplingList =
+    (await ListCropSamplingServices().getAllCompletedCropSamplingList());
     notifyListeners();
   }
 
@@ -61,19 +64,18 @@ class ListSamplingModel extends BaseViewModel {
     Navigator.pushNamed(
       context,
       Routes.addCropSamplingScreen,
-      arguments: AddCropSamplingScreenArguments(
-          samplingId: samplingList?.name ?? ""),
+      arguments:
+      AddCropSamplingScreenArguments(samplingId: samplingList?.name ?? ""),
     );
     // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
     //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));
   }
 
-
   Future<void> filterListBySeason({String? name}) async {
     caneSeasonFilter = name ?? caneSeasonFilter;
     notifyListeners();
-    filtersamplingList =
-    await ListCropSamplingServices().filterListBySeason(caneSeasonFilter);
+    filtersamplingList = await ListCropSamplingServices()
+        .filterCompletedListBySeason(caneSeasonFilter);
     notifyListeners();
   }
 
@@ -82,7 +84,8 @@ class ListSamplingModel extends BaseViewModel {
     caneVillageFilter = village ?? caneVillageFilter;
     notifyListeners();
     filtersamplingList = await ListCropSamplingServices()
-        .getListByvillagefarmernameFilter(caneVillageFilter, caneNameFilter);
+        .getCompletedListByvillagefarmernameFilter(
+        caneVillageFilter, caneNameFilter);
     notifyListeners();
   }
 }

@@ -52,6 +52,7 @@ class TripsheetMaster extends StatelessWidget {
                                       child: SizedBox(
                                         width: getWidth(context) / 4,
                                         child: TextField(
+                                          keyboardType: TextInputType.number,
                                           // controller: model.villageController,
                                           onChanged: (value) {
                                             model.idcontroller.text = value;
@@ -60,7 +61,7 @@ class TripsheetMaster extends StatelessWidget {
                                           },
                                           decoration: const InputDecoration(
                                             labelText: 'ID',
-                                            prefixIcon: Icon(Icons.search),
+
                                             // prefixIcon: Icon(Icons.search),
                                           ),
                                         ),

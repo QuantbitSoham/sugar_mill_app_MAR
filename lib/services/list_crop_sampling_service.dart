@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -32,19 +33,57 @@ class ListCropSamplingServices {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
 
-  Future<List<ListSampling>> filterListBySeason(
-      String season) async {
+  Future<List<ListSampling>> getAllCompletedCropSamplingList() async {
     try {
       var headers = {'Cookie': await getTocken()};
-var url=        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name"]&filters=[["season","like","$season%"]]&order_by=creation desc';
-    var dio = Dio();
+      var dio = Dio();
+      var response = await dio.request(
+        apiCompletedListSampling,
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<ListSampling> caneList = List.from(jsonData['data'])
+            .map<ListSampling>((data) => ListSampling.fromJson(data))
+            .toList();
+        return caneList;
+      } else {
+        Logger().e(response.statusMessage);
+        return [];
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
+      Logger().e(e.response?.data.toString());
+    }
+    return [];
+  }
+
+  Future<List<ListSampling>> filterListBySeason(String season) async {
+    try {
+      var headers = {'Cookie': await getTocken()};
+      var url =
+          '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["season","like","$season%"],["plantation_status","=","To Sampling"]]&order_by=creation desc';
+      var dio = Dio();
       var response = await dio.request(
         url,
         options: Options(
@@ -53,7 +92,6 @@ var url=        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattio
         ),
       );
       Logger().i(url);
-
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
@@ -67,22 +105,65 @@ var url=        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattio
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];
   }
 
-  Future<List<ListSampling>> getListByvillagefarmernameFilter(
-      String village,String name) async {
+  Future<List<ListSampling>> filterCompletedListBySeason(String season) async {
+    try {
+      var headers = {'Cookie': await getTocken()};
+      var url =
+          '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["season","like","$season%"],["plantation_status","=","To Harvesting"]]&order_by=creation desc';
+      var dio = Dio();
+      var response = await dio.request(
+        url,
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+      Logger().i(url);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<ListSampling> caneList = List.from(jsonData['data'])
+            .map<ListSampling>((data) => ListSampling.fromJson(data))
+            .toList();
+        Logger().i(caneList);
+        return caneList;
+      } else {
+        Logger().e(response.statusMessage);
+        return [];
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
+      Logger().e(e.response?.data.toString());
+    }
+
+    return [];
+  }
+
+  Future<List<ListSampling>> getListByvillagefarmernameFilter(String village,
+      String name) async {
     try {
       var headers = {'Cookie': await getTocken()};
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","season","plantation_status","area","form_number","name"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"]]&order_by=creation desc',
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"],["plantation_status","=","To Sampling"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,
@@ -102,9 +183,52 @@ var url=        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattio
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
+    }
 
+    return [];
+  }
+
+  Future<List<ListSampling>> getCompletedListByvillagefarmernameFilter(
+      String village, String name) async {
+    try {
+      var headers = {'Cookie': await getTocken()};
+
+      var dio = Dio();
+      var response = await dio.request(
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"],["plantation_status","=","To Harvesting"]]&order_by=creation desc',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+      Logger().i(response);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<ListSampling> caneList = List.from(jsonData['data'])
+            .map<ListSampling>((data) => ListSampling.fromJson(data))
+            .toList();
+        Logger().i(caneList);
+        return caneList;
+      } else {
+        Logger().e(response.statusMessage);
+        return [];
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
+      Logger().e(e.response?.data.toString());
     }
 
     return [];

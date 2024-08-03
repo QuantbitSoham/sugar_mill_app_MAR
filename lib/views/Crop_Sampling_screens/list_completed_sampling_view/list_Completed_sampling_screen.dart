@@ -5,19 +5,19 @@ import 'package:stacked/stacked.dart';
 import '../../../widgets/cdrop_down_widget.dart';
 import '../../../widgets/error_widget.dart';
 import '../../../widgets/full_screen_loader.dart';
-import 'list_sampling_model.dart';
+import 'list_Completed_sampling_model.dart';
 
-class ListSamplingScreen extends StatelessWidget {
-  const ListSamplingScreen({super.key});
+class ListCompletedSamplingScreen extends StatelessWidget {
+  const ListCompletedSamplingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ListSamplingModel>.reactive(
-      viewModelBuilder: () => ListSamplingModel(),
+    return ViewModelBuilder<ListCompletedSamplingModel>.reactive(
+      viewModelBuilder: () => ListCompletedSamplingModel(),
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: const AutoSizeText(' To Be Crop Sampling List'),
+          title: const AutoSizeText('Completed Crop Sampling List'),
         ),
         body: fullScreenLoader(
           child: RefreshIndicator(
@@ -151,7 +151,7 @@ class ListSamplingScreen extends StatelessWidget {
                         padding:
                         const EdgeInsets.symmetric(horizontal: 16.0),
                         child: ListTile(
-                          tileColor: const Color(0xFFEAF5EE),
+                          tileColor: const Color(0xFFFFF5F5),
                           trailing: Column(
                             mainAxisAlignment:
                             MainAxisAlignment.spaceAround,
@@ -184,7 +184,7 @@ class ListSamplingScreen extends StatelessWidget {
                               AutoSizeText(
                                 model.filtersamplingList[index]
                                     .averageBrix!
-                                    .toStringAsPrecision(2),
+                                    .toStringAsFixed(2),
                                 maxLines: 2,
                               ),
                               const SizedBox(width: 15),

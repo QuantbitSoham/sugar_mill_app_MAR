@@ -15,8 +15,8 @@ const kPanpdf = "PanCard";
 const kBankpdf = "BankPassbook";
 const kConcentpdf = "ConcentLetter";
 // const apiBaseUrl = "https://erpvppl.erpdata.in";
-// const apiBaseUrl = "https://migratesugar.erpdata.in";
-const apiBaseUrl = "http://182.74.29.227:1111";
+const apiBaseUrl = "https://migratesugar.erpdata.in";
+// const apiBaseUrl = "http://182.74.29.227:1111";
 
 /// api usrls
 String apifetchSeason =
@@ -66,7 +66,9 @@ String apigetagrilist =
 ///Crop Sampling
 String apiPostCropSampling = "$apiBaseUrl/api/resource/Crop Sampling";
 String apiListSampling =
-    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name"]';
+    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["plantation_status","=","To Sampling"]]&order_by=creation desc';
+String apiCompletedListSampling =
+    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["plantation_status","=","To Harvesting"]]&order_by=creation desc';
 
 ///TripSheet
 String apifetchplotnumber =

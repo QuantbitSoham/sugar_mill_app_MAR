@@ -8,6 +8,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:sugar_mill_app/models/cane_farmer.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sugar_mill_app/router.router.dart';
 import 'package:sugar_mill_app/services/add_cane_service.dart';
 import 'package:sugar_mill_app/services/geolocation_service.dart';
 import 'package:sugar_mill_app/views/cane_screens/list_cane_view/list_cane_screen.dart';
@@ -114,19 +115,13 @@ class CaneViewModel extends BaseViewModel {
       areainAcrsController.text = canedata.areaAcrs.toString();
       surveyNumberController.text = canedata.surveyNumber ?? "";
       formNumberController.text = canedata.formNumber ?? "";
-      // Define the desired date format
-
-// Format and set plantationRatooningDate
       plantationdateController.text = canedata.plantattionRatooningDate != ""
           ? dateFormat
               .format(DateTime.parse(canedata.plantattionRatooningDate ?? ""))
           : "";
-
-// Format and set basalDate
       String? formattedDate = canedata.basalDate != null
           ? dateFormat.format(DateTime.parse(canedata.basalDate ?? ""))
           : canedata.basalDate ?? "";
-
       baselDateController.text = formattedDate;
     }
     if (villageList.isEmpty) {
@@ -153,9 +148,8 @@ void showSuccessDialog(BuildContext context,String? name) {
         actions: [
           TextButton(
             onPressed: () {
-             Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const ListCaneScreen()),
+             Navigator.popAndPushNamed(
+    context,Routes.listCaneScreen
   ); // Close the dialog
             },
             child: const Text("OK"),
@@ -168,24 +162,6 @@ void showSuccessDialog(BuildContext context,String? name) {
 
 
   void onSavePressed(BuildContext context) async {
-    if (canedata.areaAcrs! > 10.0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.yellowAccent.shade700,
-          content: const Text(
-            'Area of acres is greater than 10 Acres',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                fontStyle: FontStyle.normal
-            ),
-          ),
-          duration: const Duration(seconds: 2), // Adjust the duration as needed
-        ),
-      );
-    }
-
     setBusy(true);
 
     if (formKey.currentState!.validate()) {
@@ -710,7 +686,7 @@ class DateValidator {
 
     // Check if the plantation date falls within the specified range
     if (plantationDate.isBefore(startDayDate) || plantationDate.isAfter(endDayDate)) {
-      return "Date must be between ${dateFormat.format(startDayDate)} and ${dateFormat.format(endDayDate)}";
+      return "Date must be between \n${dateFormat.format(startDayDate)} and ${dateFormat.format(endDayDate)}";
     }
     return null;
   }

@@ -379,7 +379,7 @@ class AddCaneScreen extends StatelessWidget {
                                       return const Iterable<String>.empty();
                                     }
                                     return model.routeList
-                                        .map((route) => route.route!)
+                                        .map((route) => route.route ??"")
                                         .toList()
                                         .where((route) => route
                                             .toLowerCase()
@@ -946,7 +946,42 @@ class AddCaneScreen extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: CtextButton(
-                                    onPressed: () => model.onSavePressed(context),
+                                    onPressed: () {
+                                      if ((model.canedata.areaAcrs ?? 0.0) >
+                                          10.0) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'More than 10 acrs cane registration!'),
+                                                content: const Text(
+                                                    'Above Cane Registration is more than 10. Are you want save this registration ?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      // Close the dialog
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: const Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      model.onSavePressed(
+                                                          context); // Close the dialog
+                                                    },
+                                                    child: const Text('Save'),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        model.onSavePressed(context);
+                                      }
+                                    },
                                     text: 'Save',
                                     buttonColor: Colors.green,
                                   ),
