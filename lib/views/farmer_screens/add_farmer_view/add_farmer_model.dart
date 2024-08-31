@@ -98,7 +98,7 @@ class FarmerViewModel extends BaseViewModel {
       panNumberController.text = farmerData.panNumber ?? "";
       String? formattedDate = farmerData.dateOfBirth != null
           ? DateFormat('dd-MM-yyyy')
-              .format(DateTime.parse(farmerData.dateOfBirth ?? ""))
+          .format(DateTime.parse(farmerData.dateOfBirth ?? ""))
           : farmerData.dateOfBirth ?? "";
       dobController.text = formattedDate;
       isVisible();
@@ -148,7 +148,7 @@ class FarmerViewModel extends BaseViewModel {
     switch (status) {
       case 'New':
         return Colors.blueAccent; // Light Blue Grey for Lead
-      // Light Green for Interested
+    // Light Green for Interested
       case 'Approved':
         return Colors.green;
       case 'Rejected':
@@ -386,7 +386,7 @@ class FarmerViewModel extends BaseViewModel {
 
 // Format the parsed date into "yyyy-MM-dd" format
       String formattedDateInDesiredFormat =
-          DateFormat('yyyy-MM-dd').format(parsedDate);
+      DateFormat('yyyy-MM-dd').format(parsedDate);
 
       Logger().i(formattedDateInDesiredFormat);
       selectedDate = DateTime.parse(formattedDateInDesiredFormat);
@@ -466,7 +466,7 @@ class FarmerViewModel extends BaseViewModel {
     selectedVillage = village;
     farmerData.village = selectedVillage;
     final selectedRouteData =
-        villageList.firstWhere((routeData) => routeData.name == village);
+    villageList.firstWhere((routeData) => routeData.name == village);
     selectedoffice = selectedRouteData.circleOffice;
     selectedtaluka = selectedRouteData.taluka;
     Logger().i(selectedVillage);
@@ -688,11 +688,11 @@ class FarmerViewModel extends BaseViewModel {
     }
 
     farmerData.aadhaarCard =
-        aadharUrl == "" ? farmerData.aadhaarCard : aadharUrl;
+    aadharUrl == "" ? farmerData.aadhaarCard : aadharUrl;
     farmerData.panCard = panUrl == "" ? farmerData.panCard : panUrl;
 
     farmerData.consentLetter =
-        letterUrl == "" ? farmerData.consentLetter : letterUrl;
+    letterUrl == "" ? farmerData.consentLetter : letterUrl;
   }
 
 

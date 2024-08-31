@@ -36,10 +36,15 @@ class AddCropSmaplingServices {
         Fluttertoast.showToast(msg: "UNABLE TO Crop Sampling!");
         return false;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }
@@ -65,10 +70,15 @@ class AddCropSmaplingServices {
         Fluttertoast.showToast(msg: "UNABLE TO UPDATE Crop Sampling!");
         return false;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }
@@ -90,7 +100,7 @@ class AddCropSmaplingServices {
         List<dynamic> dataList = jsonDataMap["data"];
         Logger().i(dataList);
         List<String> namesList =
-        dataList.map((item) => item["name"].toString()).toList();
+            dataList.map((item) => item["name"].toString()).toList();
         return namesList;
       }
 
@@ -102,11 +112,16 @@ class AddCropSmaplingServices {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
-    return[];
+    return [];
   }
 
   Future<List<villagemodel>> fetchVillages() async {
@@ -132,13 +147,17 @@ class AddCropSmaplingServices {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
-    return[];
+    return [];
   }
-
 
   Future<CropSampling?> getCropSampling(String? id) async {
     try {
@@ -159,33 +178,39 @@ class AddCropSmaplingServices {
         return null;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }
 
-  Future<List<AgriCane>> fetchcanelistwithfilter(String season,String village,String farmercode) async {
+  Future<List<AgriCane>> fetchcanelistwithfilter(
+      String season, String village, String farmercode) async {
     try {
-
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
-var url=        '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["area","like","$village%"],["grower_code","like","$farmercode%"]]&limit_page_length=999999';
-    var response = await dio.request(
-      url,
+      var url =
+          '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["area","like","$village%"],["grower_code","like","$farmercode%"]]&limit_page_length=999999';
+      var response = await dio.request(
+        url,
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-Logger().i(url.toString());
+      Logger().i(url.toString());
       if (response.statusCode == 200) {
         var jsonData = json.encode(response.data);
         Map<String, dynamic> jsonDataMap = json.decode(jsonData);
         List<dynamic> dataList = jsonDataMap['data'];
         List<AgriCane> canelistwithfilter =
-        dataList.map<AgriCane>((data) => AgriCane.fromJson(data)).toList();
+            dataList.map<AgriCane>((data) => AgriCane.fromJson(data)).toList();
         Logger().i(canelistwithfilter);
         return canelistwithfilter;
       } else {
@@ -193,12 +218,17 @@ Logger().i(url.toString());
         Logger().e(response.statusMessage);
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
-    return[];
+    return [];
   }
 
   Future<List<caneFarmer>> fetchfarmerListwithfilter(String village) async {
@@ -227,13 +257,18 @@ Logger().i(url.toString());
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
-    return[];
+    return [];
   }
-  
+
   Future<samplingformula?> fetchsamplingFormula() async {
     try {
       var headers = {'Cookie': await getTocken()};
@@ -253,10 +288,15 @@ Logger().i(url.toString());
         // print(response.statusMessage);
         return null;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }

@@ -11,53 +11,54 @@ class ListTripsheet extends BaseViewModel {
   TextEditingController seasonController = TextEditingController();
   List<TripSheetSearch> triSheetList = [];
   List<TripSheetSearch> tripSheetFilter = [];
-  List<String> seasonlist = [];
-  String tripsheetVillageFilter = "";
-  String tripsheeNameFilter = "";
+  List<String> seasonList = [];
+  String tripSheetVillageFilter = "";
+  String tripSheeNameFilter = "";
   String tripsheetSeasonFilter = "";
 
   initialise(BuildContext context) async {
     setBusy(true);
-    seasonlist = await ListTripshhetService().fetchSeason();
+    seasonList = await ListTripshhetService().fetchSeason();
     int currentYear = DateTime.now().year;
 
     // Filter the list to get the latest season
-    String latestSeason = seasonlist.firstWhere(
+    String latestSeason = seasonList.firstWhere(
           (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+      orElse: () => seasonList
+          .last, // If no season matches the current year, take the last one
     );
-    seasonController.text=latestSeason;
- await filterListByNameAndVillage(season: latestSeason);
+    seasonController.text = latestSeason;
+    await filterListByNameAndVillage(season: latestSeason);
     setBusy(false);
-    if (seasonlist.isEmpty) {
+    if (seasonList.isEmpty) {
       logout(context);
     }
     notifyListeners();
   }
 
-Future<void> refresh() async {
-   tripSheetFilter= (await ListTripshhetService().getAllTripsheetList())
+  Future<void> refresh() async {
+    tripSheetFilter = (await ListTripshhetService().getAllTripsheetList())
         .cast<TripSheetSearch>();
-  tripSheetFilter.sort((a, b) => b.name!.compareTo(a.name ?? 0)); 
-  notifyListeners();
-}
+    tripSheetFilter.sort((a, b) => b.name!.compareTo(a.name ?? ""));
+    notifyListeners();
+  }
 
-  void filterList(String filter, int query) async {
+  void filterList(String filter, String query) async {
     notifyListeners();
     tripSheetFilter =
-        await ListTripshhetService().getAllTripsheetListfilter(filter, query);
+    await ListTripshhetService().getAllTripsheetListfilter(filter, query);
     notifyListeners();
   }
 
   Future<void> filterListByNameAndVillage(
       {String? transName, String? village, String? season}) async {
-    tripsheeNameFilter = transName ?? tripsheeNameFilter;
-    tripsheetVillageFilter = village ?? tripsheetVillageFilter;
+    tripSheeNameFilter = transName ?? tripSheeNameFilter;
+    tripSheetVillageFilter = village ?? tripSheetVillageFilter;
     tripsheetSeasonFilter = season ?? tripsheetSeasonFilter;
     notifyListeners();
     tripSheetFilter = await ListTripshhetService().getTransporterNameFilter(
-        tripsheeNameFilter, tripsheetVillageFilter, tripsheetSeasonFilter);
-    tripSheetFilter.sort((a, b) => b.name!.compareTo(a.name ?? 0)); 
+        tripSheeNameFilter, tripSheetVillageFilter, tripsheetSeasonFilter);
+    tripSheetFilter.sort((a, b) => b.slipNo!.compareTo(a.slipNo!.toInt()));
     notifyListeners();
   }
 
@@ -66,7 +67,7 @@ Future<void> refresh() async {
       context,
       Routes.addTripsheetScreen,
       arguments:
-          AddTripsheetScreenArguments(tripId: tripList?.name.toString() ?? " "),
+      AddTripsheetScreenArguments(tripId: tripList?.name.toString() ?? " "),
     );
   }
 }

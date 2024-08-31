@@ -48,11 +48,11 @@ class AddCropSmaplingModel extends BaseViewModel {
       brixtopController.text = cropsamplingdata.brixTop?.toStringAsFixed(0) ?? "";
       noofpairsController.text = cropsamplingdata.noOfPairs?.toStringAsFixed(0) ?? "";
       for (AgriCane i in plotList) {
-         // Logger().i(i.growerCode);
+        // Logger().i(i.growerCode);
         if (i.growerCode == cropsamplingdata.growerCode) {
           selectedfarcode = i.vendorCode;
           // Logger().i(selectedfarcode);
-          
+
           notifyListeners();
         }
       }
@@ -88,7 +88,7 @@ class AddCropSmaplingModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-             Navigator.pop(context, const MaterialRoute(page: ListSampling)); 
+            Navigator.pop(context, const MaterialRoute(page: ListSampling));
           }
         }
       } else {
@@ -97,7 +97,7 @@ class AddCropSmaplingModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-            Navigator.pop(context, const MaterialRoute(page: ListSampling)); 
+            Navigator.pop(context, const MaterialRoute(page: ListSampling));
           }
         }
       }
@@ -121,7 +121,7 @@ class AddCropSmaplingModel extends BaseViewModel {
     selectedPlot = plot;
     cropsamplingdata.id = selectedPlot;
     final selectedCaneData =
-        plotList.firstWhere((caneData) => caneData.name.toString() == plot);
+    plotList.firstWhere((caneData) => caneData.name.toString() == plot);
     Logger().i(selectedCaneData);
     selectedVendorname = selectedCaneData.growerName;
     selectedplant = selectedCaneData.plantName;
@@ -180,7 +180,7 @@ class AddCropSmaplingModel extends BaseViewModel {
 
 
 
-void setSelectedVillage(BuildContext context,String? village) async {
+  void setSelectedVillage(BuildContext context,String? village) async {
     selectedVillage = village;
     cropsamplingdata.area = selectedVillage;
     final selectedRouteData =
@@ -298,7 +298,7 @@ void setSelectedVillage(BuildContext context,String? village) async {
   }
 
 
-String? selectedgrowername;
+  String? selectedgrowername;
 
   void setSelectedgrowername(BuildContext context,String? growername) async {
     selectedgrowername = growername;
@@ -313,7 +313,7 @@ String? selectedgrowername;
     plotList = (await AddCropSmaplingServices().fetchcanelistwithfilter(cropsamplingdata.season ?? "",cropsamplingdata.area ?? "",cropsamplingdata.growerCode ?? ""));
     if (plotList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
+        SnackBar(
           backgroundColor: Colors.red,
           content: Text(
             'There is no plot available for ${cropsamplingdata.growerName}',

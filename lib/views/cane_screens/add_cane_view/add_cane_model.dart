@@ -5,13 +5,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
 import 'package:sugar_mill_app/models/cane_farmer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sugar_mill_app/router.router.dart';
 import 'package:sugar_mill_app/services/add_cane_service.dart';
 import 'package:sugar_mill_app/services/geolocation_service.dart';
-import 'package:sugar_mill_app/views/cane_screens/list_cane_view/list_cane_screen.dart';
 import '../../../constants.dart';
 import '../../../models/cane.dart';
 import '../../../models/cane_masters.dart';
@@ -26,10 +24,10 @@ class CaneViewModel extends BaseViewModel {
   TextEditingController areainAcrsController = TextEditingController();
   TextEditingController baselDateController = TextEditingController();
   Cane canedata = Cane();
-  CaneMasters masters=CaneMasters();
+  CaneMasters masters = CaneMasters();
   List<String> plantlist = [""];
   bool isCheck = false;
-  bool role=false;
+  bool role = false;
   List<String> seasonlist = [""];
   final List<String> yesno = ["Yes", "No"];
   final List<String> yesnomachine = ["YES", "NO"];
@@ -75,37 +73,38 @@ class CaneViewModel extends BaseViewModel {
 
   initialise(BuildContext context, String caneId) async {
     setBusy(true);
-    masters=await AddCaneService().getMasters() ?? CaneMasters();
-    villageList=masters.village ?? [];
-    plantlist=masters.plant ?? [];
-    seasonlist=masters.season ?? [];
-    canevarietyList=masters.caneVariety ?? [];
-    plantationsystemList=masters.plantationSystem ?? [];
-    seedmaterialList=masters.seedMaterialUsed ?? [];
-    routeList=masters.caneRoute ?? [];
-    croptypeList=masters.cropType ?? [];
-    irrigationmethodList=masters.irrigationMethod ?? [];
-    irrigationSourceList=masters.irrigationSource ?? [];
-    soilTypeList=masters.soilType ?? [];
+    masters = await AddCaneService().getMasters() ?? CaneMasters();
+    villageList = masters.village ?? [];
+    plantlist = masters.plant ?? [];
+    seasonlist = masters.season ?? [];
+    canevarietyList = masters.caneVariety ?? [];
+    plantationsystemList = masters.plantationSystem ?? [];
+    seedmaterialList = masters.seedMaterialUsed ?? [];
+    routeList = masters.caneRoute ?? [];
+    croptypeList = masters.cropType ?? [];
+    irrigationmethodList = masters.irrigationMethod ?? [];
+    irrigationSourceList = masters.irrigationSource ?? [];
+    soilTypeList = masters.soilType ?? [];
     Logger().i(masters.toJson());
     canedata.plantName = "Bedkihal";
     canedata.plantationStatus = "New";
 
-    role=await FarmerService().role();
+    role = await FarmerService().role();
     int currentYear = DateTime.now().year;
 
     // Filter the list to get the latest season
     String latestSeason = seasonlist.firstWhere(
           (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+      orElse: () => seasonlist
+          .last, // If no season matches the current year, take the last one
     );
-    canedata.season=latestSeason;
+    canedata.season = latestSeason;
     Logger().i(caneId);
     if (caneId != "") {
       isEdit = true;
       canedata = await AddCaneService().getCane(caneId) ?? Cane();
       selectedCaneRoute = canedata.route;
-      isCheck=canedata.lateRegistration == 1 ? true : false;
+
       for (CaneRoute i in routeList) {
         if (i.name == canedata.route) {
           selectedCaneRoute = i.route;
@@ -117,7 +116,7 @@ class CaneViewModel extends BaseViewModel {
       formNumberController.text = canedata.formNumber ?? "";
       plantationdateController.text = canedata.plantattionRatooningDate != ""
           ? dateFormat
-              .format(DateTime.parse(canedata.plantattionRatooningDate ?? ""))
+          .format(DateTime.parse(canedata.plantattionRatooningDate ?? ""))
           : "";
       String? formattedDate = canedata.basalDate != null
           ? dateFormat.format(DateTime.parse(canedata.basalDate ?? ""))
@@ -130,36 +129,33 @@ class CaneViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  bool isVisible(){
-    if(canedata.name != 0 && role==true&&isEdit==true){
+  bool isVisible() {
+    if (canedata.name != 0 && role == true && isEdit == true) {
       return true;
     }
     return false;
   }
 
-void showSuccessDialog(BuildContext context,String? name) {
-  showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("$name plot registered successfully"),
-      
-        actions: [
-          TextButton(
-            onPressed: () {
-             Navigator.popAndPushNamed(
-    context,Routes.listCaneScreen
-  ); // Close the dialog
-            },
-            child: const Text("OK"),
-          ),
-        ],
-      );
-    },
-  );
-}
-
+  void showSuccessDialog(BuildContext context, String? name) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("$name plot registered successfully"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.popAndPushNamed(
+                    context, Routes.listCaneScreen); // Close the dialog
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void onSavePressed(BuildContext context) async {
     setBusy(true);
@@ -188,7 +184,8 @@ void showSuccessDialog(BuildContext context,String? name) {
 
         if (position != null) {
           // Get the placemark using the geolocation service
-          Placemark? placemark = await geolocationService.getPlacemarks(position);
+          Placemark? placemark =
+          await geolocationService.getPlacemarks(position);
 
           if (placemark != null) {
             // Extract properties from the placemark
@@ -198,7 +195,8 @@ void showSuccessDialog(BuildContext context,String? name) {
             String postalCode = placemark.postalCode ?? '';
             String country = placemark.country ?? '';
             // Create a formatted address string
-            String formattedAddress = '$street, $subLocality, $locality $postalCode, $country';
+            String formattedAddress =
+                '$street, $subLocality, $locality $postalCode, $country';
             // Update canedata object with latitude, longitude, and address
             canedata.latitude = position.latitude.toString();
             canedata.longitude = position.longitude.toString();
@@ -224,12 +222,13 @@ void showSuccessDialog(BuildContext context,String? name) {
         res = await AddCaneService().updateCane(canedata);
         if (res) {
           if (context.mounted) {
-            Navigator.pop(context, const MaterialRoute(page: ListCaneScreen));
+            Navigator.pop(context);
           }
         }
       } else {
         String? name = await AddCaneService().addCane(canedata);
         if (name.isNotEmpty) {
+          Navigator.pop(context);
           showSuccessDialog(context, name);
         }
       }
@@ -237,8 +236,6 @@ void showSuccessDialog(BuildContext context,String? name) {
 
     setBusy(false);
   }
-
-
 
   String errorMessage = '';
 
@@ -256,7 +253,7 @@ void showSuccessDialog(BuildContext context,String? name) {
 
 // Format the parsed date into "yyyy-MM-dd" format
       String formattedDateInDesiredFormat =
-          DateFormat('yyyy-MM-dd').format(parsedDate);
+      DateFormat('yyyy-MM-dd').format(parsedDate);
 
       Logger().i(formattedDateInDesiredFormat);
       selectedDate = DateTime.parse(formattedDateInDesiredFormat);
@@ -269,6 +266,7 @@ void showSuccessDialog(BuildContext context,String? name) {
   }
 
   String errorMessageforbasel = '';
+
   void onBaselDateChanged(String value) {
     String formattedDate = DateInputHelper.formatInput(value);
     bool isValidDate = DateInputHelper.isValidDate(formattedDate);
@@ -283,8 +281,7 @@ void showSuccessDialog(BuildContext context,String? name) {
 
 // Format the parsed date into "yyyy-MM-dd" format
       String formattedDateInDesiredFormat =
-          DateFormat('yyyy-MM-dd').format(parsedDate);
-
+      DateFormat('yyyy-MM-dd').format(parsedDate);
       Logger().i(formattedDateInDesiredFormat);
       selectedDate = DateTime.parse(formattedDateInDesiredFormat);
       canedata.basalDate =
@@ -350,7 +347,7 @@ void showSuccessDialog(BuildContext context,String? name) {
     canedata.village = selectedVillage;
     Logger().i(village);
     farmerList =
-        await AddCaneService().fetchfarmerListwithfilter(village ?? "");
+    await AddCaneService().fetchfarmerListwithfilter(village ?? "");
     if (farmerList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -413,8 +410,8 @@ void showSuccessDialog(BuildContext context,String? name) {
   }
 
   void setcheck(bool? plant) {
-    isCheck=plant ?? false;
-    canedata.lateRegistration = isCheck ? 1:0;
+    isCheck = plant ?? false;
+    canedata.lateRegistration = isCheck ? 1 : 0;
     Logger().i(canedata.lateRegistration);
     notifyListeners();
   }
@@ -464,7 +461,7 @@ void showSuccessDialog(BuildContext context,String? name) {
   void setSelectedGrowerCode(String? growercode) {
     selectedgrowercode = growercode;
     final selectedgrowerData = farmerList.firstWhere(
-        (growerData) => growerData.existingSupplierCode == growercode);
+            (growerData) => growerData.existingSupplierCode == growercode);
     Logger().i(selectedgrowerData);
     selectedgrowername =
         selectedgrowerData.supplierName; // Set th distance in the kmController
@@ -525,7 +522,7 @@ void showSuccessDialog(BuildContext context,String? name) {
     if (value == null || value.isEmpty) {
       return 'Please select Area in Acrs';
     }
-    if (double.parse(value)==0) {
+    if (double.parse(value) == 0) {
       return 'Area should be greater than 0.';
     }
     return null;
@@ -546,7 +543,9 @@ void showSuccessDialog(BuildContext context,String? name) {
     }
 
     // Use checkDate to validate the date range
-    final validationError = DateValidator(season: canedata.season, plantationRatooningDate: value).checkDate(parsedDate);
+    final validationError =
+    DateValidator(season: canedata.season, plantationRatooningDate: value)
+        .checkDate(parsedDate);
     if (validationError != null) {
       return validationError;
     }
@@ -659,7 +658,6 @@ void showSuccessDialog(BuildContext context,String? name) {
   }
 }
 
-
 class DateValidator {
   String? season;
   String? plantationRatooningDate;
@@ -685,7 +683,8 @@ class DateValidator {
     final endDayDate = dateFormat.parse("31-03-$endYear");
 
     // Check if the plantation date falls within the specified range
-    if (plantationDate.isBefore(startDayDate) || plantationDate.isAfter(endDayDate)) {
+    if (plantationDate.isBefore(startDayDate) ||
+        plantationDate.isAfter(endDayDate)) {
       return "Date must be between \n${dateFormat.format(startDayDate)} and ${dateFormat.format(endDayDate)}";
     }
     return null;

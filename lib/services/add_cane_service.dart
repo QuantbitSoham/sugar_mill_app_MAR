@@ -31,10 +31,8 @@ class AddCaneService {
 
       if (response.statusCode == 200) {
         String name = response.data['data']['name'].toString();
-       
-        Logger().i(response.data);
-        Logger().i(name);
-        await AddCaneService().methodcall(name);
+
+        // await AddCaneService().methodcall(name);
         Fluttertoast.showToast(msg: "Cane Registerted Successfully");
         return name;
       } else {
@@ -42,13 +40,17 @@ class AddCaneService {
         return "";
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return "";
   }
-
 
   Future<bool> methodcall(String? docname) async {
     try {
@@ -69,8 +71,13 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "UNABLE TO vendor code genrated!");
         return false;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
     }
     return false;
@@ -99,9 +106,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -131,10 +143,15 @@ class AddCaneService {
         Logger().e(response.statusMessage);
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -166,8 +183,14 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "Unable to fetch Season");
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
     }
     return [];
@@ -196,9 +219,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -232,9 +260,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -268,9 +301,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -304,9 +342,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -340,9 +383,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -376,9 +424,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -412,9 +465,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -448,9 +506,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -484,9 +547,14 @@ class AddCaneService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -515,10 +583,15 @@ class AddCaneService {
         Fluttertoast.showToast(msg: "UNABLE TO Cane Master !");
         return false;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }
@@ -542,13 +615,16 @@ class AddCaneService {
         return null;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }
-
 
   Future<Cane?> getCane(String id) async {
     try {
@@ -569,9 +645,14 @@ class AddCaneService {
         return null;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }

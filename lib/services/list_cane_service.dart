@@ -29,20 +29,26 @@ class ListCaneService {
         Logger().e(response.statusMessage);
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
 
-  Future<List<CaneListModel>> getCaneListByNameFilter(String season,
-      String name, String village) async {
+  Future<List<CaneListModel>> getCaneListByNameFilter(
+      String season, String name, String village) async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
-String url= '$apiBaseUrl/api/resource/Cane Master?fields=["plantation_status","route_name","crop_variety","name","grower_code","grower_name","plantattion_ratooning_date","survey_number"]&filters=[["season","like","$season%"],["grower_name","like","%$name%"],["route_name","like","$village%"]]&order_by=creation desc';
+      String url =
+          '$apiBaseUrl/api/resource/Cane Master?fields=["plantation_status","route_name","crop_variety","name","grower_code","grower_name","plantattion_ratooning_date","survey_number"]&filters=[["season","like","$season%"],["grower_name","like","%$name%"],["route_name","like","$village%"]]&order_by=creation desc';
       Logger().i(url);
       var response = await dio.request(
         url,
@@ -51,7 +57,7 @@ String url= '$apiBaseUrl/api/resource/Cane Master?fields=["plantation_status","r
           headers: headers,
         ),
       );
-Logger().i(response.realUri);
+      Logger().i(response.realUri);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
         List<CaneListModel> farmersList = List.from(jsonData['data'])
@@ -64,9 +70,14 @@ Logger().i(response.realUri);
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];

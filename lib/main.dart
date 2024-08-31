@@ -4,13 +4,17 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:sugar_mill_app/router.locator.dart';
 import 'package:sugar_mill_app/router.router.dart';
 import 'package:sugar_mill_app/views/splash_screen_view/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'themes/color_schemes.g.dart';
 import 'themes/custom_color.g.dart';
 
-void main() {
+Future<void> main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

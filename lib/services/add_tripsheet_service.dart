@@ -10,8 +10,6 @@ import 'package:sugar_mill_app/models/tripsheet_master.dart';
 import '../constants.dart';
 import '../models/cartlist.dart';
 
-
-
 class AddTripSheetServices {
   Future<TripSheet?> getTripsheet(String id) async {
     try {
@@ -31,10 +29,15 @@ class AddTripSheetServices {
         // print(response.statusMessage);
         return null;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }
@@ -61,12 +64,17 @@ class AddTripSheetServices {
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
-return false;
+    return false;
   }
 
   Future<bool> addTripSheet(TripSheet trip) async {
@@ -94,7 +102,8 @@ return false;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 409) {
-        Fluttertoast.showToast(msg: 'Tripsheet of ${trip.slipNo} slip no is already exists.');
+        Fluttertoast.showToast(
+            msg: 'Tripsheet of ${trip.slipNo} slip no is already exists.');
         Logger().e(e.response?.data);
         return false;
       } else {
@@ -102,20 +111,18 @@ return false;
         Logger().e(e.response?.statusCode);
         return false;
       }
-
     }
-
   }
 
   Future<TripSheetMasters?> getMasters() async {
     try {
       var dio = Dio();
       var response = await dio.request(
-          '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.tripSheetMasters',
-          options: Options(
-            method: 'GET',
-            headers: {'Cookie': await getTocken()},
-          ),
+        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.tripSheetMasters',
+        options: Options(
+          method: 'GET',
+          headers: {'Cookie': await getTocken()},
+        ),
       );
       if (response.statusCode == 200) {
         return TripSheetMasters.fromJson(response.data["data"]);
@@ -124,14 +131,16 @@ return false;
         return null;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }
-
-
 
   Future<List<String>> fetchSeason() async {
     try {
@@ -160,29 +169,30 @@ return false;
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
-    } return[];
+    }
+    return [];
   }
 
-
-
   Future<CartInfo?> cartinfo(String id) async {
-    var data = {
-      'cartno': id
-    };
+    var data = {'cartno': id};
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.trip_sheet.trip_sheet.cartlist',
-        options: Options(
-          method: 'GET',
-          headers: {'Cookie': await getTocken()},
-        ),
-        data:data
-      );
+          '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.trip_sheet.trip_sheet.cartlist',
+          options: Options(
+            method: 'GET',
+            headers: {'Cookie': await getTocken()},
+          ),
+          data: data);
 
       if (response.statusCode == 200) {
         Logger().i(response.data["message"]);
@@ -192,9 +202,13 @@ return false;
         return null;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }
@@ -223,10 +237,15 @@ return false;
         Logger().e(response.statusMessage);
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];
@@ -260,9 +279,14 @@ return false;
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -289,22 +313,29 @@ return false;
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];
   }
 
-  Future<List<TransportInfo>> fetchDummyTransport(String? season, String? plant) async {
+  Future<List<TransportInfo>> fetchDummyTransport(
+      String? season, String? plant) async {
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
-      var url= '$apiBaseUrl/api/resource/H and T Contract?fields=["name","old_no","transporter_name","transporter_code","harvester_code","harvester_name","vehicle_type","vehicle_no","trolly_1","trolly_2","gang_type","dummy_contract"]&limit_page_length=9999999&filters=[["season","like","$season%"],["plant","like","$plant%"],["dummy_contract","=","1"]]';
-   print(url);
-    var response = await dio.request(
-    url,
+      var url =
+          '$apiBaseUrl/api/resource/H and T Contract?fields=["name","old_no","transporter_name","transporter_code","harvester_code","harvester_name","vehicle_type","vehicle_no","trolly_1","trolly_2","gang_type","dummy_contract"]&limit_page_length=9999999&filters=[["season","like","$season%"],["plant","like","$plant%"],["dummy_contract","=","1"]]';
+      print(url);
+      var response = await dio.request(
+        url,
         options: Options(
           method: 'GET',
           headers: headers,
@@ -321,9 +352,14 @@ return false;
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -350,9 +386,14 @@ return false;
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];
@@ -380,9 +421,14 @@ return false;
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];

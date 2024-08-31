@@ -35,7 +35,8 @@ class ListCropSamplingServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
-        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -69,7 +70,8 @@ class ListCropSamplingServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
-        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -107,7 +109,8 @@ class ListCropSamplingServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
-        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -146,7 +149,8 @@ class ListCropSamplingServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
-        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -156,8 +160,8 @@ class ListCropSamplingServices {
     return [];
   }
 
-  Future<List<ListSampling>> getListByvillagefarmernameFilter(String village,
-      String name) async {
+  Future<List<ListSampling>> getListByvillagefarmernameFilter(
+      String village, String name) async {
     try {
       var headers = {'Cookie': await getTocken()};
 
@@ -185,7 +189,8 @@ class ListCropSamplingServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
-        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -224,7 +229,8 @@ class ListCropSamplingServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
-        msg: 'Error: ${e.response?.data["exception"].toString()} ',
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );

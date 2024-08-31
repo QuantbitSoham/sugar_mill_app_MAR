@@ -65,13 +65,14 @@ class ListAgriScreen extends StatelessWidget {
                                 }).toList(),
                                 onChanged: (value) {
                                   model.seasonController.text = value ?? "";
-                                  model.filterListBySeason(
-                                      name: value);
+                                  model.filterListBySeason(name: value);
                                 },
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10,),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -84,7 +85,9 @@ class ListAgriScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10,),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -97,7 +100,6 @@ class ListAgriScreen extends StatelessWidget {
                               ),
                             ),
                           )
-            
                         ],
                       ),
                     ),
@@ -115,15 +117,15 @@ class ListAgriScreen extends StatelessWidget {
                           maxLines: 2,
                           style: TextStyle(color: Colors.white),
                         ),
-                       AutoSizeText(
+                        AutoSizeText(
                           'Crop Variety',
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
-                    leading:AutoSizeText(
+                    leading: AutoSizeText(
                       'Plot Number',
-                       overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.white),
                     ),
                     title: AutoSizeText(
@@ -134,10 +136,10 @@ class ListAgriScreen extends StatelessWidget {
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                         Expanded(
+                        Expanded(
                           child: AutoSizeText(
                             'ID',
-                              overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -148,8 +150,6 @@ class ListAgriScreen extends StatelessWidget {
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
-                       
-                         
                       ],
                     ),
                   ),
@@ -159,69 +159,83 @@ class ListAgriScreen extends StatelessWidget {
                 ),
                 model.filteredAgriList.isNotEmpty
                     ? Expanded(
-                        child: ListView.separated(
-                          itemCount: model.filteredAgriList.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: ListTile(
-                               tileColor:const Color(0xFFD3E8FD),
-                                trailing: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    AutoSizeText(
-                                      model.filteredAgriList[index].village ?? '',
-                                      maxLines: 2,
-                                    ),
-                                    AutoSizeText(
-                                      model.filteredAgriList[index]
-                                              .cropVariety ??
-                                          '',
-                                    ),
-                                  ],
-                                ),
-                                leading:AutoSizeText(
-                                  model.filteredAgriList[index]
-                                      .caneRegistrationId.toString(),
-                                      minFontSize: 20,
-                                ),
-                               
-                                title: AutoSizeText(
-                                  model.filteredAgriList[index].growerName ?? '', maxLines: 2,minFontSize: 10,
-                                ),
-                                subtitle: Row(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: AutoSizeText(
-                                        model.filteredAgriList[index].name.toString(),maxLines: 2,
-                                      ),
-                                    ),
-                               const SizedBox(width: 15),
-                                    Expanded(
-                                      child: AutoSizeText(DateFormat('dd-MM-yyyy').format(DateTime.parse(model.filteredAgriList[index].date ??
-                                          '')),
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  model.onRowClick(
-                                      context, model.filteredAgriList[index]);
-                                },
+                  child: ListView.separated(
+                    itemCount: model.filteredAgriList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ListTile(
+                          tileColor:
+                          model.filteredAgriList[index].docstatus == 0
+                              ? Colors.grey.withOpacity(0.2)
+                              : Color(0xFFD3E8FD),
+                          trailing: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceAround,
+                            children: [
+                              AutoSizeText(
+                                model.filteredAgriList[index].village ??
+                                    '',
+                                maxLines: 2,
                               ),
-                            );
-                          },
-                           separatorBuilder: (context, index) {
-                            return const Divider(
-                              color: Colors.white, // Color of the line
-                              thickness: 0, // Thickness of the line
-                            );
+                              AutoSizeText(
+                                model.filteredAgriList[index]
+                                    .cropVariety ??
+                                    '',
+                              ),
+                            ],
+                          ),
+                          leading: AutoSizeText(
+                            model.filteredAgriList[index]
+                                .caneRegistrationId
+                                .toString(),
+                            minFontSize: 20,
+                          ),
+                          title: AutoSizeText(
+                            model.filteredAgriList[index].growerName ??
+                                '',
+                            maxLines: 2,
+                            minFontSize: 10,
+                          ),
+                          subtitle: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: AutoSizeText(
+                                  model.filteredAgriList[index].name
+                                      .toString(),
+                                  maxLines: 2,
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: AutoSizeText(
+                                  DateFormat('dd-MM-yyyy').format(
+                                      DateTime.parse(model
+                                          .filteredAgriList[index]
+                                          .date ??
+                                          '')),
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            model.onRowClick(
+                                context, model.filteredAgriList[index]);
                           },
                         ),
-                      )
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider(
+                        color: Colors.white, // Color of the line
+                        thickness: 0, // Thickness of the line
+                      );
+                    },
+                  ),
+                )
                     : customErrorMessage()
               ],
             ),

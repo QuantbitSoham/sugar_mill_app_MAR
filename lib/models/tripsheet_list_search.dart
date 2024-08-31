@@ -1,7 +1,8 @@
 class TripSheetSearch {
-  int? name;
+  String? name;
   String? farmerName;
   String? fieldVillage;
+  int? slipNo;
   String? transporterName;
   String? circleOffice;
   String? season;
@@ -10,6 +11,7 @@ class TripSheetSearch {
       {this.name,
       this.farmerName,
       this.fieldVillage,
+      this.slipNo,
       this.transporterName,
       this.circleOffice,
       this.season});
@@ -18,6 +20,7 @@ class TripSheetSearch {
     name = json['name'];
     farmerName = json['farmer_name'];
     fieldVillage = json['field_village'];
+    slipNo = json['slip_no'];
     transporterName = json['transporter_name'];
     circleOffice = json['circle_office'];
     season = json['season'];
@@ -28,6 +31,7 @@ class TripSheetSearch {
     data['name'] = name;
     data['farmer_name'] = farmerName;
     data['field_village'] = fieldVillage;
+    data['slip_no'] = slipNo;
     data['transporter_name'] = transporterName;
     data['circle_office'] = circleOffice;
     data['season'] = season;

@@ -23,7 +23,7 @@ class login {
         List<dynamic> dataList = jsonDataMap["data"];
         Logger().i(dataList);
         List<String> namesList =
-        dataList.map((item) => item["name"].toString()).toList();
+            dataList.map((item) => item["name"].toString()).toList();
         return namesList;
       }
 
@@ -34,11 +34,15 @@ class login {
         Fluttertoast.showToast(msg: "Unable to fetch Villages");
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["exception"].toString()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
+      return [];
     }
-    return [];
   }
 }

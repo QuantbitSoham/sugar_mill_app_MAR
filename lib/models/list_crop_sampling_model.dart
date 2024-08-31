@@ -11,14 +11,14 @@ class ListSampling {
 
   ListSampling(
       {this.id,
-        this.plantattionRatooningDate,
-        this.averageBrix,
-        this.growerName,
-        this.route,
-        this.formNumber,
-        this.cropVariety,
-        this.name,
-        this.area});
+      this.plantattionRatooningDate,
+      this.averageBrix,
+      this.growerName,
+      this.route,
+      this.formNumber,
+      this.cropVariety,
+      this.name,
+      this.area});
 
   ListSampling.fromJson(Map<String, dynamic> json) {
     id = json['id'];

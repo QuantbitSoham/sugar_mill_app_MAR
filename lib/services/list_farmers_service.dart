@@ -33,9 +33,14 @@ class ListFarmersService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -66,9 +71,14 @@ class ListFarmersService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];
@@ -76,15 +86,15 @@ class ListFarmersService {
 
   Future<List<FarmersListModel>> getFarmersListByNameFilter(
       String name, String village) async {
-        
-        var url=  "$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.filterfarmerlist?village=$village&name=$name";
-   Logger().i(url);
+    var url =
+        "$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.filterfarmerlist?village=$village&name=$name";
+    Logger().i(url);
     try {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
         url,
-             options: Options(
+        options: Options(
           method: 'GET',
           headers: headers,
         ),
@@ -100,10 +110,15 @@ class ListFarmersService {
         Logger().e(response.statusMessage);
         return [];
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }

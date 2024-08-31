@@ -1,5 +1,5 @@
 class TripSheet {
-  int? name;
+  String? name;
   String? owner;
   String? modifiedBy;
   int? docstatus;
@@ -46,68 +46,59 @@ class TripSheet {
   String? slipBoy;
   String? circleOffice;
   String? vendorCode;
-  int? basPaliFlag;
   String? tripsheetNo;
-  int? caneWeightFlag;
-  String? canSlipFlag;
-  int? tokenNo;
   String? doctype;
 
   TripSheet(
       {this.name,
-        this.owner,
-        this.modifiedBy,
-        this.docstatus,
-        this.date,
-        this.slipNo,
-        this.season,
-        this.branch,
-        this.plotNo,
-        this.platNoId,
-        this.farmerCode,
-        this.farmerName,
-        this.fieldVillage,
-        this.caneVariety,
-        this.plantationDate,
-        this.surveryNo,
-        this.areaAcre,
-        this.routeName,
-        this.applyFlatRate,
-        this.distance,
-        this.flatRate,
-        this.burnCane,
-        this.deduction,
-
-        this.cartno,
-        this.transporterCode,
-        this.oldTransporterCode,
-        this.transporter,
-        this.transporterName,
-        this.vehicleType,
-        this.harvesterCode,
-        this.harvesterName,
-        this.harvestingCodeHt,
-        this.harvesterCodeOld,
-        this.harvesterCodeH,
-        this.harvesterNameH,
-        this.gangType,
-        this.vehicleNumber,
-        this.tolly1,
-        this.tolly2,
-        this.rope,
-        this.waterSupplier,
-        this.waterSupplierName,
-        this.waterShare,
-        this.percentage,
-        this.slipBoy,
-        this.circleOffice,
-        this.vendorCode,
-        this.basPaliFlag,
-        this.tripsheetNo,
-        this.caneWeightFlag,
-        this.canSlipFlag,
-        this.tokenNo,
-        this.doctype});
+      this.owner,
+      this.modifiedBy,
+      this.docstatus,
+      this.date,
+      this.slipNo,
+      this.season,
+      this.branch,
+      this.plotNo,
+      this.platNoId,
+      this.farmerCode,
+      this.farmerName,
+      this.fieldVillage,
+      this.caneVariety,
+      this.plantationDate,
+      this.surveryNo,
+      this.areaAcre,
+      this.routeName,
+      this.applyFlatRate,
+      this.distance,
+      this.flatRate,
+      this.burnCane,
+      this.deduction,
+      this.cartno,
+      this.transporterCode,
+      this.oldTransporterCode,
+      this.transporter,
+      this.transporterName,
+      this.vehicleType,
+      this.harvesterCode,
+      this.harvesterName,
+      this.harvestingCodeHt,
+      this.harvesterCodeOld,
+      this.harvesterCodeH,
+      this.harvesterNameH,
+      this.gangType,
+      this.vehicleNumber,
+      this.tolly1,
+      this.tolly2,
+      this.rope,
+      this.waterSupplier,
+      this.waterSupplierName,
+      this.waterShare,
+      this.percentage,
+      this.slipBoy,
+      this.circleOffice,
+      this.vendorCode,
+      this.tripsheetNo,
+      this.doctype});
 
   TripSheet.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -157,16 +148,12 @@ class TripSheet {
     slipBoy = json['slip_boy'];
     circleOffice = json['circle_office'];
     vendorCode = json['vendor_code'];
-    basPaliFlag = json['bas_pali_flag'];
     tripsheetNo = json['tripsheet_no'];
-    caneWeightFlag = json['cane_weight_flag'];
-    canSlipFlag = json['can_slip_flag'];
-    tokenNo = json['token_no'];
     doctype = json['doctype'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['name'] = name;
     data['owner'] = owner;
     data['modified_by'] = modifiedBy;
@@ -190,7 +177,6 @@ class TripSheet {
     data['flat_rate'] = flatRate;
     data['burn_cane'] = burnCane;
     data['deduction'] = deduction;
-
     data['cartno'] = cartno;
     data['transporter_code'] = transporterCode;
     data['old_transporter_code'] = oldTransporterCode;
@@ -215,11 +201,7 @@ class TripSheet {
     data['slip_boy'] = slipBoy;
     data['circle_office'] = circleOffice;
     data['vendor_code'] = vendorCode;
-    data['bas_pali_flag'] = basPaliFlag;
     data['tripsheet_no'] = tripsheetNo;
-    data['cane_weight_flag'] = caneWeightFlag;
-    data['can_slip_flag'] = canSlipFlag;
-    data['token_no'] = tokenNo;
     data['doctype'] = doctype;
     return data;
   }

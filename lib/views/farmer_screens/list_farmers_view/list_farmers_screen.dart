@@ -19,13 +19,13 @@ class ListFarmersScreen extends StatelessWidget {
         appBar: AppBar(
           title: const AutoSizeText('Farmer List'),
           actions: [
-           IconButton(onPressed: (){Navigator.push(
-             context,
-             MaterialPageRoute(
-               builder: (context) => QRCodeScanner(
-               ),
-             ),
-           );}, icon: const Icon(Icons.qr_code))
+            IconButton(onPressed: (){Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QRCodeScanner(
+                ),
+              ),
+            );}, icon: const Icon(Icons.qr_code))
           ],
         ),
         body:   fullScreenLoader(
@@ -88,7 +88,7 @@ class ListFarmersScreen extends StatelessWidget {
                                     },
                                     decoration: const InputDecoration(
                                       labelText: 'Vendor Code',
-            
+
                                       // prefixIcon: Icon(Icons.search),
                                     ),
                                   ),
@@ -153,75 +153,75 @@ class ListFarmersScreen extends StatelessWidget {
                 ),
                 model.farmersList.isNotEmpty
                     ? Expanded(
-                        child: ListView.separated(
-                          itemCount: model.filteredList.length,
-                          itemBuilder: (context, index) {
-                          
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: ListTile(
-                                tileColor: 
-                                      model.getColorForStatus(model
-                                            .filteredList[index].workflowState ??""),
-                                trailing: AutoSizeText(
-                                  model.filteredList[index].village ?? '',
-                                  maxLines: 2,
+                  child: ListView.separated(
+                    itemCount: model.filteredList.length,
+                    itemBuilder: (context, index) {
+
+                      return Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ListTile(
+                          tileColor:
+                          model.getColorForStatus(model
+                              .filteredList[index].workflowState ??""),
+                          trailing: AutoSizeText(
+                            model.filteredList[index].village ?? '',
+                            maxLines: 2,
+                            style: TextStyle( color: Colors.white,),
+                          ),
+                          leading: SizedBox(
+                            width: getWidth(context) / 5,
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: [
+                                AutoSizeText(
+                                  model.filteredList[index].circleOffice ??
+                                      '',
+                                  maxLines: 1,
                                   style: TextStyle( color: Colors.white,),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                leading: SizedBox(
-                                  width: getWidth(context) / 5,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      AutoSizeText(
-                                        model.filteredList[index].circleOffice ??
-                                            '',
-                                        maxLines: 1,
-                                        style: TextStyle( color: Colors.white,),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      AutoSizeText(
-                                        model.filteredList[index].workflowState ??
-                                            '',
-                                        maxLines: 1,
-                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                                AutoSizeText(
+                                  model.filteredList[index].workflowState ??
+                                      '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                title: Text(
-                                  model.filteredList[index].supplierName ?? '',
-                                  style: const TextStyle(fontSize: 15, color: Colors.white,fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  model.filteredList[index]
-                                          .existingSupplierCode ??
-                                      '',
-                                  style: const TextStyle(fontSize: 13, color: Colors.white,),
-                                ),
-                                onTap: () {
-                                  // Handle row click here
-                                  // _onRowClick(context, filteredList[index]);
-                                  model.onRowClick(
-                                      context, model.filteredList[index]);
-                                },
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const Divider(
-                              color: Colors.white, // Color of the line
-                              thickness: 0, // Thickness of the line
-                            );
+                              ],
+                            ),
+                          ),
+                          title: Text(
+                            model.filteredList[index].supplierName ?? '',
+                            style: const TextStyle(fontSize: 15, color: Colors.white,fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            model.filteredList[index]
+                                .existingSupplierCode ??
+                                '',
+                            style: const TextStyle(fontSize: 13, color: Colors.white,),
+                          ),
+                          onTap: () {
+                            // Handle row click here
+                            // _onRowClick(context, filteredList[index]);
+                            model.onRowClick(
+                                context, model.filteredList[index]);
                           },
                         ),
-                      )
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider(
+                        color: Colors.white, // Color of the line
+                        thickness: 0, // Thickness of the line
+                      );
+                    },
+                  ),
+                )
                     : customErrorMessage()
               ],
             ),

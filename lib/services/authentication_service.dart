@@ -4,9 +4,9 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sugar_mill_app/constants.dart';
 
-
 class Authentication {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   Future<bool> login(String username, String password) async {
     var headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -37,9 +37,8 @@ class Authentication {
         return false;
       }
     } on DioException catch (e) {
-      // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }

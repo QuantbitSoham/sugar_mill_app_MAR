@@ -6,10 +6,9 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sugar_mill_app/models/checkin.dart';
 import 'package:sugar_mill_app/models/employee.dart';
-import 'package:sugar_mill_app/router.router.dart';
 import 'package:sugar_mill_app/services/chekin_Services.dart';
 import 'package:sugar_mill_app/services/geolocation_service.dart';
 import '../../models/dashboard_model.dart';
@@ -23,14 +22,14 @@ class HomeViewModel extends BaseViewModel {
   List<String> season = [""];
   List<Employee> empList = [];
   List<Checkin> checkinList = [];
-
+  var fcmToken = "";
    String? greeting;
   String? imageurl;
 
 
   initialise(BuildContext context) async {
     setBusy(true);
-
+    _getToken();
     season = await login().fetchSeason();
     if (season.isEmpty) {
       logout(context);
@@ -42,6 +41,27 @@ dashboard=await CheckInServices().dashboard() ?? Dashboard();
   }
 
 
+  Future<void> _getToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      String? token = await messaging.getToken();
+      fcmToken = token!;
+      print("FCM Token: $token");
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
  void handleGreeting() {
     final now = DateTime.now();
     final timeOfDay = now.hour;

@@ -35,9 +35,14 @@ class FarmerService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -64,9 +69,14 @@ class FarmerService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -91,9 +101,13 @@ class FarmerService {
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }
@@ -110,7 +124,7 @@ class FarmerService {
       );
 
       if (response.statusCode == 200) {
-        bool name=response.data["message"];
+        bool name = response.data["message"];
         // Logger().i('vendor code generate');
         // Fluttertoast.showToast(msg: "vendor code genrated");
         return name;
@@ -119,40 +133,45 @@ class FarmerService {
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }
 
-Future<aadharData?> aadharCardData(var qrData) async {
-  try {
-    var data = {
-      "qrData": qrData,
-    };
-    var dio = Dio();
-    var response = await dio.request(
-      '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.aadhardata',
-      options: Options(
-        method: 'GET',
-        headers: {'Cookie': await getTocken()},
-      ),
-      data: data
-    );
+  Future<aadharData?> aadharCardData(var qrData) async {
+    try {
+      var data = {
+        "qrData": qrData,
+      };
+      var dio = Dio();
+      var response = await dio.request(
+          '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.aadhardata',
+          options: Options(
+            method: 'GET',
+            headers: {'Cookie': await getTocken()},
+          ),
+          data: data);
 
-    if (response.statusCode == 200) {
-      return aadharData.fromJson(response.data["message"]);
-    } else {
-      Fluttertoast.showToast(msg: "UNABLE TO call aadhar");
-      return null;
+      if (response.statusCode == 200) {
+        return aadharData.fromJson(response.data["message"]);
+      } else {
+        Fluttertoast.showToast(msg: "UNABLE TO call aadhar");
+        return null;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+          msg:
+              "Please scan valid aadhar QR code ${e.response?.data["exception"]}");
+      Logger().e(e.response?.data["exception"]);
     }
-  } on DioException catch (e) {
-    Fluttertoast.showToast(msg: "Please scan valid aadhar QR code ${e.response?.data["exception"]}");
-    Logger().e(e.response?.data["exception"]);
+    return null;
   }
-  return null;
-}
 
   Future<bool> addFarmer(Farmer farmer) async {
     var data = json.encode({
@@ -182,10 +201,9 @@ Future<aadharData?> aadharCardData(var qrData) async {
       }
     } catch (e) {
       if (e is DioException) {
-
-          Fluttertoast.showToast(msg: "${e.response?.data["exception"].toString()}");
-          Logger().e(e.message);
-        
+        Fluttertoast.showToast(
+            msg: "${e.response?.data["exception"].toString()}");
+        Logger().e(e.message);
       } else {
         Fluttertoast.showToast(msg: "Error occurred $e");
         Logger().e(e);
@@ -227,10 +245,15 @@ Future<aadharData?> aadharCardData(var qrData) async {
       } else {
         Logger().i(response.statusMessage);
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return "";
   }
@@ -254,10 +277,15 @@ Future<aadharData?> aadharCardData(var qrData) async {
         }
         return null;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return null;
   }
@@ -283,10 +311,15 @@ Future<aadharData?> aadharCardData(var qrData) async {
         Fluttertoast.showToast(msg: "UNABLE TO UPDATE FARMER!");
         return false;
       }
-    }on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return false;
   }

@@ -26,12 +26,12 @@ class ListFarmersModel extends BaseViewModel {
     notifyListeners();
   }
 
-Future<void> refresh() async {
-   filteredList= await ListFarmersService().getAllFarmersList();
-  notifyListeners();
-}
+  Future<void> refresh() async {
+    filteredList= await ListFarmersService().getAllFarmersList();
+    notifyListeners();
+  }
 
-Color getColorForStatus(String status) {
+  Color getColorForStatus(String status) {
     switch (status) {
     // Set the color for Draft status
       case 'New':
@@ -64,7 +64,7 @@ Color getColorForStatus(String status) {
   void filterList(String filter, String query) async {
     notifyListeners();
     filteredList =
-        await ListFarmersService().getFarmersListByFilter(filter, query);
+    await ListFarmersService().getFarmersListByFilter(filter, query);
     notifyListeners();
   }
 

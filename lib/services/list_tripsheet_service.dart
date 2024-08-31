@@ -32,9 +32,14 @@ class ListTripshhetService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -67,21 +72,26 @@ class ListTripshhetService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
 
   Future<List<TripSheetSearch>> getAllTripsheetListfilter(
-      String query, int filter) async {
+      String query, String filter) async {
     try {
       var headers = {'Cookie': await getTocken()};
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["$query","like","$filter%"]]&order_by=creation desc',
+        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","slip_no","farmer_name","field_village","transporter_name","circle_office","season","slip_no"]&filters=[["$query","like","$filter%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,
@@ -101,9 +111,14 @@ class ListTripshhetService {
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
     return [];
   }
@@ -114,13 +129,13 @@ class ListTripshhetService {
       var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["transporter_name","like","%$trsname%"],["field_village","like","$village%"],["season","like","$season%"]]&order_by=creation desc',
+        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","slip_no","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["farmer_name","like","%$trsname%"],["field_village","like","$village%"],["season","like","$season%"]]&order_by=creation desc',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-Logger().i(response);
+      Logger().i(response);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
         List<TripSheetSearch> farmersList = List.from(jsonData['data'])
@@ -132,9 +147,14 @@ Logger().i(response);
         return [];
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg:
+            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFBA1A1A),
+      );
       Logger().e(e.response?.data.toString());
-
     }
 
     return [];

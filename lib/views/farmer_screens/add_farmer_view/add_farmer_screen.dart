@@ -36,28 +36,28 @@ class AddFarmerScreen extends StatelessWidget {
                   ? Text(model.farmerData.existingSupplierCode ?? "")
                   : const Text('New Farmer'),
               if(model.isEdit == true)
-              const SizedBox(width: 10),
+                const SizedBox(width: 10),
               if(model.isEdit == true)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: model
-                      .getColorForStatus(
-                          model.farmerData.workflowState.toString())
-                      .withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  model.farmerData.workflowState ?? "",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: model.getColorForStatus(
-                        model.farmerData.workflowState.toString()),
-                    fontWeight: FontWeight.bold,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: model
+                        .getColorForStatus(
+                        model.farmerData.workflowState.toString())
+                        .withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    model.farmerData.workflowState ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: model.getColorForStatus(
+                          model.farmerData.workflowState.toString()),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -125,19 +125,19 @@ class AddFarmerScreen extends StatelessWidget {
                         visible: model.isEdit == true,
                         child: model.farmerData.existingSupplierCode != null
                             ? TextFormField(
-                                readOnly: true,
-                                initialValue:
-                                    model.farmerData.existingSupplierCode,
-                                decoration: const InputDecoration(
-                                    labelText: 'Vendor Code'),
-                              )
+                          readOnly: true,
+                          initialValue:
+                          model.farmerData.existingSupplierCode,
+                          decoration: const InputDecoration(
+                              labelText: 'Vendor Code'),
+                        )
                             : TextFormField(
-                                readOnly: true,
-                                initialValue:
-                                    model.farmerData.name?.substring(3),
-                                decoration: const InputDecoration(
-                                    labelText: 'Vendor Code'),
-                              )),
+                          readOnly: true,
+                          initialValue:
+                          model.farmerData.name?.substring(3),
+                          decoration: const InputDecoration(
+                              labelText: 'Vendor Code'),
+                        )),
 
                     TextFormField(
                       textCapitalization: TextCapitalization.sentences,
@@ -177,14 +177,14 @@ class AddFarmerScreen extends StatelessWidget {
                                   .map((route) => route.name!)
                                   .toList()
                                   .where((route) => route
-                                      .toLowerCase()
-                                      .contains(
-                                          textEditingValue.text.toLowerCase()));
+                                  .toLowerCase()
+                                  .contains(
+                                  textEditingValue.text.toLowerCase()));
                             },
                             onSelected: (String routeName) {
                               // Find the corresponding route object
                               final routeData = model.villageList.firstWhere(
-                                  (route) => route.name == routeName);
+                                      (route) => route.name == routeName);
                               model.setSelectedVillage(
                                   routeData.name); // Pass the route
                             },
@@ -213,14 +213,14 @@ class AddFarmerScreen extends StatelessWidget {
                                   elevation: 4.0,
                                   child: Container(
                                     constraints:
-                                        const BoxConstraints(maxHeight: 200),
+                                    const BoxConstraints(maxHeight: 200),
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: options.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         final String option =
-                                            options.elementAt(index);
+                                        options.elementAt(index);
                                         return GestureDetector(
                                           onTap: () {
                                             onSelected(option);
@@ -264,7 +264,7 @@ class AddFarmerScreen extends StatelessWidget {
                               readOnly: true,
                               initialValue: model.farmerData.taluka,
                               decoration:
-                                  const InputDecoration(labelText: 'Taluka'),
+                              const InputDecoration(labelText: 'Taluka'),
                             ),
                           ),
                           const SizedBox(
@@ -304,70 +304,70 @@ class AddFarmerScreen extends StatelessWidget {
                     Row(children: [
                       model.isEdit == false
                           ? Expanded(
-                              child: TextFormField(
-                                controller: model.mobileNumberController,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
-                                keyboardType: TextInputType.phone,
-                                decoration: const InputDecoration(
-                                  labelText: 'Mobile Number *',
-                                  hintText: 'Enter 10-digit mobile number',
-                                ),
-                                validator: model.validateMobileNumber,
-                                onChanged: model.onMobileNumberChanged,
-                              ),
-                            )
+                        child: TextFormField(
+                          controller: model.mobileNumberController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(10),
+                          ],
+                          keyboardType: TextInputType.phone,
+                          decoration: const InputDecoration(
+                            labelText: 'Mobile Number *',
+                            hintText: 'Enter 10-digit mobile number',
+                          ),
+                          validator: model.validateMobileNumber,
+                          onChanged: model.onMobileNumberChanged,
+                        ),
+                      )
                           : Expanded(
-                              child: TextFormField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                controller: model.panNumberController,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(11),
-                                  UppercaseTextFormatter()
-                                ],
-                                keyboardType: TextInputType.text,
-                                decoration: const InputDecoration(
-                                  labelText: 'PAN Number',
-                                  hintText: 'Enter 10-character PAN number',
-                                ),
-                                // validator: model.validatePanNumber,
-                                onChanged: model.onPanNumberChanged,
-                              ),
-                            ),
+                        child: TextFormField(
+                          textCapitalization:
+                          TextCapitalization.sentences,
+                          controller: model.panNumberController,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(11),
+                            UppercaseTextFormatter()
+                          ],
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            labelText: 'PAN Number',
+                            hintText: 'Enter 10-character PAN number',
+                          ),
+                          // validator: model.validatePanNumber,
+                          onChanged: model.onPanNumberChanged,
+                        ),
+                      ),
                       const SizedBox(
                         width: 15,
                       ),
                       model.isEdit == false
                           ? Expanded(
-                              child: TextFormField(
-                                key: Key(model.farmerData.taluka ?? "Taluka"),
-                                readOnly: true,
-                                initialValue: model.farmerData.taluka,
-                                decoration: const InputDecoration(
-                                  labelText: 'Taluka',
-                                ),
-                                // onChanged: model.setSelectedcircleoffice,
-                              ),
-                            )
+                        child: TextFormField(
+                          key: Key(model.farmerData.taluka ?? "Taluka"),
+                          readOnly: true,
+                          initialValue: model.farmerData.taluka,
+                          decoration: const InputDecoration(
+                            labelText: 'Taluka',
+                          ),
+                          // onChanged: model.setSelectedcircleoffice,
+                        ),
+                      )
                           : Expanded(
-                              child: TextFormField(
-                                controller: model.aadharNumberController,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(12),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  labelText: 'Aadhar Card Number *',
-                                  hintText: 'Enter 12-digit Aadhar number',
-                                ),
-                                validator: model.validateAadhar,
-                                onChanged: model.onAadharChanged,
-                              ),
-                            ),
+                        child: TextFormField(
+                          controller: model.aadharNumberController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(12),
+                          ],
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Aadhar Card Number *',
+                            hintText: 'Enter 12-digit Aadhar number',
+                          ),
+                          validator: model.validateAadhar,
+                          onChanged: model.onAadharChanged,
+                        ),
+                      ),
                     ]),
 
                     Visibility(
@@ -450,7 +450,7 @@ class AddFarmerScreen extends StatelessWidget {
                                 hintText: 'Enter the age',
                               ),
                               validator: (value) =>
-                                  value!.isEmpty ? 'Please enter an age' : null,
+                              value!.isEmpty ? 'Please enter an age' : null,
                               onChanged: (value) {
                                 model.farmerData.age = value.toString();
                                 model.dobController.clear();
@@ -528,15 +528,15 @@ class AddFarmerScreen extends StatelessWidget {
                                 pickDoc(kAadharpdf, context, model),
                             child: model.farmerData.aadhaarCard != null
                                 ? Text(
-                                    'Aadhar File: ${model.farmerData.aadhaarCard?.split("/").last}',
-                                    overflow: TextOverflow.ellipsis,
-                                  )
+                              'Aadhar File: ${model.farmerData.aadhaarCard?.split("/").last}',
+                              overflow: TextOverflow.ellipsis,
+                            )
                                 : model.isFileSelected(kAadharpdf)
-                                    ? Text(
-                                        'Aadhar File: ${model.files.getFile(kAadharpdf)?.path.split("/").last}',
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    : const Text('Attach Aaddhar *'),
+                                ? Text(
+                              'Aadhar File: ${model.files.getFile(kAadharpdf)?.path.split("/").last}',
+                              overflow: TextOverflow.ellipsis,
+                            )
+                                : const Text('Attach Aaddhar *'),
                           ),
                         ),
                         const SizedBox(
@@ -550,15 +550,15 @@ class AddFarmerScreen extends StatelessWidget {
                             // model.selectPdf(kPanpdf, ImageSource.camera),
                             child: model.farmerData.panCard != null
                                 ? Text(
-                                    'Pan File: ${model.farmerData.panCard?.split("/").last}',
-                                    overflow: TextOverflow.ellipsis,
-                                  )
+                              'Pan File: ${model.farmerData.panCard?.split("/").last}',
+                              overflow: TextOverflow.ellipsis,
+                            )
                                 : model.isFileSelected(kPanpdf)
-                                    ? Text(
-                                        'Pan File: ${model.files.getFile(kPanpdf)?.path.split("/").last}',
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    : const Text('Attach PAN'),
+                                ? Text(
+                              'Pan File: ${model.files.getFile(kPanpdf)?.path.split("/").last}',
+                              overflow: TextOverflow.ellipsis,
+                            )
+                                : const Text('Attach PAN'),
                           ),
                         ),
                         const SizedBox(
@@ -571,15 +571,15 @@ class AddFarmerScreen extends StatelessWidget {
                             //  model.selectPdf( kConcentpdf, ImageSource.camera),
                             child: model.farmerData.consentLetter != null
                                 ? Text(
-                                    'Concent Letter File: ${model.farmerData.consentLetter?.split("/").last}',
-                                    overflow: TextOverflow.ellipsis,
-                                  )
+                              'Concent Letter File: ${model.farmerData.consentLetter?.split("/").last}',
+                              overflow: TextOverflow.ellipsis,
+                            )
                                 : model.isFileSelected(kConcentpdf)
-                                    ? Text(
-                                        'Concent Letter: ${model.files.getFile(kConcentpdf)?.path.split("/").last}',
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    : const Text('Attach Letter'),
+                                ? Text(
+                              'Concent Letter: ${model.files.getFile(kConcentpdf)?.path.split("/").last}',
+                              overflow: TextOverflow.ellipsis,
+                            )
+                                : const Text('Attach Letter'),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -644,189 +644,189 @@ class AddFarmerScreen extends StatelessWidget {
                     (model.bankAccounts.isEmpty)
                         ? const SizedBox()
                         : SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                              border: TableBorder.all(width: 0.5),
-                              columnSpacing: 12.0,
-                              // ignore: deprecated_member_use
-                              dataRowHeight: 40.0,
-                              columns: [
-                                const DataColumn(
-                                  label: Text('Far.'),
-                                ),
-                                if (model.role == false)
-                                  const DataColumn(
-                                    label: Text('Har.'),
-                                  ),
-                                if (model.role == false)
-                                  const DataColumn(
-                                    label: Text('Trans.'),
-                                  ),
-                                if (model.role == false)
-                                  const DataColumn(
-                                    label: Text('Drip'),
-                                  ),
-                                if (model.role == false)
-                                  const DataColumn(
-                                    label: Text('Nursery'),
-                                  ),
-                                const DataColumn(
-                                  label: Text('Bank Name'),
-                                ),
-                                const DataColumn(
-                                  label: Text('IFSC'),
-                                ),
-                                const DataColumn(
-                                  label: Text('Acc. Number'),
-                                ),
-                                const DataColumn(
-                                  label: Text('Bank Passbook'),
-                                ),
-                                const DataColumn(
-                                  label: Text('Action'),
-                                  // Add a new DataColumn for the button
-                                  numeric: false,
-                                ),
-                                const DataColumn(
-                                  label: Text('Delete'),
-                                  // Add a new DataColumn for the button
-                                  numeric: false,
-                                ),
-                              ],
-                              rows: List<DataRow>.generate(
-                                model.bankAccounts.length,
-                                // Replace 10 with the actual number of rows you want
-                                (int index) => DataRow(
-                                  cells: [
-                                    DataCell(Checkbox(
-                                      value:
-                                          model.bankAccounts[index].farmer == 1,
-                                      onChanged: (bool? newValue) {
-                                        model.setRole(
-                                          "Farmer",
-                                          newValue ?? false,
-                                        );
-                                      },
-                                    )),
-                                    if (model.role == false)
-                                      DataCell(Checkbox(
-                                        value: model.bankAccounts[index]
-                                                .harvester ==
-                                            1,
-                                        onChanged: (bool? newValue) {
-                                          model.setRole(
-                                              "Harvester", newValue ?? false);
-                                        },
-                                      )),
-                                    if (model.role == false)
-                                      DataCell(Checkbox(
-                                        value: model.bankAccounts[index]
-                                                .transporter ==
-                                            1,
-                                        onChanged: (bool? newValue) {
-                                          model.setRole(
-                                              "Transporter", newValue ?? false);
-                                        },
-                                      )),
-                                    if (model.role == false)
-                                      DataCell(Checkbox(
-                                        value:
-                                            model.bankAccounts[index].drip == 1,
-                                        onChanged: (bool? newValue) {
-                                          model.setRole(
-                                              "Drip", newValue ?? false);
-                                        },
-                                      )),
-                                    if (model.role == false)
-                                      DataCell(Checkbox(
-                                        value:
-                                            model.bankAccounts[index].nursery ==
-                                                1,
-                                        onChanged: (bool? newValue) {
-                                          model.setRole(
-                                              "Nursery", newValue ?? false);
-                                        },
-                                      )),
-                                    DataCell(Text(model
-                                        .bankAccounts[index].bankAndBranch
-                                        .toString())),
-                                    DataCell(Text(model
-                                        .bankAccounts[index].branchifscCode
-                                        .toString())),
-                                    DataCell(Text(model
-                                        .bankAccounts[index].accountNumber
-                                        .toString())),
-                                    DataCell(TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ViewImageInternet(
-                                                url: model.bankAccounts[index]
-                                                        .bankPassbook ??
-                                                    "",
-                                              ),
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        border: TableBorder.all(width: 0.5),
+                        columnSpacing: 12.0,
+                        // ignore: deprecated_member_use
+                        dataRowHeight: 40.0,
+                        columns: [
+                          const DataColumn(
+                            label: Text('Far.'),
+                          ),
+                          if (model.role == false)
+                            const DataColumn(
+                              label: Text('Har.'),
+                            ),
+                          if (model.role == false)
+                            const DataColumn(
+                              label: Text('Trans.'),
+                            ),
+                          if (model.role == false)
+                            const DataColumn(
+                              label: Text('Drip'),
+                            ),
+                          if (model.role == false)
+                            const DataColumn(
+                              label: Text('Nursery'),
+                            ),
+                          const DataColumn(
+                            label: Text('Bank Name'),
+                          ),
+                          const DataColumn(
+                            label: Text('IFSC'),
+                          ),
+                          const DataColumn(
+                            label: Text('Acc. Number'),
+                          ),
+                          const DataColumn(
+                            label: Text('Bank Passbook'),
+                          ),
+                          const DataColumn(
+                            label: Text('Action'),
+                            // Add a new DataColumn for the button
+                            numeric: false,
+                          ),
+                          const DataColumn(
+                            label: Text('Delete'),
+                            // Add a new DataColumn for the button
+                            numeric: false,
+                          ),
+                        ],
+                        rows: List<DataRow>.generate(
+                          model.bankAccounts.length,
+                          // Replace 10 with the actual number of rows you want
+                              (int index) => DataRow(
+                            cells: [
+                              DataCell(Checkbox(
+                                value:
+                                model.bankAccounts[index].farmer == 1,
+                                onChanged: (bool? newValue) {
+                                  model.setRole(
+                                    "Farmer",
+                                    newValue ?? false,
+                                  );
+                                },
+                              )),
+                              if (model.role == false)
+                                DataCell(Checkbox(
+                                  value: model.bankAccounts[index]
+                                      .harvester ==
+                                      1,
+                                  onChanged: (bool? newValue) {
+                                    model.setRole(
+                                        "Harvester", newValue ?? false);
+                                  },
+                                )),
+                              if (model.role == false)
+                                DataCell(Checkbox(
+                                  value: model.bankAccounts[index]
+                                      .transporter ==
+                                      1,
+                                  onChanged: (bool? newValue) {
+                                    model.setRole(
+                                        "Transporter", newValue ?? false);
+                                  },
+                                )),
+                              if (model.role == false)
+                                DataCell(Checkbox(
+                                  value:
+                                  model.bankAccounts[index].drip == 1,
+                                  onChanged: (bool? newValue) {
+                                    model.setRole(
+                                        "Drip", newValue ?? false);
+                                  },
+                                )),
+                              if (model.role == false)
+                                DataCell(Checkbox(
+                                  value:
+                                  model.bankAccounts[index].nursery ==
+                                      1,
+                                  onChanged: (bool? newValue) {
+                                    model.setRole(
+                                        "Nursery", newValue ?? false);
+                                  },
+                                )),
+                              DataCell(Text(model
+                                  .bankAccounts[index].bankAndBranch
+                                  .toString())),
+                              DataCell(Text(model
+                                  .bankAccounts[index].branchifscCode
+                                  .toString())),
+                              DataCell(Text(model
+                                  .bankAccounts[index].accountNumber
+                                  .toString())),
+                              DataCell(TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ViewImageInternet(
+                                              url: model.bankAccounts[index]
+                                                  .bankPassbook ??
+                                                  "",
                                             ),
-                                          );
-                                        },
-                                        child: Text(model.bankAccounts[index]
-                                                .bankPassbook
-                                                ?.toString()
-                                                .split("/")
-                                                .last ??
-                                            "Not Available"))),
-                                    DataCell(
-                                      SizedBox(
-                                        height: 24.0,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            getBankDetails(
-                                                context, model, index);
-                                          },
-                                          child: const Text('Edit'),
-                                        ),
                                       ),
-                                    ),
-                                    DataCell(IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title:
-                                                  const Text('Confirm Delete'),
-                                              content: const Text(
-                                                  'Are you sure you want to delete this bank account?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context); // Close the confirmation dialog
-                                                  },
-                                                  child: const Text('Cancel'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context); // Close the confirmation dialog
-                                                    model.deleteBankAccount(
-                                                        index); // Delete the entry
-                                                  },
-                                                  child: const Text('Delete'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: const Icon(Icons.delete),
-                                    ))
-                                  ],
+                                    );
+                                  },
+                                  child: Text(model.bankAccounts[index]
+                                      .bankPassbook
+                                      ?.toString()
+                                      .split("/")
+                                      .last ??
+                                      "Not Available"))),
+                              DataCell(
+                                SizedBox(
+                                  height: 24.0,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      getBankDetails(
+                                          context, model, index);
+                                    },
+                                    child: const Text('Edit'),
+                                  ),
                                 ),
                               ),
-                            ),
+                              DataCell(IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title:
+                                        const Text('Confirm Delete'),
+                                        content: const Text(
+                                            'Are you sure you want to delete this bank account?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context); // Close the confirmation dialog
+                                            },
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context); // Close the confirmation dialog
+                                              model.deleteBankAccount(
+                                                  index); // Delete the entry
+                                            },
+                                            child: const Text('Delete'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.delete),
+                              ))
+                            ],
                           ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -884,7 +884,7 @@ class AddFarmerScreen extends StatelessWidget {
     }
 
     SchedulerBinding.instance.addPostFrameCallback(
-      (_) {
+          (_) {
         showDialog(
           barrierDismissible: false,
           context: context,
@@ -1042,11 +1042,11 @@ class AddFarmerScreen extends StatelessWidget {
                                   optionsMaxHeight: 200,
                                 ),
                               )
-,
+                              ,
                               Expanded(
                                 child: TextFormField(
                                   initialValue:
-                                      index == -1 ? null : model.accountNumber,
+                                  index == -1 ? null : model.accountNumber,
                                   keyboardType: TextInputType.number,
                                   decoration: const InputDecoration(
                                     labelText: 'Account Number *',
@@ -1087,12 +1087,12 @@ class AddFarmerScreen extends StatelessWidget {
                                     icon: Icon(Icons.attachment),
                                     label: model.passbookattch != ""
                                         ? Text(
-                                            'Passbook: ${model.passbookattch.split('/').last}',
-                                            overflow: TextOverflow.ellipsis,
-                                          )
+                                      'Passbook: ${model.passbookattch.split('/').last}',
+                                      overflow: TextOverflow.ellipsis,
+                                    )
                                         : const Text(
-                                            'Click here to attach passbook',
-                                          ),
+                                      'Click here to attach passbook',
+                                    ),
                                   )),
                             ],
                           ),
@@ -1248,14 +1248,14 @@ class AddFarmerScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => model
-                                    .passbookattch[0] !=
-                                '/'
+                            .passbookattch[0] !=
+                            '/'
                             ? ViewImageInternet(
-                                url: model.getFileFromFarmer(filetype) ?? "",
-                              )
+                          url: model.getFileFromFarmer(filetype) ?? "",
+                        )
                             : ViewImageInternet(
-                                url: model.getFileFromFarmer(filetype) ?? "",
-                              )),
+                          url: model.getFileFromFarmer(filetype) ?? "",
+                        )),
                   );
                 },
                 child: const Text("View Uploaded File"),

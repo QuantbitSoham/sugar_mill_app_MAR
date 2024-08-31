@@ -12,6 +12,7 @@ import '../../../models/agri_masters.dart';
 import '../../../models/cane_farmer.dart';
 import '../../../models/dose_type.dart';
 import '../../../models/tripsheet_water_supplier.dart';
+import '../../../router.router.dart';
 import '../../../services/add_agri_services.dart';
 
 class AgriViewModel extends BaseViewModel {
@@ -36,9 +37,9 @@ class AgriViewModel extends BaseViewModel {
   List<AgriCane> canelistwithfilter = [];
   List<caneFarmer> farmerList = [];
   List<ItemList> itemList = [];
-  List<FertilizerItemList> fertilizeritemlist=[];
+  List<FertilizerItemList> fertilizeritemlist = [];
   List<WaterSupplierList> supplierList = [];
-List<Village> villagelist=[];
+  List<Village> villagelist = [];
   String? selectedplot;
   String? season;
   String? selectedVendorname;
@@ -52,26 +53,31 @@ List<Village> villagelist=[];
   String? selectedgrowername;
   String? farmercode;
   TextEditingController datecontroller = TextEditingController();
-  AgriMasters masters=AgriMasters();
+  AgriMasters masters = AgriMasters();
   final List<String> _selectedItems = [];
+
   List<String> get selectedItems => _selectedItems;
   late String agriId;
 
   initialise(BuildContext context, String agriid) async {
     setBusy(true);
-    masters=await AddAgriServices().getMasters() ?? AgriMasters();
-    seasonlist=masters.season ?? [];
-    itemList=masters.itemList ?? [];
-    fertilizeritemlist=masters.fertilizerItemList ?? [];
-    villagelist=masters.village ?? [];
-    int currentYear = DateTime.now().year;
+    masters = await AddAgriServices().getMasters() ?? AgriMasters();
+    seasonlist = masters.season ?? [];
+    itemList = masters.itemList ?? [];
+    fertilizeritemlist = masters.fertilizerItemList ?? [];
+    villagelist = masters.village ?? [];
+    int currentYear = DateTime
+        .now()
+        .year;
 
     // Filter the list to get the latest season
     String latestSeason = seasonlist.firstWhere(
           (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+      orElse: () =>
+      seasonlist
+          .last, // If no season matches the current year, take the last one
     );
-    agridata.season=latestSeason;
+    agridata.season = latestSeason;
 //     seasonlist = await AddAgriServices().fetchSeason();
 //     itemList = await AddAgriServices().fetchItemlist();
 //     fertilizeritemlist=await AddAgriServices().fetchItemwithfilter();
@@ -81,8 +87,10 @@ List<Village> villagelist=[];
       agridata = await AddAgriServices().getAgri(agriid) ?? Agri();
       notifyListeners();
 
-      farmerList=await AddAgriServices().fetchFarmerListWithFilter(agridata.farmerVillage ?? "");
-      supplierList = await AddAgriServices().fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
+      farmerList = await AddAgriServices()
+          .fetchFarmerListWithFilter(agridata.farmerVillage ?? "");
+      supplierList = await AddAgriServices()
+          .fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
       developmentAreaController.text = agridata.developmentArea.toString();
       for (caneFarmer i in farmerList) {
         if (i.existingSupplierCode == agridata.vendorCode) {
@@ -102,7 +110,10 @@ List<Village> villagelist=[];
           : agridata.date ?? "";
       // agridata.date = formattedDate;
       datecontroller.text = formattedDate;
-      canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(agridata.season ?? "",agridata.farmerVillage ?? "",farmercode ?? ""));
+      canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(
+          agridata.season ?? "",
+          agridata.farmerVillage ?? "",
+          farmercode ?? ""));
       Logger().i(canelistwithfilter);
       agricultureDevelopmentItem
           .addAll(agridata.agricultureDevelopmentItem?.toList() ?? []);
@@ -148,8 +159,7 @@ List<Village> villagelist=[];
     }
     if (grantor.isEmpty) {
       Fluttertoast.showToast(
-          msg: "Please fill the grantor details.",
-          textColor: Colors.white);
+          msg: "Please fill the grantor details.", textColor: Colors.white);
       return;
     }
     setBusy(true);
@@ -166,7 +176,7 @@ List<Village> villagelist=[];
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-           Navigator.pop(context, const MaterialRoute(page: ListAgriScreen));  
+            Navigator.pop(context);
           }
         }
       } else {
@@ -175,7 +185,7 @@ List<Village> villagelist=[];
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-            Navigator.pop(context, const MaterialRoute(page: ListAgriScreen));  
+            Navigator.popAndPushNamed(context, Routes.listCaneScreen);
           }
         }
       }
@@ -231,28 +241,27 @@ List<Village> villagelist=[];
     Logger().i(doseList.toString());
     agricultureDevelopmentItem = doseList.map((e) {
       return AgricultureDevelopmentItem(
-          itemCode: e.itemCode,
-          itemName: e.itemName,
-          basel: e.baselqty ?? 0.0,
-          preEarthing: e.preearthqty ?? 0.0,
-          earth: e.earthingqty ?? 0.0,
-          rainy: e.rainyqty ?? 0.0,
-          ratoon1: e.ratoon1qty ?? 0.0,
-          ratoon2: e.ratoon2qty ?? 0.0,
-          qty: ((e.baselqty ?? 0.0) +
-              (e.preearthqty ?? 0.0) +
-              (e.earthingqty ?? 0.0) +
-              (e.rainyqty ?? 0.0) +
-              (e.ratoon1qty ?? 0.0) +
-              (e.ratoon2qty ?? 0.0)),
-
-          actualQty: e.actualQty,
-itemTaxTemp: e.itemTaxTemp,
-          rate: e.rate,
-          weightPerUnit: e.weightPerUnit,
-totalWeight: (e.weightPerUnit ?? 0.0) * (e.qty ?? 0.0),
-          baseAmount: ((e.qty ?? 0.0) * (e.rate ?? 0.0)),
-          );
+        itemCode: e.itemCode,
+        itemName: e.itemName,
+        basel: e.baselqty ?? 0.0,
+        preEarthing: e.preearthqty ?? 0.0,
+        earth: e.earthingqty ?? 0.0,
+        rainy: e.rainyqty ?? 0.0,
+        ratoon1: e.ratoon1qty ?? 0.0,
+        ratoon2: e.ratoon2qty ?? 0.0,
+        qty: ((e.baselqty ?? 0.0) +
+            (e.preearthqty ?? 0.0) +
+            (e.earthingqty ?? 0.0) +
+            (e.rainyqty ?? 0.0) +
+            (e.ratoon1qty ?? 0.0) +
+            (e.ratoon2qty ?? 0.0)),
+        actualQty: e.actualQty,
+        itemTaxTemp: e.itemTaxTemp,
+        rate: e.rate,
+        weightPerUnit: e.weightPerUnit,
+        totalWeight: (e.weightPerUnit ?? 0.0) * (e.qty ?? 0.0),
+        baseAmount: ((e.qty ?? 0.0) * (e.rate ?? 0.0)),
+      );
     }).toList();
 
     notifyListeners();
@@ -263,7 +272,7 @@ totalWeight: (e.weightPerUnit ?? 0.0) * (e.qty ?? 0.0),
     calculateprearthtotal();
     calculatebaseltotal();
     calculatetotal();
-calculatebaseAmount();
+    calculatebaseAmount();
     calculatetotalweight();
   }
 
@@ -278,28 +287,30 @@ calculatebaseAmount();
 
       // Update the qty property of the item with the calculated total
       agricultureDevelopmentItem[index].qty = total;
-      agricultureDevelopmentItem[index].totalWeight=(agricultureDevelopmentItem[index].qty ?? 0.0)*(agricultureDevelopmentItem[index].weightPerUnit ?? 0.0);
-      agricultureDevelopmentItem[index].baseAmount=(agricultureDevelopmentItem[index].qty ?? 0.0)*(agricultureDevelopmentItem[index].rate ?? 0.0);
-
+      agricultureDevelopmentItem[index].totalWeight =
+          (agricultureDevelopmentItem[index].qty ?? 0.0) *
+              (agricultureDevelopmentItem[index].weightPerUnit ?? 0.0);
+      agricultureDevelopmentItem[index].baseAmount =
+          (agricultureDevelopmentItem[index].qty ?? 0.0) *
+              (agricultureDevelopmentItem[index].rate ?? 0.0);
     }
     calculatebaseAmount();
     calculatetotalweight();
   }
 
-
   void validateForm(BuildContext context, int index) async {
     final formState = bankformKey.currentState;
     if (formState!.validate()) {
-      if (grantor.any((grantor) => grantor.suretyExistingCode == suretyExistingCode)) {
-      Fluttertoast.showToast(
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-          msg: "Grantor already exists",
-          toastLength: Toast.LENGTH_LONG
-      );
-      return;
-    }
+      if (grantor
+          .any((grantor) => grantor.suretyExistingCode == suretyExistingCode)) {
+        Fluttertoast.showToast(
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            msg: "Grantor already exists",
+            toastLength: Toast.LENGTH_LONG);
+        return;
+      }
       // Form is valid, submit it
       setBusy(true);
       submitBankAccount(index);
@@ -316,16 +327,16 @@ calculatebaseAmount();
   void validateAgriForm2(BuildContext context, int index) async {
     final formState = agriformKey.currentState;
     if (formState!.validate()) {
-       if (agricultureDevelopmentItem2.any((item) => item.itemCode == itemCode)) {
-      Fluttertoast.showToast(
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-          msg: "This item already exists",
-          toastLength: Toast.LENGTH_LONG
-      );
-      return;
-    }
+      if (agricultureDevelopmentItem2
+          .any((item) => item.itemCode == itemCode)) {
+        Fluttertoast.showToast(
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            msg: "This item already exists",
+            toastLength: Toast.LENGTH_LONG);
+        return;
+      }
       // Form is valid, submit it
       setBusy(true);
       submitAgriAccount2(index);
@@ -378,15 +389,16 @@ calculatebaseAmount();
     }
   }
 
-  void setSelectedSales(BuildContext context,String? sales)  async {
+  void setSelectedSales(BuildContext context, String? sales) async {
     agridata.salesType = sales;
     if (agridata.salesType != 'Fertilizer') {
       agricultureDevelopmentItem2.clear();
     }
     Logger().i(agridata.salesType);
     Logger().i(sales);
-    if( agridata.salesType !="Fertilizer"){
-      supplierList = await AddAgriServices().fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
+    if (agridata.salesType != "Fertilizer") {
+      supplierList = await AddAgriServices()
+          .fetchSupplierList(agridata.salesType?.toLowerCase() ?? "");
     }
 
     if (supplierList.isEmpty && agridata.salesType != 'Fertilizer') {
@@ -404,7 +416,21 @@ calculatebaseAmount();
     notifyListeners();
   }
 
-  void setSelectedSeason(String? seasom)  {
+  Color getColorForStatus(String status) {
+    switch (status) {
+      case '0':
+        return Colors.grey; // Light Blue Grey for Lead
+    // Light Green for Interested
+      case '1':
+        return Colors.blue;
+      case '2':
+        return Colors.redAccent.shade700; // Dark Grey for Converted
+      default:
+        return Colors.grey; // Default Grey for unknown status
+    }
+  }
+
+  void setSelectedSeason(String? seasom) {
     agridata.season = seasom;
 
     Logger().i(seasom);
@@ -412,10 +438,10 @@ calculatebaseAmount();
     notifyListeners();
   }
 
-   void setSeason(String? sales)  {
-      agridata.season = sales;
-      notifyListeners();
-    }
+  void setSeason(String? sales) {
+    agridata.season = sales;
+    notifyListeners();
+  }
 
   void calculatebaseltotal() {
     double baselTotal = 0.0;
@@ -472,6 +498,7 @@ calculatebaseAmount();
     }
     agridata.total = total;
   }
+
   void calculatetotalweight() {
     double totalWeight = 0.0;
     for (int index = 0; index < agricultureDevelopmentItem.length; index++) {
@@ -501,7 +528,7 @@ calculatebaseAmount();
     final selectedCaneData = supplierList
         .firstWhere((caneData) => caneData.name.toString() == suppli);
     Logger().i(selectedCaneData);
-    suppliercode=selectedCaneData.existingSupplierCode;
+    suppliercode = selectedCaneData.existingSupplierCode;
     suppliername = selectedCaneData.supplierName;
     agridata.supplierName = suppliername;
     notifyListeners();
@@ -512,7 +539,7 @@ calculatebaseAmount();
     agridata.caneRegistrationId = selectedplot.toString();
     Logger().i(selectedplot);
     final selectedCaneData = canelistwithfilter.firstWhere(
-        (caneData) => caneData.name.toString() == caneRegistrationId);
+            (caneData) => caneData.name.toString() == caneRegistrationId);
     Logger().i(selectedCaneData);
     selectedVendorname = selectedCaneData.growerName;
     selectedplant = selectedCaneData.plantName;
@@ -598,12 +625,13 @@ calculatebaseAmount();
     }
   }
 
-String? selectedVillage;
+  String? selectedVillage;
 
-  void setSelectedVillage(BuildContext context,String? village) async {
+  void setSelectedVillage(BuildContext context, String? village) async {
     selectedVillage = village;
     agridata.farmerVillage = selectedVillage;
-    farmerList=await AddAgriServices().fetchFarmerListWithFilter(agridata.farmerVillage ?? "");
+    farmerList = await AddAgriServices()
+        .fetchFarmerListWithFilter(agridata.farmerVillage ?? "");
     if (farmerList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -619,18 +647,18 @@ String? selectedVillage;
     notifyListeners();
   }
 
-
-  void setSelectedgrowername(BuildContext context,String? growername) async {
+  void setSelectedgrowername(BuildContext context, String? growername) async {
     selectedgrowername = growername;
-    final selectedgrowerData = farmerList.firstWhere(
-            (growerData) => growerData.supplierName == growername);
+    final selectedgrowerData = farmerList
+        .firstWhere((growerData) => growerData.supplierName == growername);
     Logger().i(selectedgrowerData);
     // Set th distance in the kmController
-    farmercode=selectedgrowerData.name;
+    farmercode = selectedgrowerData.name;
     agridata.vendorCode = selectedgrowerData.existingSupplierCode;
     agridata.growerName = selectedgrowername;
     Logger().i(selectedgrowername);
-    canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(agridata.season ?? "",agridata.village ?? "",farmercode ?? ""));
+    canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(
+        agridata.season ?? "", agridata.village ?? "", farmercode ?? ""));
     if (canelistwithfilter.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -699,6 +727,7 @@ String? selectedVillage;
   }
 
   TextEditingController developmentAreaController = TextEditingController();
+
   // TextEditingController kmController = TextEditingController();
 
   void setSelecteddevelopmentarea(String? surveyNumber) {
@@ -762,13 +791,13 @@ String? selectedVillage;
     }
     return null;
   }
+
   String? validatefarmer(String? value) {
     if (value == null || value.isEmpty) {
       return 'please select farmer';
     }
     return null;
   }
-
 
   String? validatevillage(String? value) {
     if (value == null || value.isEmpty) {
@@ -792,12 +821,14 @@ String? selectedVillage;
 
     return null;
   }
+
   String? validateSupplier(String? value) {
-    if(agridata.salesType != "Fertilizer"){
-    if (value == null || value.isEmpty) {
-      return 'please select Supplier';
+    if (agridata.salesType != "Fertilizer") {
+      if (value == null || value.isEmpty) {
+        return 'please select Supplier';
+      }
+      return null;
     }
-    return null;}
     return null;
   }
 
@@ -864,19 +895,18 @@ String? selectedVillage;
     if (index != -1) {
       agricultureDevelopmentItem[index].itemCode = itemCode;
       agricultureDevelopmentItem[index].itemName = itemName;
-      agricultureDevelopmentItem[index].weightPerUnit=weight;
-      agricultureDevelopmentItem[index].actualQty=actualQty;
-      agricultureDevelopmentItem[index].rate=fertilizerrate;
+      agricultureDevelopmentItem[index].weightPerUnit = weight;
+      agricultureDevelopmentItem[index].actualQty = actualQty;
+      agricultureDevelopmentItem[index].rate = fertilizerrate;
       notifyListeners();
       return;
     }
     agricultureDevelopmentItem.add(AgricultureDevelopmentItem(
-      itemCode: itemCode,
-      itemName: itemName,
-      weightPerUnit: weight,
-      actualQty: actualQty,
-      rate: rate
-    ));
+        itemCode: itemCode,
+        itemName: itemName,
+        weightPerUnit: weight,
+        actualQty: actualQty,
+        rate: rate));
     notifyListeners();
   }
 
@@ -896,6 +926,7 @@ String? selectedVillage;
   }
 
   final totalController2 = TextEditingController();
+
   void resetAgriVariables2() {
     itemCode2 = "";
     totalController2.clear();
@@ -907,7 +938,7 @@ String? selectedVillage;
       agricultureDevelopmentItem2[index].itemName = itemName2;
       agricultureDevelopmentItem2[index].qty = total;
       agricultureDevelopmentItem2[index].rate = rate;
-      amount=rate*total;
+      amount = rate * total;
       agricultureDevelopmentItem2[index].amount = amount;
       notifyListeners();
       return;
@@ -929,6 +960,7 @@ String? selectedVillage;
     rate = bankData.rate ?? 0.0;
     notifyListeners();
   }
+
   String? suretyvillage;
   String? suretyexistingcode;
 
@@ -939,7 +971,7 @@ String? selectedVillage;
       }
       // Reset all roles to false
       suretyCode = grantor[index].suretyCode!;
-      suretyvillage=grantor[index].village;
+      suretyvillage = grantor[index].village;
       suretyExistingCode = grantor[index].suretyExistingCode!;
       suretyname = grantor[index].suretyName!;
     }
@@ -949,7 +981,7 @@ String? selectedVillage;
   void resetBankVariables() {
     suretyExistingCode = "";
     suretyname = "";
-    suretyvillage ="";
+    suretyvillage = "";
   }
 
   void submitBankAccount(int index) {
@@ -962,24 +994,24 @@ String? selectedVillage;
       return;
     }
     grantor.add(Grantor(
-      suretyExistingCode: suretyExistingCode,
-      suretyName: suretyname,
-      suretyCode: suretyCode,
-      village: suretyvillage
-    ));
+        suretyExistingCode: suretyExistingCode,
+        suretyName: suretyname,
+        suretyCode: suretyCode,
+        village: suretyvillage));
     notifyListeners();
   }
 
   void setSelectedAgri(String? agri) async {
     Logger().i(agri);
     itemCode = agri ?? "";
-    final bankData = fertilizeritemlist.firstWhere((bank) => bank.itemCode == agri);
+    final bankData =
+    fertilizeritemlist.firstWhere((bank) => bank.itemCode == agri);
     itemName = bankData.itemName ?? "";
-    weight=bankData.weightPerUnit?? 0.0;
-    itemTaxTemp=bankData.itemTaxTemp ?? "";
+    weight = bankData.weightPerUnit ?? 0.0;
+    itemTaxTemp = bankData.itemTaxTemp ?? "";
     // taxNumber=bankData.taxNumber ?? 0.0;
-    actualQty=bankData.actualQty ?? "";
-    rate=bankData.rate ?? 0.0;
+    actualQty = bankData.actualQty ?? "";
+    rate = bankData.rate ?? 0.0;
     notifyListeners();
   }
 
@@ -989,21 +1021,21 @@ String? selectedVillage;
     notifyListeners();
   }
 
-
   void setSelectedgrantorvillage(String? village) async {
     Logger().i(village);
     final selectedRouteData =
     villagelist.firstWhere((bankData) => bankData.name == village);
     Logger().i(selectedRouteData);
     suretyvillage = selectedRouteData.name ?? "";
-    farmerList=await AddAgriServices().fetchFarmerListWithFilter(suretyvillage ?? "");
+    farmerList =
+    await AddAgriServices().fetchFarmerListWithFilter(suretyvillage ?? "");
     notifyListeners();
   }
 
   void setSelectedgrantor(String? bank) async {
     Logger().i(bank);
     final selectedRouteData =
-        farmerList.firstWhere((bankData) => bankData.name == bank);
+    farmerList.firstWhere((bankData) => bankData.name == bank);
     Logger().i(selectedRouteData);
     suretyCode = selectedRouteData.name ?? "";
     suretyExistingCode = selectedRouteData.existingSupplierCode ?? "";

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sugar_mill_app/router.router.dart';
 
 getHeight(context) => (MediaQuery.of(context).size.height);
+
 getWidth(context) => (MediaQuery.of(context).size.width);
 
 Color lightBlack = Colors.black.withOpacity(0.5);
@@ -14,14 +15,15 @@ const kAadharpdf = "AadharCard";
 const kPanpdf = "PanCard";
 const kBankpdf = "BankPassbook";
 const kConcentpdf = "ConcentLetter";
-// const apiBaseUrl = "https://erpvppl.erpdata.in";
-const apiBaseUrl = "https://migratesugar.erpdata.in";
+const apiBaseUrl = "https://erpvppl.erpdata.in";
+// const apiBaseUrl = "https://migratesugar.erpdata.in";
 // const apiBaseUrl = "http://182.74.29.227:1111";
 
 /// api usrls
 String apifetchSeason =
     '$apiBaseUrl/api/resource/Season?filters=[["disabled","=","0"]]';
 String apifetchPlant = '$apiBaseUrl/api/resource/Branch';
+
 ///farmer List
 String apimethodcall =
     '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.vendor_code?docname=Farmer List';
@@ -38,6 +40,7 @@ String apiFarmerAllListGet =
 String apitFilterOnFarmerListGet =
     "$apiBaseUrl/api/resource/Farmer List?order_by=creation desc&limit_page_length=20&fields=[\"supplier_name\",\"village\",\"name\",\"circle_office\",\"existing_supplier_code\"]&filters=[[\"village\",  \"like\", \"bed%\" ],[\"supplier_name\",  \"like\", \"abhi%\" ]]";
 String apiLoginGet = '$apiBaseUrl/api/method/login';
+
 ///Cane Registration
 String apifetchCaneList =
     '$apiBaseUrl/api/resource/Cane Master?order_by=creation desc&fields=["plantation_status","route_name","crop_variety","name","grower_code","grower_name","plantattion_ratooning_date","survey_number"]';
@@ -79,7 +82,7 @@ String apifetchFarList =
     '$apiBaseUrl/api/resource/Farmer List?fields=["name","supplier_name","existing_supplier_code"]&filters=[["workflow_state","=","approved"]]&limit_page_length=9999999';
 String apifetchtripsheetData = '$apiBaseUrl/api/resource/Trip Sheet';
 String apifetchtripsheetsearch =
-    '$apiBaseUrl/api/resource/Trip Sheet?order_by=modified desc&fields=["name","farmer_name","field_village","transporter_name","circle_office","season"]&limit_page_length=9999999';
+    '$apiBaseUrl/api/resource/Trip Sheet?order_by=modified desc&fields=["name","farmer_name","field_village","transporter_name","circle_office","season","slip_no"]&limit_page_length=99';
 
 ///functions
 Future<Map<String, String>> getTocken() async {
@@ -150,7 +153,7 @@ Future<File?> compressFile(File file) async {
 
   // Create a new file name with the extension "_compressed".
   final compressedFileName =
-      filePath.replaceAll(fileExtension, '_compressed.jpeg');
+  filePath.replaceAll(fileExtension, '_compressed.jpeg');
 
   var result = await FlutterImageCompress.compressAndGetFile(
     file.absolute.path,
@@ -172,5 +175,3 @@ File fileFromXFile(XFile xfile) {
 
   return file;
 }
-
-

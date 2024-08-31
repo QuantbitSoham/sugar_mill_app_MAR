@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
@@ -17,6 +16,7 @@ class ListAgriModel extends BaseViewModel {
   List<AgriListModel> agriList = [];
   List<AgriListModel> filteredAgriList = [];
   List<String> seasonList = [""];
+  String latestSeason = "";
 
   initialise(BuildContext context) async {
     setBusy(true);
@@ -28,9 +28,10 @@ class ListAgriModel extends BaseViewModel {
     // Filter the list to get the latest season
     String latestSeason = seasonList.firstWhere(
           (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonList.last, // If no season matches the current year, take the last one
+      orElse: () => seasonList
+          .last, // If no season matches the current year, take the last one
     );
-    seasonController.text=latestSeason;
+    seasonController.text = latestSeason;
     // canefilterList = caneList;
     await filterListBySeason(name: latestSeason);
     setBusy(false);
@@ -39,31 +40,33 @@ class ListAgriModel extends BaseViewModel {
     }
     notifyListeners();
   }
-///dhdjhdjhj
 
-Future<void> refresh() async {
-  filteredAgriList = await ListAgriService().getAllCaneList();
-  filteredAgriList.sort((a, b) => b.caneRegistrationId!.compareTo(a.caneRegistrationId ?? '')); 
-  notifyListeners();
-}
+  ///dhdjhdjhj
 
-
-  Future<void>  filterListBySeason({String? name}) async {
-    caneSeasonFilter = name ?? caneSeasonFilter;
-    notifyListeners();
-    filteredAgriList =
-        await ListAgriService().getAgriListByNameFilter(caneSeasonFilter);
-        filteredAgriList.sort((a, b) => b.caneRegistrationId!.compareTo(a.caneRegistrationId ?? '')); 
+  Future<void> refresh() async {
+    await filterListBySeason(name: seasonController.text);
     notifyListeners();
   }
 
-  void getAgriListByVillageFarmerNameFilter({String? village, String? name}) async {
+  Future<void> filterListBySeason({String? name}) async {
+    caneSeasonFilter = name ?? caneSeasonFilter;
+    notifyListeners();
+    filteredAgriList =
+    await ListAgriService().getAgriListByNameFilter(caneSeasonFilter);
+    filteredAgriList.sort(
+            (a, b) => b.caneRegistrationId!.compareTo(a.caneRegistrationId ?? ''));
+    notifyListeners();
+  }
+
+  void getAgriListByVillageFarmerNameFilter(
+      {String? village, String? name}) async {
     caneNameFilter = name ?? caneNameFilter;
     caneVillageFilter = village ?? caneVillageFilter;
     notifyListeners();
     filteredAgriList = await ListAgriService()
-        .getAgriListByvillagefarmernameFilter(caneVillageFilter, caneNameFilter);
-   
+        .getAgriListByvillagefarmernameFilter(
+        caneVillageFilter, caneNameFilter);
+
     notifyListeners();
   }
 
@@ -73,7 +76,5 @@ Future<void> refresh() async {
       Routes.addAgriScreen,
       arguments: AddAgriScreenArguments(agriId: agriList?.name ?? ""),
     );
-    // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
-    //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));
   }
 }

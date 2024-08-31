@@ -8,7 +8,9 @@ import 'add_tripsheet_model.dart';
 
 class AddTripsheetScreen extends StatelessWidget {
   final String tripId;
+
   const AddTripsheetScreen({super.key, required this.tripId});
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddTripSheetModel>.reactive(
@@ -84,22 +86,25 @@ class AddTripsheetScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: TextFormField(
-                              keyboardType:
-                                  TextInputType.numberWithOptions(signed: true),
-                              controller: model.slipnoController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Slip No *'),
-                              validator: (value) => value!.isEmpty
-                                  ? 'Please enter a Slip Number'
-                                  : null,
-                              onChanged: model.setSelectSlipNo,
+                          if (model.isEdit)
+                            Expanded(
+                              child: TextFormField(
+                                keyboardType:
+                                const TextInputType.numberWithOptions(
+                                    signed: true),
+                                controller: model.slipnoController,
+                                decoration: const InputDecoration(
+                                    labelText: 'Slip No '),
+                                validator: (value) => value!.isEmpty
+                                    ? 'Please enter a Slip Number'
+                                    : null,
+                                onChanged: model.setSelectSlipNo,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 20.0,
-                          ),
+                          if (model.isEdit)
+                            const SizedBox(
+                              width: 20.0,
+                            ),
                           Expanded(
                             child: Autocomplete<String>(
                               key: Key(model.tripSheetData.platNoId ?? "05"),
@@ -115,9 +120,9 @@ class AddTripsheetScreen extends StatelessWidget {
                                     .map((grower) => grower.id ?? "")
                                     .toList()
                                     .where((grower) => grower
-                                        .toLowerCase()
-                                        .contains(textEditingValue.text
-                                            .toLowerCase()));
+                                    .toLowerCase()
+                                    .contains(textEditingValue.text
+                                    .toLowerCase()));
                               },
                               onSelected: model.setSelectPlotNo,
                               fieldViewBuilder: (BuildContext context,
@@ -144,18 +149,18 @@ class AddTripsheetScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                          const BoxConstraints(maxHeight: 200),
+                                      const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
                                           final routeData = model.plotList
                                               .firstWhere((route) =>
-                                                  route.id.toString() ==
-                                                  option);
+                                          route.id.toString() ==
+                                              option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -163,7 +168,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                             child: ListTile(
                                               title: Text(option),
                                               subtitle:
-                                                  Text(routeData.growerName!),
+                                              Text(routeData.growerName!),
                                             ),
                                           );
                                         },
@@ -215,7 +220,7 @@ class AddTripsheetScreen extends StatelessWidget {
                           key: Key(model.tripSheetData.farmerName ?? "04"),
                           initialValue: model.tripSheetData.farmerName,
                           decoration:
-                              const InputDecoration(labelText: 'Farmer Name'),
+                          const InputDecoration(labelText: 'Farmer Name'),
                           // validator: (value) => value!.isEmpty
                           //     ? 'Please enter a Farmer Name'
                           //     : null,
@@ -228,7 +233,7 @@ class AddTripsheetScreen extends StatelessWidget {
                               key: Key(model.tripSheetData.surveryNo ?? "04"),
                               initialValue: model.tripSheetData.surveryNo,
                               decoration:
-                                  const InputDecoration(labelText: 'Survey No'),
+                              const InputDecoration(labelText: 'Survey No'),
                               // validator: (value) => value!.isEmpty
                               //     ? 'Please enter a Survey No'
                               //     : null,
@@ -243,10 +248,10 @@ class AddTripsheetScreen extends StatelessWidget {
                             child: TextFormField(
                               key: Key(model.tripSheetData.areaAcre.toString()),
                               initialValue:
-                                  model.tripSheetData.areaAcre?.toString() ??
-                                      "",
+                              model.tripSheetData.areaAcre?.toString() ??
+                                  "",
                               decoration:
-                                  const InputDecoration(labelText: 'Area Acre'),
+                              const InputDecoration(labelText: 'Area Acre'),
                               // validator: (value) => value!.isEmpty
                               //     ? 'Please enter a Area Acre'
                               //     : null,
@@ -262,10 +267,10 @@ class AddTripsheetScreen extends StatelessWidget {
                           Expanded(
                             child: TextFormField(
                               key:
-                                  Key(model.tripSheetData.fieldVillage ?? "04"),
+                              Key(model.tripSheetData.fieldVillage ?? "04"),
                               initialValue: model.tripSheetData.fieldVillage,
                               decoration:
-                                  const InputDecoration(labelText: 'Village'),
+                              const InputDecoration(labelText: 'Village'),
                               // validator: (value) => value!.isEmpty
                               //     ? 'Please enter a Village'
                               //     : null,
@@ -309,14 +314,14 @@ class AddTripsheetScreen extends StatelessWidget {
                                     .map((route) => route.route!)
                                     .toList()
                                     .where((route) => route
-                                        .toLowerCase()
-                                        .contains(textEditingValue.text
-                                            .toLowerCase()));
+                                    .toLowerCase()
+                                    .contains(textEditingValue.text
+                                    .toLowerCase()));
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final routeData = model.routeList.firstWhere(
-                                    (route) => route.route == routeName);
+                                        (route) => route.route == routeName);
                                 model.setSelectedRoute(
                                     routeData); // Pass the route
                               },
@@ -351,11 +356,11 @@ class AddTripsheetScreen extends StatelessWidget {
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
                                           // Find the corresponding route object
                                           final routeData = model.routeList
                                               .firstWhere((route) =>
-                                                  route.route == option);
+                                          route.route == option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(routeData.route ??
@@ -383,41 +388,47 @@ class AddTripsheetScreen extends StatelessWidget {
                             child: TextFormField(
                               key: Key(model.tripSheetData.distance.toString()),
                               initialValue: model.tripSheetData.distance
-                                      ?.toStringAsFixed(0) ??
+                                  ?.toStringAsFixed(0) ??
                                   "",
                               decoration:
-                                  const InputDecoration(labelText: 'Distance'),
+                              const InputDecoration(labelText: 'Distance'),
                               onChanged: model.setSelectedDistance,
                               readOnly: true,
                             ),
                           ),
                         ],
                       ),
-                      if(model.tripSheetData.applyFlatRate ==1)
-                      Row(
-                        children: [
-                          Expanded(
-flex: 3,
-                            child:
-                            CheckboxListTile(
-                                controlAffinity: ListTileControlAffinity.leading,title: const Text('Apply Flat Rate',style: TextStyle(fontWeight: FontWeight.bold),),value: model.applyFlatRate, onChanged: model.setApplyFlatRate),
-                          ),
-                          Expanded(
-flex: 2,
-                            child: TextFormField(
-                              readOnly: true,
-
-                              key: Key(model.tripSheetData.flatRate.toString()),
-                              initialValue:
-                              model.tripSheetData.flatRate?.toStringAsFixed(0) ??
-                                  "",
-                              decoration:
-                              const InputDecoration(labelText: 'Flat Rate'),
-
+                      if (model.tripSheetData.applyFlatRate == 1)
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: CheckboxListTile(
+                                  controlAffinity:
+                                  ListTileControlAffinity.leading,
+                                  title: const Text(
+                                    'Apply Flat Rate',
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  value: model.applyFlatRate,
+                                  onChanged: model.setApplyFlatRate),
                             ),
-                          ),
-                        ],
-                      ),
+                            Expanded(
+                              flex: 2,
+                              child: TextFormField(
+                                readOnly: true,
+                                key: Key(
+                                    model.tripSheetData.flatRate.toString()),
+                                initialValue: model.tripSheetData.flatRate
+                                    ?.toStringAsFixed(0) ??
+                                    "",
+                                decoration: const InputDecoration(
+                                    labelText: 'Flat Rate'),
+                              ),
+                            ),
+                          ],
+                        ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -447,19 +458,19 @@ flex: 2,
                           ),
                           Expanded(
                             child: TextFormField(
-                              keyboardType: const TextInputType.numberWithOptions(
+                              keyboardType:
+                              const TextInputType.numberWithOptions(
                                   decimal: true),
                               controller: model.deductionController,
                               // onTap: () => model.selectDate(context),
                               decoration: const InputDecoration(
-                                labelText: 'Deduction %',
+                                labelText: 'Deduction',
                               ),
                               onChanged: model.setSelectedDeductionAmount,
                             ),
                           ),
                         ],
                       ),
-
                       TextFormField(
                         keyboardType:
                         const TextInputType.numberWithOptions(signed: true),
@@ -469,10 +480,8 @@ flex: 2,
                             "",
                         decoration:
                         const InputDecoration(labelText: 'Cart Number'),
-
                         onFieldSubmitted: model.setSelectedCartNo,
                       ),
-
                       const SizedBox(
                         width: 20.0,
                       ),
@@ -494,17 +503,17 @@ flex: 2,
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                    textEditingValue.text.toLowerCase();
+                                textEditingValue.text.toLowerCase();
                                 return model.transportList
                                     .where((grower) =>
-                                        grower.oldNo
-                                            .toString()
-                                            .toLowerCase()
-                                            .contains(searchText) ||
-                                        grower.transporterName
-                                            .toString()
-                                            .toLowerCase()
-                                            .contains(searchText))
+                                grower.oldNo
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(searchText) ||
+                                    grower.transporterName
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(searchText))
                                     .map((grower) => grower.oldNo.toString())
                                     .toList();
                               },
@@ -512,7 +521,7 @@ flex: 2,
                                 // Find the corresponding route object
                                 final routeData = model.transportList
                                     .firstWhere((route) =>
-                                        route.oldNo.toString() == routeName);
+                                route.oldNo.toString() == routeName);
                                 model.setSelectedTransCode(
                                     routeData.oldNo); // Pass the route
                               },
@@ -540,18 +549,18 @@ flex: 2,
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                          const BoxConstraints(maxHeight: 200),
+                                      const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
                                           final routeData = model.transportList
                                               .firstWhere((route) =>
-                                                  route.oldNo.toString() ==
-                                                  option);
+                                          route.oldNo.toString() ==
+                                              option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -581,7 +590,7 @@ flex: 2,
                               key: Key(
                                   model.tripSheetData.transporterName ?? "07"),
                               initialValue:
-                                  model.tripSheetData.transporterName ?? "",
+                              model.tripSheetData.transporterName ?? "",
                               // onTap: () => model.selectDate(context),
                               decoration: const InputDecoration(
                                 labelText: 'Transporter Name',
@@ -592,14 +601,30 @@ flex: 2,
                           ),
                         ],
                       ),
-                      TextFormField(
-                        key: Key(model.tripSheetData.vehicleType ?? "08"),
-                        initialValue: model.tripSheetData.vehicleType ?? "",
-                        decoration: const InputDecoration(
-                          labelText: 'vehicle Type',
+                      CdropDown(
+                        dropdownButton: DropdownButtonFormField<String>(
+                          isExpanded: true,
+
+                          value: model.tripSheetData.vehicleType,
+                          // Replace null with the selected value if needed
+                          decoration: const InputDecoration(
+                            labelText: 'Vehicle Type',
+                          ),
+                          hint: const Text('Select vehicle Type'),
+                          items: model.vehicleTypeList.map((val) {
+                            return DropdownMenuItem<String>(
+                              value: val.name,
+                              child: Text(
+                                val.name ?? "",
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged:
+                          model.tripSheetData.oldTransporterCode == "SELF"
+                              ? model.setSelectedVType
+                              : null,
                         ),
-                        readOnly: true,
-                        onChanged: model.setSelectedVType,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -611,7 +636,7 @@ flex: 2,
                                   model.tripSheetData.harvesterCodeOld ?? "09"),
                               initialValue: TextEditingValue(
                                 text:
-                                    model.tripSheetData.harvesterCodeOld ?? "",
+                                model.tripSheetData.harvesterCodeOld ?? "",
                               ),
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
@@ -619,17 +644,17 @@ flex: 2,
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                    textEditingValue.text.toLowerCase();
+                                textEditingValue.text.toLowerCase();
                                 return model.transportList
                                     .where((grower) =>
-                                        grower.oldNo
-                                            .toString()
-                                            .toLowerCase()
-                                            .contains(searchText) ||
-                                        grower.harvesterName
-                                            .toString()
-                                            .toLowerCase()
-                                            .contains(searchText))
+                                grower.oldNo
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(searchText) ||
+                                    grower.harvesterName
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(searchText))
                                     .map((grower) => grower.oldNo.toString())
                                     .toList();
                               },
@@ -637,7 +662,7 @@ flex: 2,
                                 // Find the corresponding route object
                                 final routeData = model.transportList
                                     .firstWhere((route) =>
-                                        route.oldNo.toString() == routeName);
+                                route.oldNo.toString() == routeName);
                                 model.setSelectedHarCode(
                                     routeData.oldNo); // Pass the route
                               },
@@ -664,18 +689,18 @@ flex: 2,
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                          const BoxConstraints(maxHeight: 200),
+                                      const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
                                           final routeData = model.transportList
                                               .firstWhere((route) =>
-                                                  route.oldNo.toString() ==
-                                                  option);
+                                          route.oldNo.toString() ==
+                                              option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -705,7 +730,7 @@ flex: 2,
                               key: Key(
                                   model.tripSheetData.harvesterNameH ?? "10"),
                               initialValue:
-                                  model.tripSheetData.harvesterNameH ?? "",
+                              model.tripSheetData.harvesterNameH ?? "",
                               decoration: const InputDecoration(
                                 labelText: 'Harvester Name',
                               ),
@@ -738,12 +763,17 @@ flex: 2,
                                 key: Key(
                                     model.tripSheetData.vehicleNumber ?? "12"),
                                 initialValue:
-                                    model.tripSheetData.vehicleNumber ?? "",
+                                model.tripSheetData.vehicleNumber ?? "",
                                 decoration: const InputDecoration(
                                   labelText: 'Engine Number',
                                 ),
-                                readOnly: true,
+                                readOnly:
+                                model.tripSheetData.oldTransporterCode ==
+                                    "SELF"
+                                    ? false
+                                    : true,
                                 onChanged: model.setSelectedEngine,
+                                autofocus: true,
                               ),
                             ),
                           const SizedBox(
@@ -762,8 +792,13 @@ flex: 2,
                                 decoration: const InputDecoration(
                                   labelText: 'Tolly 1 ',
                                 ),
-                                readOnly: true,
+                                readOnly:
+                                model.tripSheetData.oldTransporterCode ==
+                                    "SELF"
+                                    ? false
+                                    : true,
                                 onChanged: model.setSelectedTy_1,
+                                autofocus: true,
                               ),
                             ),
                             const SizedBox(
@@ -776,8 +811,13 @@ flex: 2,
                                 decoration: const InputDecoration(
                                   labelText: 'Tolly 2',
                                 ),
-                                readOnly: true,
+                                readOnly:
+                                model.tripSheetData.oldTransporterCode ==
+                                    "SELF"
+                                    ? false
+                                    : true,
                                 onChanged: model.setSelectedTy_2,
+                                autofocus: true,
                               ),
                             ),
                             const SizedBox(
@@ -830,27 +870,27 @@ flex: 2,
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                    textEditingValue.text.toLowerCase();
+                                textEditingValue.text.toLowerCase();
                                 return model.waterSupplier
                                     .where((route) =>
-                                        (route.supplierName
-                                                ?.toLowerCase()
-                                                .contains(searchText) ??
-                                            false) ||
-                                        (route.existingSupplierCode
-                                                ?.toLowerCase()
-                                                .contains(searchText) ??
-                                            false))
+                                (route.supplierName
+                                    ?.toLowerCase()
+                                    .contains(searchText) ??
+                                    false) ||
+                                    (route.existingSupplierCode
+                                        ?.toLowerCase()
+                                        .contains(searchText) ??
+                                        false))
                                     .map((route) =>
-                                        route.existingSupplierCode ?? "")
+                                route.existingSupplierCode ?? "")
                                     .toList();
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final routeData = model.waterSupplier
                                     .firstWhere((route) =>
-                                        route.existingSupplierCode ==
-                                        routeName);
+                                route.existingSupplierCode ==
+                                    routeName);
                                 model.setSelectedWaterSupplier(
                                     routeData); // Pass the route
                               },
@@ -884,16 +924,16 @@ flex: 2,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                              options.elementAt(index);
+                                          options.elementAt(index);
                                           // Find the corresponding route object
                                           final routeData = model.waterSupplier
                                               .firstWhere((route) =>
-                                                  route.existingSupplierCode ==
-                                                  option);
+                                          route.existingSupplierCode ==
+                                              option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(routeData
-                                                      .existingSupplierCode ??
+                                                  .existingSupplierCode ??
                                                   ""); // Send the name as the selected route
                                             },
                                             child: ListTile(
@@ -902,7 +942,7 @@ flex: 2,
                                                       "N/A"),
                                               // Display the corresponding name value
                                               subtitle: Text(routeData
-                                                      .existingSupplierCode ??
+                                                  .existingSupplierCode ??
                                                   "N/A"),
                                             ),
                                           );
@@ -924,7 +964,7 @@ flex: 2,
                               key: Key(model.tripSheetData.waterSupplierName ??
                                   "16"),
                               initialValue:
-                                  model.tripSheetData.waterSupplierName ?? "",
+                              model.tripSheetData.waterSupplierName ?? "",
                               decoration: const InputDecoration(
                                 labelText: 'Water Supplier Name',
                               ),
@@ -939,7 +979,8 @@ flex: 2,
                         children: [
                           Expanded(
                             child: TextFormField(
-                                keyboardType: const TextInputType.numberWithOptions(
+                                keyboardType:
+                                const TextInputType.numberWithOptions(
                                     decimal: true),
                                 controller: model.watershareController,
                                 decoration: const InputDecoration(

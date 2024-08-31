@@ -60,10 +60,10 @@ class ListCaneModel extends BaseViewModel {
     notifyListeners();
   }
 
-Future<void> refresh() async {
-   canefilterList= (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
-  notifyListeners();
-}
+  Future<void> refresh() async {
+    canefilterList= (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
+    notifyListeners();
+  }
 
   Future<void> filterListByNameAndVillage({String? season,String? name, String? village}) async {
     caneseasonFilter=season ?? caneseasonFilter;
@@ -81,7 +81,7 @@ Future<void> refresh() async {
       context,
       Routes.addCaneScreen,
       arguments:
-          AddCaneScreenArguments(caneId: caneList?.name.toString() ?? " "),
+      AddCaneScreenArguments(caneId: caneList?.name.toString() ?? " "),
     );
     // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
     //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));
