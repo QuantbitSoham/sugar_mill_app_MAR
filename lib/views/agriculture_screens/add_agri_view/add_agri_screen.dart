@@ -35,7 +35,7 @@ class AddAgriScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: model
                             .getColorForStatus(
-                            model.agridata.docstatus.toString())
+                                model.agridata.docstatus.toString())
                             .withOpacity(0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -72,7 +72,7 @@ class AddAgriScreen extends StatelessWidget {
                                   labelText: 'Season *',
                                 ),
                                 hint: const Text('Select Season'),
-                                items: model.seasonlist.map((val) {
+                                items: model.seasonList.map((val) {
                                   return DropdownMenuItem<String>(
                                     value: val,
                                     child: AutoSizeText(val),
@@ -96,7 +96,7 @@ class AddAgriScreen extends StatelessWidget {
                                   labelText: 'Sales Type *',
                                 ),
                                 hint: const Text('Select Sales type'),
-                                items: model.saleslist.map((val) {
+                                items: model.salesList.map((val) {
                                   return DropdownMenuItem<String>(
                                     value: val,
                                     child: AutoSizeText(val),
@@ -119,15 +119,15 @@ class AddAgriScreen extends StatelessWidget {
                           if (textEditingValue.text.isEmpty) {
                             return const Iterable<String>.empty();
                           }
-                          return model.villagelist
+                          return model.villageList
                               .map((route) => route.name ?? "")
                               .toList()
                               .where((route) => route.toLowerCase().contains(
-                              textEditingValue.text.toLowerCase()));
+                                  textEditingValue.text.toLowerCase()));
                         },
                         onSelected: (String routeName) {
                           // Find the corresponding route object
-                          final routeData = model.villagelist
+                          final routeData = model.villageList
                               .firstWhere((route) => route.name == routeName);
                           model.setSelectedVillage(
                               context, routeData.name); // Pass the route
@@ -157,14 +157,14 @@ class AddAgriScreen extends StatelessWidget {
                               elevation: 4.0,
                               child: Container(
                                 constraints:
-                                const BoxConstraints(maxHeight: 200),
+                                    const BoxConstraints(maxHeight: 200),
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: options.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     final String option =
-                                    options.elementAt(index);
+                                        options.elementAt(index);
                                     return GestureDetector(
                                       onTap: () {
                                         onSelected(option);
@@ -195,17 +195,17 @@ class AddAgriScreen extends StatelessWidget {
                                 return const Iterable<String>.empty();
                               }
                               final searchText =
-                              textEditingValue.text.toLowerCase();
+                                  textEditingValue.text.toLowerCase();
                               return model.farmerList
                                   .where((grower) =>
-                              (grower.supplierName
-                                  ?.toLowerCase()
-                                  .contains(searchText) ??
-                                  false) ||
-                                  (grower.existingSupplierCode
-                                      ?.toLowerCase()
-                                      .contains(searchText) ??
-                                      false))
+                                      (grower.supplierName
+                                              ?.toLowerCase()
+                                              .contains(searchText) ??
+                                          false) ||
+                                      (grower.existingSupplierCode
+                                              ?.toLowerCase()
+                                              .contains(searchText) ??
+                                          false))
                                   .map((grower) => grower.supplierName ?? "")
                                   .toList();
                             },
@@ -235,17 +235,17 @@ class AddAgriScreen extends StatelessWidget {
                                   elevation: 4.0,
                                   child: Container(
                                     constraints:
-                                    const BoxConstraints(maxHeight: 200),
+                                        const BoxConstraints(maxHeight: 200),
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: options.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         final String option =
-                                        options.elementAt(index);
+                                            options.elementAt(index);
                                         final routeData = model.farmerList
                                             .firstWhere((route) =>
-                                        route.supplierName == option);
+                                                route.supplierName == option);
                                         return GestureDetector(
                                           onTap: () {
                                             onSelected(option);
@@ -286,18 +286,18 @@ class AddAgriScreen extends StatelessWidget {
                           Expanded(
                             child: CdropDown(
                               dropdownButton: DropdownButtonFormField<String>(
-                                key: Key(model.agridata.caneRegistrationId ??
+                                key: Key(model.agridata.plotNo ??
                                     "plotno"),
                                 isExpanded: true,
-                                value: model.agridata.caneRegistrationId,
+                                value: model.agridata.plotNo,
                                 decoration: const InputDecoration(
                                   labelText: 'Plot Number *',
                                 ),
                                 hint: const Text('Select plot number'),
-                                items: model.canelistwithfilter.map((val) {
+                                items: model.caneListWithFilter.map((val) {
                                   return DropdownMenuItem<String>(
-                                    value: val.name.toString(),
-                                    child: AutoSizeText(val.name.toString()),
+                                    value: val.plotNo.toString(),
+                                    child: AutoSizeText(val.plotNo.toString()),
                                   );
                                 }).toList(),
                                 onChanged: (value) =>
@@ -339,18 +339,18 @@ class AddAgriScreen extends StatelessWidget {
                                   }
                                   return model.supplierList
                                       .map((route) =>
-                                      route.supplierName.toString())
+                                          route.supplierName.toString())
                                       .toList()
                                       .where((route) => route
-                                      .toLowerCase()
-                                      .contains(textEditingValue.text
-                                      .toLowerCase()));
+                                          .toLowerCase()
+                                          .contains(textEditingValue.text
+                                              .toLowerCase()));
                                 },
                                 onSelected: (String routeName) {
                                   // Find the corresponding route object
                                   final routeData = model.supplierList
                                       .firstWhere((route) =>
-                                  route.supplierName == routeName);
+                                          route.supplierName == routeName);
                                   model.setsupplier(
                                       routeData.name); // Pass the route
                                 },
@@ -365,7 +365,7 @@ class AddAgriScreen extends StatelessWidget {
                                     focusNode: focusNode,
                                     decoration: InputDecoration(
                                       labelText:
-                                      '${model.agridata.salesType ?? ""} Supplier *',
+                                          '${model.agridata.salesType ?? ""} Supplier *',
                                     ),
                                     onChanged: (String value) {},
                                     validator: model.validateSupplier,
@@ -387,12 +387,12 @@ class AddAgriScreen extends StatelessWidget {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             final String option =
-                                            options.elementAt(index);
+                                                options.elementAt(index);
                                             final routeData = model.supplierList
                                                 .firstWhere((route) =>
-                                            route.supplierName
-                                                .toString() ==
-                                                option);
+                                                    route.supplierName
+                                                        .toString() ==
+                                                    option);
                                             return GestureDetector(
                                               onTap: () {
                                                 onSelected(routeData
@@ -474,7 +474,7 @@ class AddAgriScreen extends StatelessWidget {
                               key: Key(model.agridata.area.toString()),
                               readOnly: true,
                               initialValue:
-                              model.agridata.area?.toString() ?? "",
+                                  model.agridata.area?.toString() ?? "",
                               decoration: const InputDecoration(
                                 labelText: 'Area in Acrs',
                               ),
@@ -504,20 +504,20 @@ class AddAgriScreen extends StatelessWidget {
                         children: [
                           Expanded(
                               child: TextFormField(
-                                keyboardType: const TextInputType.numberWithOptions(
-                                    decimal: true),
-                                controller: model.developmentAreaController,
-                                decoration: InputDecoration(
-                                  labelText: 'Development Area *',
-                                  hintText: 'Enter the development area',
-                                  errorText: (model.agridata.developmentArea ?? 0) >
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            controller: model.developmentAreaController,
+                            decoration: InputDecoration(
+                              labelText: 'Development Area *',
+                              hintText: 'Enter the development area',
+                              errorText: (model.agridata.developmentArea ?? 0) >
                                       (model.agridata.area ?? 0)
-                                      ? 'Enter valid development area'
-                                      : null,
-                                ),
-                                onChanged: model.setSelecteddevelopmentarea,
-                                validator: model.validatedevelopmentArea,
-                              )),
+                                  ? 'Enter valid development area'
+                                  : null,
+                            ),
+                            onChanged: model.setSelecteddevelopmentarea,
+                            validator: model.validatedevelopmentArea,
+                          )),
                           const SizedBox(
                             width: 25,
                           ),
@@ -584,415 +584,415 @@ class AddAgriScreen extends StatelessWidget {
                       ),
                       (model.agridata.salesType == 'Fertilizer')
                           ? (model.agricultureDevelopmentItem.isEmpty)
-                          ? const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.error,
-                            color: Colors.redAccent,
-                          ),
-                          title: Text(
-                            "No record founds for fertilizer!",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Raleway-Bold',
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      )
-                          : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 30.0,
-                          // ignore: deprecated_member_use
-                          border: TableBorder.all(width: 1.0),
-                          columns: const [
-                            DataColumn(
-                              label: Text('Item Name'),
-                            ),
-                            DataColumn(
-                              label: Text('Basel'),
-                            ),
-                            DataColumn(
-                              label: Text('Pre-Earthing'),
-                            ),
-                            DataColumn(
-                              label: Text('Earth'),
-                            ),
-                            DataColumn(
-                              label: Text('Rainy'),
-                            ),
-                            DataColumn(
-                              label: Text('Ratoon1'),
-                            ),
-                            DataColumn(
-                              label: Text('Ratoon2'),
-                            ),
-                            DataColumn(
-                              label: Text('Total'),
-                            ),
-                            DataColumn(
-                              label: Text('Rate'),
-                            ),
-                            DataColumn(
-                              label: Text('Weight Per Unit'),
-                            ),
-                            DataColumn(
-                              label: Text('Total Weight'),
-                            ),
-                            DataColumn(
-                              label: Text('Base Amount'),
-                            ),
-                            DataColumn(
-                              label: Text('Delete'),
-                            ),
-                          ],
-                          rows: List<DataRow>.generate(
-                            model.agricultureDevelopmentItem.length,
-                            // Replace 10 with the actual number of rows you want
-                                (int index) => DataRow(
-                              cells: [
-                                DataCell(Text(
-                                  "${model.agricultureDevelopmentItem[index].itemCode.toString()}:${model.agricultureDevelopmentItem[index].itemName.toString()}",
-                                  maxLines: 3,
-                                  style: TextStyle(
-                                      color: ((double.tryParse((model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .actualQty ??
-                                          "")) ??
-                                          0.0) >
-                                          0.0)
-                                          ? Colors.green
-                                          : Colors.red),
-                                )),
-                                DataCell(
-                                  TextField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller: TextEditingController(
-                                      text: (model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .basel ??
-                                          0)
-                                          .toStringAsFixed(0),
-                                      // Use an empty string if model.agricultureDevelopmentItem[index].basel is null
+                              ? const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.error,
+                                      color: Colors.redAccent,
                                     ),
-                                    onChanged: (value) {
-                                      model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .basel = double.tryParse(value);
-                                      model.calculateTotal();
-                                      model.calculatebaseltotal();
+                                    title: Text(
+                                      "No record founds for fertilizer!",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Raleway-Bold',
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                )
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    columnSpacing: 30.0,
+                                    // ignore: deprecated_member_use
+                                    border: TableBorder.all(width: 1.0),
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('Item Name'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Basel'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Pre-Earthing'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Earth'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Rainy'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Ratoon1'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Ratoon2'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Total'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Rate'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Weight Per Unit'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Total Weight'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Base Amount'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Delete'),
+                                      ),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      model.agricultureDevelopmentItem.length,
+                                      // Replace 10 with the actual number of rows you want
+                                      (int index) => DataRow(
+                                        cells: [
+                                          DataCell(Text(
+                                            "${model.agricultureDevelopmentItem[index].itemCode.toString()}:${model.agricultureDevelopmentItem[index].itemName.toString()}",
+                                            maxLines: 3,
+                                            style: TextStyle(
+                                                color: ((double.tryParse((model
+                                                                    .agricultureDevelopmentItem[
+                                                                        index]
+                                                                    .actualQty ??
+                                                                "")) ??
+                                                            0.0) >
+                                                        0.0)
+                                                    ? Colors.green
+                                                    : Colors.red),
+                                          )),
+                                          DataCell(
+                                            TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: TextEditingController(
+                                                text: (model
+                                                            .agricultureDevelopmentItem[
+                                                                index]
+                                                            .basel ??
+                                                        0)
+                                                    .toStringAsFixed(0),
+                                                // Use an empty string if model.agricultureDevelopmentItem[index].basel is null
+                                              ),
+                                              onChanged: (value) {
+                                                model
+                                                    .agricultureDevelopmentItem[
+                                                        index]
+                                                    .basel = double.tryParse(value);
+                                                model.calculateTotal();
+                                                model.calculatebaseltotal();
 // Set the total to model.agridata.baseltotal
-                                      model.calculatetotal();
-                                    },
-                                  ),
-                                ),
-                                DataCell(
-                                  TextField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller: TextEditingController(
-                                      text: (model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .preEarthing ??
-                                          0)
-                                          .toStringAsFixed(0),
-                                    ),
-                                    onChanged: (value) {
-                                      model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .preEarthing =
-                                          double.parse(value);
-                                      model.calculateTotal();
-                                      model.calculateprearthtotal();
-                                      model.calculatetotal();
-                                    },
-                                  ),
-                                ),
-                                DataCell(
-                                  TextField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller: TextEditingController(
-                                      text: (model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .earth ??
-                                          0)
-                                          .toStringAsFixed(0),
-                                    ),
-                                    onChanged: (value) {
-                                      model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .earth = double.parse(value);
-                                      model.calculateTotal();
-                                      model.calculatedearthtotal();
-                                      model.calculatetotal();
-                                    },
-                                  ),
-                                ),
-                                DataCell(
-                                  TextField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller: TextEditingController(
-                                      text: (model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .rainy ??
-                                          0)
-                                          .toStringAsFixed(0),
-                                    ),
-                                    onChanged: (value) {
-                                      model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .rainy = double.parse(value);
-                                      model.calculateTotal();
-                                      model.calculaterainytotal();
-                                      model.calculatetotal();
-                                    },
-                                  ),
-                                ),
-                                DataCell(
-                                  TextField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller: TextEditingController(
-                                      text: (model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .ratoon1 ??
-                                          0)
-                                          .toStringAsFixed(0),
-                                    ),
-                                    onChanged: (value) {
-                                      model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .ratoon1 = double.parse(value);
-                                      model.calculateTotal();
-                                      model.calculateratoon1total();
-                                      model.calculatetotal();
-                                    },
-                                  ),
-                                ),
-                                DataCell(
-                                  TextField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller: TextEditingController(
-                                      text: (model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .ratoon2 ??
-                                          0)
-                                          .toStringAsFixed(0),
-                                    ),
-                                    onChanged: (value) {
-                                      model
-                                          .agricultureDevelopmentItem[
-                                      index]
-                                          .ratoon2 = double.parse(value);
-                                      model.calculateTotal();
-                                      model.calculateratoon2total();
-                                      model.calculatetotal();
-                                    },
-                                  ),
-                                ),
-                                DataCell(Text(
-                                  (model.agricultureDevelopmentItem[index]
-                                      .qty ??
-                                      0)
-                                      .toStringAsFixed(0),
-                                )),
-                                DataCell(Text(
-                                  (model.agricultureDevelopmentItem[index]
-                                      .rate ??
-                                      0)
-                                      .toString(),
-                                )),
-                                DataCell(Text(
-                                  (model.agricultureDevelopmentItem[index]
-                                      .weightPerUnit ??
-                                      0)
-                                      .toString(),
-                                )),
-                                DataCell(Text(
-                                  (model.agricultureDevelopmentItem[index]
-                                      .totalWeight ??
-                                      0)
-                                      .toString(),
-                                )),
-                                DataCell(Text(
-                                  (model.agricultureDevelopmentItem[index]
-                                      .baseAmount ??
-                                      0)
-                                      .toString(),
-                                )),
-                                DataCell(IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                              'Confirm Delete'),
-                                          content: const Text(
-                                              'Are you sure you want to delete this Record?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the confirmation dialog
+                                                model.calculatetotal();
                                               },
-                                              child: const Text(
-                                                  'Cancel'),
                                             ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the confirmation dialog
-                                                model.deleteAgriAccount(
-                                                    index); // Delete the entry
+                                          ),
+                                          DataCell(
+                                            TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: TextEditingController(
+                                                text: (model
+                                                            .agricultureDevelopmentItem[
+                                                                index]
+                                                            .preEarthing ??
+                                                        0)
+                                                    .toStringAsFixed(0),
+                                              ),
+                                              onChanged: (value) {
+                                                model
+                                                        .agricultureDevelopmentItem[
+                                                            index]
+                                                        .preEarthing =
+                                                    double.parse(value);
+                                                model.calculateTotal();
+                                                model.calculateprearthtotal();
+                                                model.calculatetotal();
                                               },
-                                              child: const Text(
-                                                  'Delete'),
                                             ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(Icons.delete),
-                                ))
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
+                                          ),
+                                          DataCell(
+                                            TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: TextEditingController(
+                                                text: (model
+                                                            .agricultureDevelopmentItem[
+                                                                index]
+                                                            .earth ??
+                                                        0)
+                                                    .toStringAsFixed(0),
+                                              ),
+                                              onChanged: (value) {
+                                                model
+                                                    .agricultureDevelopmentItem[
+                                                        index]
+                                                    .earth = double.parse(value);
+                                                model.calculateTotal();
+                                                model.calculatedearthtotal();
+                                                model.calculatetotal();
+                                              },
+                                            ),
+                                          ),
+                                          DataCell(
+                                            TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: TextEditingController(
+                                                text: (model
+                                                            .agricultureDevelopmentItem[
+                                                                index]
+                                                            .rainy ??
+                                                        0)
+                                                    .toStringAsFixed(0),
+                                              ),
+                                              onChanged: (value) {
+                                                model
+                                                    .agricultureDevelopmentItem[
+                                                        index]
+                                                    .rainy = double.parse(value);
+                                                model.calculateTotal();
+                                                model.calculaterainytotal();
+                                                model.calculatetotal();
+                                              },
+                                            ),
+                                          ),
+                                          DataCell(
+                                            TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: TextEditingController(
+                                                text: (model
+                                                            .agricultureDevelopmentItem[
+                                                                index]
+                                                            .ratoon1 ??
+                                                        0)
+                                                    .toStringAsFixed(0),
+                                              ),
+                                              onChanged: (value) {
+                                                model
+                                                    .agricultureDevelopmentItem[
+                                                        index]
+                                                    .ratoon1 = double.parse(value);
+                                                model.calculateTotal();
+                                                model.calculateratoon1total();
+                                                model.calculatetotal();
+                                              },
+                                            ),
+                                          ),
+                                          DataCell(
+                                            TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: TextEditingController(
+                                                text: (model
+                                                            .agricultureDevelopmentItem[
+                                                                index]
+                                                            .ratoon2 ??
+                                                        0)
+                                                    .toStringAsFixed(0),
+                                              ),
+                                              onChanged: (value) {
+                                                model
+                                                    .agricultureDevelopmentItem[
+                                                        index]
+                                                    .ratoon2 = double.parse(value);
+                                                model.calculateTotal();
+                                                model.calculateratoon2total();
+                                                model.calculatetotal();
+                                              },
+                                            ),
+                                          ),
+                                          DataCell(Text(
+                                            (model.agricultureDevelopmentItem[index]
+                                                        .qty ??
+                                                    0)
+                                                .toStringAsFixed(0),
+                                          )),
+                                          DataCell(Text(
+                                            (model.agricultureDevelopmentItem[index]
+                                                        .rate ??
+                                                    0)
+                                                .toString(),
+                                          )),
+                                          DataCell(Text(
+                                            (model.agricultureDevelopmentItem[index]
+                                                        .weightPerUnit ??
+                                                    0)
+                                                .toString(),
+                                          )),
+                                          DataCell(Text(
+                                            (model.agricultureDevelopmentItem[index]
+                                                        .totalWeight ??
+                                                    0)
+                                                .toString(),
+                                          )),
+                                          DataCell(Text(
+                                            (model.agricultureDevelopmentItem[index]
+                                                        .baseAmount ??
+                                                    0)
+                                                .toString(),
+                                          )),
+                                          DataCell(IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'Confirm Delete'),
+                                                    content: const Text(
+                                                        'Are you sure you want to delete this Record?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context); // Close the confirmation dialog
+                                                        },
+                                                        child: const Text(
+                                                            'Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context); // Close the confirmation dialog
+                                                          model.deleteAgriAccount(
+                                                              index); // Delete the entry
+                                                        },
+                                                        child: const Text(
+                                                            'Delete'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
                           : (model.agricultureDevelopmentItem2.isEmpty)
-                          ? const ListTile(
-                        leading: Icon(
-                          Icons.error,
-                          color: Colors.redAccent,
-                        ),
-                        title: Text(
-                          "No record founds for items!",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Raleway-Bold',
-                              fontWeight: FontWeight.w700),
-                        ),
-                      )
-                          : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 22.0,
-                          border: TableBorder.all(width: 0.5),
-                          // ignore: deprecated_member_use
-                          dataRowHeight: 40.0,
-                          columns: const [
-                            DataColumn(
-                              label: Text('Item code'),
-                            ),
-                            DataColumn(
-                              label: Text('Qty'),
-                            ),
-                            DataColumn(
-                              label: Text('Rate'),
-                            ),
-                            DataColumn(
-                              label: Text('Amount'),
-                            ),
-                            DataColumn(
-                              label: Text('Delete'),
-                              // Add a new DataColumn for the button
-                              numeric: false,
-                            ),
-                          ],
-                          rows: List<DataRow>.generate(
-                            model.agricultureDevelopmentItem2.length,
-                            // Replace 10 with the actual number of rows you want
-                                (int index) => DataRow(
-                              cells: [
-                                DataCell(Text(
-                                  "${model.agricultureDevelopmentItem2[index].itemCode.toString()}:${model.agricultureDevelopmentItem2[index].itemName.toString()}",
-                                )),
-                                DataCell(Text((model
-                                    .agricultureDevelopmentItem2[
-                                index]
-                                    .qty ??
-                                    0)
-                                    .toStringAsFixed(0))),
-                                DataCell(Text(model
-                                    .agricultureDevelopmentItem2[
-                                index]
-                                    .rate
-                                    .toString())),
-                                DataCell(Text(model
-                                    .agricultureDevelopmentItem2[
-                                index]
-                                    .amount
-                                    .toString())),
-                                DataCell(IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                              'Confirm Delete'),
-                                          content: const Text(
-                                              'Are you sure you want to delete this Record?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the confirmation dialog
-                                              },
-                                              child: const Text(
-                                                  'Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the confirmation dialog
-                                                model.deleteAgriAccount2(
-                                                    index); // Delete the entry
-                                              },
-                                              child: const Text(
-                                                  'Delete'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(Icons.delete),
-                                ))
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                              ? const ListTile(
+                                  leading: Icon(
+                                    Icons.error,
+                                    color: Colors.redAccent,
+                                  ),
+                                  title: Text(
+                                    "No record founds for items!",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Raleway-Bold',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                )
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    columnSpacing: 22.0,
+                                    border: TableBorder.all(width: 0.5),
+                                    // ignore: deprecated_member_use
+                                    dataRowHeight: 40.0,
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('Item code'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Qty'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Rate'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Amount'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('Delete'),
+                                        // Add a new DataColumn for the button
+                                        numeric: false,
+                                      ),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      model.agricultureDevelopmentItem2.length,
+                                      // Replace 10 with the actual number of rows you want
+                                      (int index) => DataRow(
+                                        cells: [
+                                          DataCell(Text(
+                                            "${model.agricultureDevelopmentItem2[index].itemCode.toString()}:${model.agricultureDevelopmentItem2[index].itemName.toString()}",
+                                          )),
+                                          DataCell(Text((model
+                                                      .agricultureDevelopmentItem2[
+                                                          index]
+                                                      .qty ??
+                                                  0)
+                                              .toStringAsFixed(0))),
+                                          DataCell(Text(model
+                                              .agricultureDevelopmentItem2[
+                                                  index]
+                                              .rate
+                                              .toString())),
+                                          DataCell(Text(model
+                                              .agricultureDevelopmentItem2[
+                                                  index]
+                                              .amount
+                                              .toString())),
+                                          DataCell(IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'Confirm Delete'),
+                                                    content: const Text(
+                                                        'Are you sure you want to delete this Record?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context); // Close the confirmation dialog
+                                                        },
+                                                        child: const Text(
+                                                            'Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context); // Close the confirmation dialog
+                                                          model.deleteAgriAccount2(
+                                                              index); // Delete the entry
+                                                        },
+                                                        child: const Text(
+                                                            'Delete'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                       const SizedBox(
                         height: 15,
                       ),
                       (model.agricultureDevelopmentItem.isNotEmpty &&
-                          model.agridata.salesType == 'Fertilizer')
+                              model.agridata.salesType == 'Fertilizer')
                           ? ElevatedButton(
-                          onPressed: () =>
-                              getAgricaultureDetails(context, model, -1),
-                          child: const Text(
-                              'Add New Agriculture Development *'))
+                              onPressed: () =>
+                                  getAgricaultureDetails(context, model, -1),
+                              child: const Text(
+                                  'Add New Agriculture Development *'))
                           : const SizedBox(),
                       const SizedBox(
                         height: 15,
@@ -1002,125 +1002,125 @@ class AddAgriScreen extends StatelessWidget {
                       ),
                       model.agridata.salesType == 'Fertilizer'
                           ? Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              key: Key(
-                                  model.agridata.baselTotal.toString()),
-                              readOnly: true,
-                              initialValue: model.agridata.baselTotal
-                                  ?.toStringAsFixed(0) ??
-                                  "",
-                              decoration: const InputDecoration(
-                                labelText: 'basel Total',
-                              ),
-                              onChanged: model.setbaseltotal,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              key: Key(model.agridata.preEarthingTotal
-                                  .toString()),
-                              readOnly: true,
-                              initialValue: model
-                                  .agridata.preEarthingTotal
-                                  ?.toStringAsFixed(0) ??
-                                  "",
-                              decoration: const InputDecoration(
-                                labelText: 'PreEarthing Total',
-                              ),
-                              onChanged: model.setpreeath,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              key: Key(
-                                  model.agridata.earthTotal.toString()),
-                              readOnly: true,
-                              initialValue: model.agridata.earthTotal
-                                  ?.toStringAsFixed(0) ??
-                                  "",
-                              decoration: const InputDecoration(
-                                labelText: 'Earth Total',
-                              ),
-                              onChanged: model.setearthtotal,
-                            ),
-                          ),
-                        ],
-                      )
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    key: Key(
+                                        model.agridata.baselTotal.toString()),
+                                    readOnly: true,
+                                    initialValue: model.agridata.baselTotal
+                                            ?.toStringAsFixed(0) ??
+                                        "",
+                                    decoration: const InputDecoration(
+                                      labelText: 'basel Total',
+                                    ),
+                                    onChanged: model.setbaseltotal,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    key: Key(model.agridata.preEarthingTotal
+                                        .toString()),
+                                    readOnly: true,
+                                    initialValue: model
+                                            .agridata.preEarthingTotal
+                                            ?.toStringAsFixed(0) ??
+                                        "",
+                                    decoration: const InputDecoration(
+                                      labelText: 'PreEarthing Total',
+                                    ),
+                                    onChanged: model.setpreeath,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    key: Key(
+                                        model.agridata.earthTotal.toString()),
+                                    readOnly: true,
+                                    initialValue: model.agridata.earthTotal
+                                            ?.toStringAsFixed(0) ??
+                                        "",
+                                    decoration: const InputDecoration(
+                                      labelText: 'Earth Total',
+                                    ),
+                                    onChanged: model.setearthtotal,
+                                  ),
+                                ),
+                              ],
+                            )
                           : Container(),
                       model.agridata.salesType == 'Fertilizer'
                           ? Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              key: Key(
-                                  model.agridata.rainyTotal.toString()),
-                              readOnly: true,
-                              initialValue: model.agridata.rainyTotal
-                                  ?.toStringAsFixed(0) ??
-                                  "",
-                              decoration: const InputDecoration(
-                                labelText: 'Rainy Total',
-                              ),
-                              onChanged: model.setrainytotal,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              key: Key(
-                                  model.agridata.ratoon1Total.toString()),
-                              readOnly: true,
-                              initialValue: model.agridata.ratoon1Total
-                                  ?.toStringAsFixed(0) ??
-                                  "",
-                              decoration: const InputDecoration(
-                                labelText: 'Ratoon1 Total',
-                              ),
-                              onChanged: model.setratoon1total,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              key: Key(
-                                  model.agridata.ratoon2Total.toString()),
-                              readOnly: true,
-                              initialValue: model.agridata.ratoon2Total
-                                  ?.toStringAsFixed(0) ??
-                                  "",
-                              decoration: const InputDecoration(
-                                labelText: 'Ratoon2 Total',
-                              ),
-                              onChanged: model.setratoon2total,
-                            ),
-                          ),
-                        ],
-                      )
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    key: Key(
+                                        model.agridata.rainyTotal.toString()),
+                                    readOnly: true,
+                                    initialValue: model.agridata.rainyTotal
+                                            ?.toStringAsFixed(0) ??
+                                        "",
+                                    decoration: const InputDecoration(
+                                      labelText: 'Rainy Total',
+                                    ),
+                                    onChanged: model.setrainytotal,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    key: Key(
+                                        model.agridata.ratoon1Total.toString()),
+                                    readOnly: true,
+                                    initialValue: model.agridata.ratoon1Total
+                                            ?.toStringAsFixed(0) ??
+                                        "",
+                                    decoration: const InputDecoration(
+                                      labelText: 'Ratoon1 Total',
+                                    ),
+                                    onChanged: model.setratoon1total,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    key: Key(
+                                        model.agridata.ratoon2Total.toString()),
+                                    readOnly: true,
+                                    initialValue: model.agridata.ratoon2Total
+                                            ?.toStringAsFixed(0) ??
+                                        "",
+                                    decoration: const InputDecoration(
+                                      labelText: 'Ratoon2 Total',
+                                    ),
+                                    onChanged: model.setratoon2total,
+                                  ),
+                                ),
+                              ],
+                            )
                           : Container(),
                       model.agridata.salesType == 'Fertilizer'
                           ? TextFormField(
-                        key: Key(model.agridata.total.toString()),
-                        readOnly: true,
-                        initialValue:
-                        model.agridata.total?.toStringAsFixed(0) ??
-                            "",
-                        decoration: const InputDecoration(
-                          labelText: 'Total',
-                        ),
-                        onChanged: model.settotal,
-                      )
+                              key: Key(model.agridata.total.toString()),
+                              readOnly: true,
+                              initialValue:
+                                  model.agridata.total?.toStringAsFixed(0) ??
+                                      "",
+                              decoration: const InputDecoration(
+                                labelText: 'Total',
+                              ),
+                              onChanged: model.settotal,
+                            )
                           : Container(),
                       if (model.agridata.salesType == 'Fertilizer')
                         Row(
@@ -1130,8 +1130,8 @@ class AddAgriScreen extends StatelessWidget {
                                 key: Key(model.agridata.totalWeight.toString()),
                                 readOnly: true,
                                 initialValue:
-                                model.agridata.totalWeight?.toString() ??
-                                    "",
+                                    model.agridata.totalWeight?.toString() ??
+                                        "",
                                 decoration: const InputDecoration(
                                   labelText: 'Total Weight',
                                 ),
@@ -1147,7 +1147,7 @@ class AddAgriScreen extends StatelessWidget {
                                     model.agridata.totalBaseAmount.toString()),
                                 readOnly: true,
                                 initialValue: model.agridata.totalBaseAmount
-                                    ?.toString() ??
+                                        ?.toString() ??
                                     "",
                                 decoration: const InputDecoration(
                                   labelText: 'Total Amount',
@@ -1167,93 +1167,93 @@ class AddAgriScreen extends StatelessWidget {
                       ),
                       (model.grantor.isEmpty)
                           ? const ListTile(
-                        leading: Icon(
-                          Icons.error,
-                          color: Colors.redAccent,
-                        ),
-                        title: Text(
-                          "No record founds for grantors!",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Raleway-Bold',
-                              fontWeight: FontWeight.w700),
-                        ),
-                      )
+                              leading: Icon(
+                                Icons.error,
+                                color: Colors.redAccent,
+                              ),
+                              title: Text(
+                                "No record founds for grantors!",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Raleway-Bold',
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            )
                           : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 22.0,
-                          border: TableBorder.all(width: 0.5),
-                          // ignore: deprecated_member_use
-                          dataRowHeight: 40.0,
-                          columns: const [
-                            DataColumn(
-                              label: Text('Village'),
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                columnSpacing: 22.0,
+                                border: TableBorder.all(width: 0.5),
+                                // ignore: deprecated_member_use
+                                dataRowHeight: 40.0,
+                                columns: const [
+                                  DataColumn(
+                                    label: Text('Village'),
+                                  ),
+                                  DataColumn(
+                                    label: Text('Surety Code'),
+                                  ),
+                                  DataColumn(
+                                    label: Text('Surety Name'),
+                                  ),
+                                  DataColumn(
+                                    label: Text('Delete'),
+                                    // Add a new DataColumn for the button
+                                    numeric: false,
+                                  ),
+                                ],
+                                rows: List<DataRow>.generate(
+                                  model.grantor.length,
+                                  // Replace 10 with the actual number of rows you want
+                                  (int index) => DataRow(
+                                    cells: [
+                                      DataCell(Text(model.grantor[index].village
+                                          .toString())),
+                                      DataCell(Text(model
+                                          .grantor[index].suretyExistingCode
+                                          .toString())),
+                                      DataCell(Text(model
+                                          .grantor[index].suretyName
+                                          .toString())),
+                                      DataCell(IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Confirm Delete'),
+                                                content: const Text(
+                                                    'Are you sure you want to delete this Granter?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          context); // Close the confirmation dialog
+                                                    },
+                                                    child: const Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          context); // Close the confirmation dialog
+                                                      model.deleteBankAccount(
+                                                          index); // Delete the entry
+                                                    },
+                                                    child: const Text('Delete'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(Icons.delete),
+                                      ))
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                            DataColumn(
-                              label: Text('Surety Code'),
-                            ),
-                            DataColumn(
-                              label: Text('Surety Name'),
-                            ),
-                            DataColumn(
-                              label: Text('Delete'),
-                              // Add a new DataColumn for the button
-                              numeric: false,
-                            ),
-                          ],
-                          rows: List<DataRow>.generate(
-                            model.grantor.length,
-                            // Replace 10 with the actual number of rows you want
-                                (int index) => DataRow(
-                              cells: [
-                                DataCell(Text(model.grantor[index].village
-                                    .toString())),
-                                DataCell(Text(model
-                                    .grantor[index].suretyExistingCode
-                                    .toString())),
-                                DataCell(Text(model
-                                    .grantor[index].suretyName
-                                    .toString())),
-                                DataCell(IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                              'Confirm Delete'),
-                                          content: const Text(
-                                              'Are you sure you want to delete this Granter?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the confirmation dialog
-                                              },
-                                              child: const Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); // Close the confirmation dialog
-                                                model.deleteBankAccount(
-                                                    index); // Delete the entry
-                                              },
-                                              child: const Text('Delete'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(Icons.delete),
-                                ))
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 10.0,
                       ),
@@ -1302,7 +1302,7 @@ class AddAgriScreen extends StatelessWidget {
       model.setValuesTograntorVaribles(index);
     }
     SchedulerBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         showDialog(
           context: context,
           builder: (context) {
@@ -1331,18 +1331,18 @@ class AddAgriScreen extends StatelessWidget {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
-                                return model.villagelist
+                                return model.villageList
                                     .map((route) => route.name ?? "")
                                     .toList()
                                     .where((route) => route
-                                    .toLowerCase()
-                                    .contains(textEditingValue.text
-                                    .toLowerCase()));
+                                        .toLowerCase()
+                                        .contains(textEditingValue.text
+                                            .toLowerCase()));
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
-                                final routeData = model.villagelist.firstWhere(
-                                        (route) => route.name == routeName);
+                                final routeData = model.villageList.firstWhere(
+                                    (route) => route.name == routeName);
                                 model.setSelectedgrantorvillage(
                                     routeData.name); // Pass the route
                               },
@@ -1370,14 +1370,14 @@ class AddAgriScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -1404,32 +1404,32 @@ class AddAgriScreen extends StatelessWidget {
                                   text: index == -1
                                       ? ""
                                       : model.grantor[index]
-                                      .suretyExistingCode ??
-                                      ""),
+                                              .suretyExistingCode ??
+                                          ""),
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                textEditingValue.text.toLowerCase();
+                                    textEditingValue.text.toLowerCase();
                                 return model.farmerList
                                     .where((grower) =>
-                                (grower.supplierName
-                                    ?.toLowerCase()
-                                    .contains(searchText) ??
-                                    false) ||
-                                    (grower.existingSupplierCode
-                                        ?.toLowerCase()
-                                        .contains(searchText) ??
-                                        false))
+                                        (grower.supplierName
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false) ||
+                                        (grower.existingSupplierCode
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false))
                                     .map((grower) => grower.supplierName ?? "")
                                     .toList();
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final bankData = model.farmerList.firstWhere(
-                                        (bank) => bank.supplierName == routeName);
+                                    (bank) => bank.supplierName == routeName);
                                 model.setSelectedgrantor(
                                     bankData.name); // Pass the route
                               },
@@ -1455,17 +1455,17 @@ class AddAgriScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           final routeData = model.farmerList
                                               .firstWhere((route) =>
-                                          route.supplierName == option);
+                                                  route.supplierName == option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -1530,7 +1530,7 @@ class AddAgriScreen extends StatelessWidget {
       model.setValuesToAgriVaribles(index);
     }
     SchedulerBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         showDialog(
           context: context,
           builder: (context) {
@@ -1550,38 +1550,38 @@ class AddAgriScreen extends StatelessWidget {
                               key: Key(index == -1
                                   ? ""
                                   : model.agricultureDevelopmentItem[index]
-                                  .itemCode ??
-                                  ""),
+                                          .itemCode ??
+                                      ""),
                               initialValue: TextEditingValue(
                                   text: index == -1
                                       ? ""
                                       : model.agricultureDevelopmentItem[index]
-                                      .itemCode ??
-                                      ""),
+                                              .itemCode ??
+                                          ""),
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                textEditingValue.text.toLowerCase();
-                                return model.fertilizeritemlist
+                                    textEditingValue.text.toLowerCase();
+                                return model.fertilizerItemList
                                     .where((grower) =>
-                                (grower.itemName
-                                    ?.toLowerCase()
-                                    .contains(searchText) ??
-                                    false) ||
-                                    (grower.itemCode
-                                        ?.toLowerCase()
-                                        .contains(searchText) ??
-                                        false))
+                                        (grower.itemName
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false) ||
+                                        (grower.itemCode
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false))
                                     .map((grower) => grower.itemName ?? "")
                                     .toList();
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final bankData = model.itemList.firstWhere(
-                                        (bank) => bank.itemName == routeName);
+                                    (bank) => bank.itemName == routeName);
                                 model.setSelectedAgri(
                                     bankData.itemCode); // Pass the route
                               },
@@ -1613,17 +1613,17 @@ class AddAgriScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           final routeData = model.itemList
                                               .firstWhere((route) =>
-                                          route.itemName == option);
+                                                  route.itemName == option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -1701,7 +1701,7 @@ class AddAgriScreen extends StatelessWidget {
       model.setValuesToAgriVaribles2(index);
     }
     SchedulerBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         showDialog(
           context: context,
           builder: (context) {
@@ -1721,38 +1721,38 @@ class AddAgriScreen extends StatelessWidget {
                               key: Key(index == -1
                                   ? ""
                                   : model.agricultureDevelopmentItem2[index]
-                                  .itemCode ??
-                                  ""),
+                                          .itemCode ??
+                                      ""),
                               initialValue: TextEditingValue(
                                   text: index == -1
                                       ? ""
                                       : model.agricultureDevelopmentItem2[index]
-                                      .itemCode ??
-                                      ""),
+                                              .itemCode ??
+                                          ""),
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text.isEmpty) {
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                textEditingValue.text.toLowerCase();
+                                    textEditingValue.text.toLowerCase();
                                 return model.itemList
                                     .where((grower) =>
-                                (grower.itemName
-                                    ?.toLowerCase()
-                                    .contains(searchText) ??
-                                    false) ||
-                                    (grower.itemCode
-                                        ?.toLowerCase()
-                                        .contains(searchText) ??
-                                        false))
+                                        (grower.itemName
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false) ||
+                                        (grower.itemCode
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false))
                                     .map((grower) => grower.itemName ?? "")
                                     .toList();
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final bankData = model.itemList.firstWhere(
-                                        (bank) => bank.itemName == routeName);
+                                    (bank) => bank.itemName == routeName);
                                 model.setSelectedAgri2(
                                     bankData.itemCode); // Pass the route
                               },
@@ -1784,17 +1784,17 @@ class AddAgriScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           final routeData = model.itemList
                                               .firstWhere((route) =>
-                                          route.itemName == option);
+                                                  route.itemName == option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);

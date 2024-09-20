@@ -3,10 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
 import 'package:sugar_mill_app/constants.dart';
 import 'package:sugar_mill_app/models/agri.dart';
-import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_screen.dart';
 import '../../../models/agri_cane_model.dart';
 import '../../../models/agri_masters.dart';
 import '../../../models/cane_farmer.dart';
@@ -32,18 +30,18 @@ class AgriViewModel extends BaseViewModel {
     'Ratoon2'
   ];
   bool isEdit = false;
-  List<String> seasonlist = [""];
-  List<String> saleslist = ["Nursery", "Fertilizer"];
-  List<AgriCane> canelistwithfilter = [];
+  List<String> seasonList = [""];
+  List<String> salesList = ["Nursery", "Fertilizer"];
+  List<AgriCane> caneListWithFilter = [];
   List<caneFarmer> farmerList = [];
   List<ItemList> itemList = [];
-  List<FertilizerItemList> fertilizeritemlist = [];
+  List<FertilizerItemList> fertilizerItemList = [];
   List<WaterSupplierList> supplierList = [];
-  List<Village> villagelist = [];
-  String? selectedplot;
+  List<Village> villageList = [];
+  String? selectedPlot;
   String? season;
-  String? selectedVendorname;
-  String? selectedplant;
+  String? selectedVendorName;
+  String? selectedPlant;
   String? selectedvillage;
   String? selectedcropvariety;
   String? selectedcroptype;
@@ -62,19 +60,19 @@ class AgriViewModel extends BaseViewModel {
   initialise(BuildContext context, String agriid) async {
     setBusy(true);
     masters = await AddAgriServices().getMasters() ?? AgriMasters();
-    seasonlist = masters.season ?? [];
+    seasonList = masters.season ?? [];
     itemList = masters.itemList ?? [];
-    fertilizeritemlist = masters.fertilizerItemList ?? [];
-    villagelist = masters.village ?? [];
+    fertilizerItemList = masters.fertilizerItemList ?? [];
+    villageList = masters.village ?? [];
     int currentYear = DateTime
         .now()
         .year;
 
     // Filter the list to get the latest season
-    String latestSeason = seasonlist.firstWhere(
+    String latestSeason = seasonList.firstWhere(
           (season) => season.startsWith("$currentYear-"),
       orElse: () =>
-      seasonlist
+      seasonList
           .last, // If no season matches the current year, take the last one
     );
     agridata.season = latestSeason;
@@ -110,11 +108,11 @@ class AgriViewModel extends BaseViewModel {
           : agridata.date ?? "";
       // agridata.date = formattedDate;
       datecontroller.text = formattedDate;
-      canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(
+      caneListWithFilter = (await AddAgriServices().fetchCaneListWithFilter(
           agridata.season ?? "",
           agridata.farmerVillage ?? "",
           farmercode ?? ""));
-      Logger().i(canelistwithfilter);
+      Logger().i(caneListWithFilter);
       agricultureDevelopmentItem
           .addAll(agridata.agricultureDevelopmentItem?.toList() ?? []);
       grantor.addAll(agridata.grantor?.toList() ?? []);
@@ -140,7 +138,7 @@ class AgriViewModel extends BaseViewModel {
       }
     }
 
-    if (seasonlist.isEmpty) {
+    if (seasonList.isEmpty) {
       logout(context);
     }
 
@@ -185,7 +183,7 @@ class AgriViewModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-            Navigator.popAndPushNamed(context, Routes.listCaneScreen);
+            Navigator.popAndPushNamed(context, Routes.listAgriScreen);
           }
         }
       }
@@ -524,7 +522,7 @@ class AgriViewModel extends BaseViewModel {
   void setsupplier(String? suppli) async {
     supplier = suppli;
     agridata.nurserySupplier = supplier.toString();
-    Logger().i(selectedplot);
+    Logger().i(selectedPlot);
     final selectedCaneData = supplierList
         .firstWhere((caneData) => caneData.name.toString() == suppli);
     Logger().i(selectedCaneData);
@@ -535,14 +533,14 @@ class AgriViewModel extends BaseViewModel {
   }
 
   void setPlotnumber(String? caneRegistrationId) async {
-    selectedplot = caneRegistrationId;
-    agridata.caneRegistrationId = selectedplot.toString();
-    Logger().i(selectedplot);
-    final selectedCaneData = canelistwithfilter.firstWhere(
-            (caneData) => caneData.name.toString() == caneRegistrationId);
+
+    Logger().i(selectedPlot);
+    final selectedCaneData = caneListWithFilter.firstWhere(
+            (caneData) => caneData.plotNo.toString() == caneRegistrationId);
     Logger().i(selectedCaneData);
-    selectedVendorname = selectedCaneData.growerName;
-    selectedplant = selectedCaneData.plantName;
+    agridata.caneRegistrationId=selectedCaneData.name;
+    selectedVendorName = selectedCaneData.growerName;
+    selectedPlant = selectedCaneData.plantName;
     selectedvillage = selectedCaneData.area;
     selectedcropvariety = selectedCaneData.cropVariety;
     selectedcroptype = selectedCaneData.cropType;
@@ -551,7 +549,7 @@ class AgriViewModel extends BaseViewModel {
     selectedgrower = selectedCaneData.growerCode;
     selectedvendor = selectedCaneData.vendorCode;
     routeKm = selectedCaneData.routeKm.toString();
-    agridata.growerName = selectedVendorname;
+    agridata.growerName = selectedVendorName;
     agridata.route = routeKm;
     agridata.village = selectedvillage;
     agridata.cropVariety = selectedcropvariety;
@@ -560,7 +558,7 @@ class AgriViewModel extends BaseViewModel {
     agridata.date = datecontroller.text;
     agridata.supplier = selectedgrower;
     agridata.vendorCode = selectedvendor;
-    agridata.branch = selectedplant;
+    agridata.branch = selectedPlant;
     notifyListeners();
   }
 
@@ -657,9 +655,9 @@ class AgriViewModel extends BaseViewModel {
     agridata.vendorCode = selectedgrowerData.existingSupplierCode;
     agridata.growerName = selectedgrowername;
     Logger().i(selectedgrowername);
-    canelistwithfilter = (await AddAgriServices().fetchCaneListWithFilter(
+    caneListWithFilter = (await AddAgriServices().fetchCaneListWithFilter(
         agridata.season ?? "", agridata.village ?? "", farmercode ?? ""));
-    if (canelistwithfilter.isEmpty) {
+    if (caneListWithFilter.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
@@ -681,20 +679,20 @@ class AgriViewModel extends BaseViewModel {
   }
 
   void setSelectedVendor(String? supplier) {
-    selectedVendorname = supplier;
-    agridata.vendorCode = selectedVendorname;
+    selectedVendorName = supplier;
+    agridata.vendorCode = selectedVendorName;
     notifyListeners();
   }
 
   void setSelectedfarmername(String? growerName) {
-    selectedVendorname = growerName;
-    agridata.growerName = selectedVendorname;
+    selectedVendorName = growerName;
+    agridata.growerName = selectedVendorName;
     notifyListeners();
   }
 
   void setSelectedPlantName(String? branch) {
-    selectedplant = branch;
-    agridata.branch = selectedplant;
+    selectedPlant = branch;
+    agridata.branch = selectedPlant;
     notifyListeners();
   }
 
@@ -1005,7 +1003,7 @@ class AgriViewModel extends BaseViewModel {
     Logger().i(agri);
     itemCode = agri ?? "";
     final bankData =
-    fertilizeritemlist.firstWhere((bank) => bank.itemCode == agri);
+    fertilizerItemList.firstWhere((bank) => bank.itemCode == agri);
     itemName = bankData.itemName ?? "";
     weight = bankData.weightPerUnit ?? 0.0;
     itemTaxTemp = bankData.itemTaxTemp ?? "";
@@ -1024,7 +1022,7 @@ class AgriViewModel extends BaseViewModel {
   void setSelectedgrantorvillage(String? village) async {
     Logger().i(village);
     final selectedRouteData =
-    villagelist.firstWhere((bankData) => bankData.name == village);
+    villageList.firstWhere((bankData) => bankData.name == village);
     Logger().i(selectedRouteData);
     suretyvillage = selectedRouteData.name ?? "";
     farmerList =

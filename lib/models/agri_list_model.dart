@@ -7,6 +7,7 @@ class AgriListModel {
   double? area;
   String? village;
   String? name;
+  String? plotNo;
   String? surveyNumber;
   String? caneRegistrationId;
 
@@ -16,6 +17,7 @@ class AgriListModel {
       this.growerName,
       this.cropVariety,
       this.date,
+        this.plotNo,
       this.area,
       this.village,
       this.name,
@@ -29,6 +31,7 @@ class AgriListModel {
     cropVariety = json['crop_variety'];
     date = json['date'];
     area = json['area'];
+    plotNo=json['plot_no'];
     village = json['village'];
     name = json['name'];
     surveyNumber = json['survey_number'];
@@ -43,6 +46,7 @@ class AgriListModel {
     data['crop_variety'] = cropVariety;
     data['date'] = date;
     data['area'] = area;
+    data['plot_no']=plotNo;
     data['village'] = village;
     data['name'] = name;
     data['survey_number'] = surveyNumber;

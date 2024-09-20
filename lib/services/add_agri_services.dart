@@ -20,7 +20,7 @@ class AddAgriServices {
         '$apiBaseUrl/api/resource/Village?limit_page_length=999999&fields=["name","circle_office","taluka"]',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -39,7 +39,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -50,13 +50,12 @@ class AddAgriServices {
 
   Future<List<caneFarmer>> fetchFarmerListWithFilter(String village) async {
     try {
-      var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Farmer List?fields=["supplier_name","existing_supplier_code","village","name"]&limit_page_length=999999&filters=[["village","like","$village%"],["workflow_state","=","approved"]]',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -77,7 +76,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -95,7 +94,7 @@ class AddAgriServices {
         '$apiBaseUrl/api/resource/Agriculture Development/${agri.name}',
         options: Options(
           method: 'PUT',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: agri.toJson(),
       );
@@ -112,7 +111,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -128,7 +127,7 @@ class AddAgriServices {
         '$apiBaseUrl/api/resource/Agriculture Development/$id',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -143,7 +142,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -163,7 +162,7 @@ class AddAgriServices {
         apiListagri,
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: data,
       );
@@ -180,7 +179,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -196,7 +195,7 @@ class AddAgriServices {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.agriMasters',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -226,7 +225,7 @@ class AddAgriServices {
         apifetchSeason,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -251,7 +250,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -278,7 +277,7 @@ class AddAgriServices {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.calculation?self=AgricultureDevelopment(new-agriculture-development-1)&doctype=Agriculture Development&basel=$basel&preeathing=$preEarth&earth=$earth&rainy=$rainy&ratoon1=$ratoon1&ratoon2=$ratoon2&area=$developmentArea&croptype=$cropType&cropvariety=$cropVariety&areafixed=$areaFixed&areagunta=$areaGunta',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -307,16 +306,16 @@ class AddAgriServices {
   Future<List<AgriCane>> fetchCaneListWithFilter(
       String season, String village, String farmerCode) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       String url =
-          '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["village","like","$village%"],["grower_code","like","$farmerCode%"]]&limit_page_length=99999';
+          '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","plot_no","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["village","like","$village%"],["grower_code","like","$farmerCode%"]]&limit_page_length=99999';
       Logger().i(url);
       var response = await dio.request(
         url,
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -337,7 +336,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -348,13 +347,13 @@ class AddAgriServices {
 
   Future<List<WaterSupplierList>> fetchSupplierList(String salestype) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Farmer List?fields=["name","supplier_name","existing_supplier_code"]&limit_page_length=99999&filters=[["workflow_state","=","approved"],["$salestype","=",1]]',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -374,7 +373,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -385,13 +384,13 @@ class AddAgriServices {
 
   Future<List<Item>> fetchItem() async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Item?fields=["item_code","item_name","standard_rate"]&limit_page_length=999999',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -411,7 +410,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -422,13 +421,13 @@ class AddAgriServices {
 
   Future<List<FertilizerItemList>> fetchItemwithfilter() async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.get_fertilizeritem_list',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -450,7 +449,7 @@ class AddAgriServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: const Color(0xFFFFFFFF),
         backgroundColor: const Color(0xFFBA1A1A),
       );
@@ -461,13 +460,13 @@ class AddAgriServices {
 
   Future<List<ItemList>> fetchItemlist() async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.agriculture_development.agriculture_development.get_item_list',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {

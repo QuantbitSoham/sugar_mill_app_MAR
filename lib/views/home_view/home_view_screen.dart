@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logger/logger.dart';
@@ -42,7 +43,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               Image.asset(
                 imagePath,
                 height: 120,
-                width: 300,
+                width: 500,
                 fit: BoxFit.fill,
               ),
               Expanded(
@@ -64,24 +65,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('Do you want to exit an App'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () =>
-                Navigator.of(context).pop(false), //<-- SEE HERE
-            child: const Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(false), //<-- SEE HERE
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(true), // <-- SEE HERE
+                child: const Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () =>
-                Navigator.of(context).pop(true), // <-- SEE HERE
-            child: const Text('Yes'),
-          ),
-        ],
-      ),
-    )) ??
+        )) ??
         false;
   }
 
@@ -150,165 +151,165 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         children: [
                           model.dashboard.empName != null
                               ? Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  // Customize the shadow color and opacity
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0,
-                                      3), // Customize the shadow offset
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              model.greeting ?? "",
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight:
-                                                FontWeight.w300,
-                                              ),
-                                            ),
-                                            Text(
-                                              "${model.dashboard.empName.toString().toUpperCase()},",
-                                              overflow:
-                                              TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 22,
-                                                fontWeight:
-                                                FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              model.dashboard
-                                                  .lastLogType ==
-                                                  "IN"
-                                                  ? 'Last Check-In at ${model.dashboard.lastLogTime.toString()}'
-                                                  : "You're not check-in yet",
-                                              style: const TextStyle(
-                                                  fontSize: 16),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                        ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        // Customize the shadow color and opacity
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: const Offset(0,
+                                            3), // Customize the shadow offset
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          child: Image.asset(
-                                            fit: BoxFit.fill,
-                                            model.imageurl ?? "",
-                                          ),
-                                        ),
-                                      )
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Center(
-                                    child: OutlinedButton(
-                                      onPressed: () {
-                                        String logtype =
-                                        model.dashboard.lastLogType ==
-                                            "IN"
-                                            ? "OUT"
-                                            : "IN";
-                                        Logger().i(logtype);
-                                        model.employeeLog(
-                                            logtype, context);
-                                      },
-                                      style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(30),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Expanded(
+                                              flex: 3,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    model.greeting ?? "",
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "${model.dashboard.empName.toString().toUpperCase()},",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    model.dashboard
+                                                                .lastLogType ==
+                                                            "IN"
+                                                        ? 'Last Check-In at ${model.dashboard.lastLogTime.toString()}'
+                                                        : "You're not check-in yet",
+                                                    style: const TextStyle(
+                                                        fontSize: 16),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child: Image.asset(
+                                                  fit: BoxFit.fill,
+                                                  model.imageurl ?? "",
+                                                ),
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        side: BorderSide(
-                                            color: model.dashboard
-                                                .lastLogType ==
-                                                "OUT"
-                                                ? Colors.green
-                                                : Colors.red,
-                                            width: 2),
-                                        // Set the border color
-                                        minimumSize: const Size(150,
-                                            50), // Set the minimum button size
-                                      ),
-                                      child: model.isBusy == true
-                                          ? LoadingAnimationWidget
-                                          .hexagonDots(
-                                        color: Colors.blueAccent,
-                                        size: 18,
-                                      )
-                                          : Row(
-                                        mainAxisSize:
-                                        MainAxisSize.min,
-                                        children: [
-                                          Image.asset(
-                                              model.dashboard
-                                                  .lastLogType ==
-                                                  "OUT"
-                                                  ? 'assets/images/check-in.png'
-                                                  : 'assets/images/check-out.png',
-                                              scale: 20),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            model.dashboard
-                                                .lastLogType ==
-                                                "OUT"
-                                                ? 'Check-In'
-                                                : 'Check-Out',
-                                            style: TextStyle(
-                                                color: model.dashboard
-                                                    .lastLogType ==
-                                                    "OUT"
-                                                    ? Colors.green
-                                                    : Colors.red),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Center(
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              String logtype =
+                                                  model.dashboard.lastLogType ==
+                                                          "IN"
+                                                      ? "OUT"
+                                                      : "IN";
+                                              Logger().i(logtype);
+                                              model.employeeLog(
+                                                  logtype, context);
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              side: BorderSide(
+                                                  color: model.dashboard
+                                                              .lastLogType ==
+                                                          "OUT"
+                                                      ? Colors.green
+                                                      : Colors.red,
+                                                  width: 2),
+                                              // Set the border color
+                                              minimumSize: const Size(150,
+                                                  50), // Set the minimum button size
+                                            ),
+                                            child: model.isBusy == true
+                                                ? LoadingAnimationWidget
+                                                    .hexagonDots(
+                                                    color: Colors.blueAccent,
+                                                    size: 18,
+                                                  )
+                                                : Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Image.asset(
+                                                          model.dashboard
+                                                                      .lastLogType ==
+                                                                  "OUT"
+                                                              ? 'assets/images/check-in.png'
+                                                              : 'assets/images/check-out.png',
+                                                          scale: 20),
+                                                      const SizedBox(width: 8),
+                                                      Text(
+                                                        model.dashboard
+                                                                    .lastLogType ==
+                                                                "OUT"
+                                                            ? 'Check-In'
+                                                            : 'Check-Out',
+                                                        style: TextStyle(
+                                                            color: model.dashboard
+                                                                        .lastLogType ==
+                                                                    "OUT"
+                                                                ? Colors.green
+                                                                : Colors.red),
+                                                      ),
+                                                    ],
+                                                  ),
                                           ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : const Center(
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 1,
+                                    child: ListTile(
+                                      leading: Icon(Icons.error,
+                                          color: Colors.redAccent, size: 50),
+                                      title: Text(
+                                        'Employee is not created for this user.\nPlease Contact to HR Admin.',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w900),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                              : const Center(
-                            child: Card(
-                              color: Colors.white,
-                              elevation: 1,
-                              child: ListTile(
-                                leading: Icon(Icons.error,
-                                    color: Colors.redAccent, size: 50),
-                                title: Text(
-                                  'Employee is not created for this user.\nPlease Contact to HR Admin.',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900),
                                 ),
-                              ),
-                            ),
-                          ),
                           const SizedBox(
                             height: 10.0,
                           ),
@@ -358,7 +359,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 Expanded(
                                   child: _buildImageButton(
                                     imagePath:
-                                    'assets/images/cane_registration.jpeg',
+                                        'assets/images/cane_registration.jpeg',
                                     buttonText: 'New Cane Registration',
                                     onPressed: () {
                                       Navigator.pushNamed(
@@ -398,7 +399,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 Expanded(
                                   child: _buildImageButton(
                                     imagePath:
-                                    'assets/images/agri_developement.jpg',
+                                        'assets/images/agri_developement.jpg',
                                     buttonText: 'New Cane Development',
                                     onPressed: () {
                                       Navigator.pushNamed(
@@ -454,7 +455,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 Expanded(
                                   child: _buildImageButton(
                                     imagePath:
-                                    'assets/images/crop_sample_list.jpg',
+                                        'assets/images/crop_sample_list.jpg',
                                     buttonText: 'To Be Crop Samplings',
                                     onPressed: () {
                                       Navigator.pushNamed(
@@ -470,7 +471,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 Expanded(
                                   child: _buildImageButton(
                                     imagePath:
-                                    'assets/images/crop_sample_list.jpg',
+                                        'assets/images/crop_sample_list.jpg',
                                     buttonText: ' Completed Crop Samplings',
                                     onPressed: () {
                                       Navigator.pushNamed(
@@ -497,10 +498,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     onPressed: () {
                                       Navigator.pushNamed(
                                         context,
-                                        Routes.addTripsheetScreen,
+                                        Routes.addTripSheetScreen,
                                         arguments:
-                                        const AddTripsheetScreenArguments(
-                                            tripId: ""),
+                                            const AddTripSheetScreenArguments(
+                                                tripId: ""),
                                       );
                                     },
                                   ),
@@ -523,6 +524,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               ],
                             ),
                           ),
+                          // const SizedBox(
+                          //   height: 15.0,
+                          // ),
+                          // Card(
+                          //   elevation: 1,
+                          //   child: ListTile(
+                          //     leading:
+                          //         Icon(CupertinoIcons.rectangle_on_rectangle),
+                          //     title: Text('Reports'),
+                          //     trailing: Icon(CupertinoIcons.arrow_right),
+                          //     onTap: () {
+                          //       Navigator.pushNamed(
+                          //         context,
+                          //         Routes.reportScreen,
+                          //       );
+                          //     },
+                          //   ),
+                          // ),
                         ],
                       ),
                     ))),

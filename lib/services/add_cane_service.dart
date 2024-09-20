@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,10 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:sugar_mill_app/models/cane.dart';
 import 'package:sugar_mill_app/models/cane_farmer.dart';
 import 'package:sugar_mill_app/models/cane_masters.dart';
-import 'package:sugar_mill_app/models/cane_route.dart';
-
 import '../constants.dart';
-import '../models/village_model.dart';
 
 class AddCaneService {
   Future<String> addCane(Cane cane) async {
@@ -24,16 +20,15 @@ class AddCaneService {
         apiCaneRegistration,
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: data,
       );
 
       if (response.statusCode == 200) {
-        String name = response.data['data']['name'].toString();
-
-        // await AddCaneService().methodcall(name);
-        Fluttertoast.showToast(msg: "Cane Registerted Successfully");
+        String name = response.data['data']['plot_no'].toString();
+        // await methodcall(name);
+        Fluttertoast.showToast(msg: "Cane Registered Successfully");
         return name;
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO Cane registration!");
@@ -43,9 +38,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -55,14 +50,15 @@ class AddCaneService {
   Future<bool> methodcall(String? docname) async {
     try {
       var dio = Dio();
+      var apiUrl='$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.cane_master.cane_master.late_reg?name=$docname';
       var response = await dio.request(
-        '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.cane_master.cane_master.late_reg?name=$docname',
+       apiUrl ,
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
-
+      Logger().i(apiUrl);
       if (response.statusCode == 200) {
         Logger().i('method called');
         // Fluttertoast.showToast(msg: "method called");
@@ -75,8 +71,8 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg: 'Error: ${e.response?.data["message"].toString()} ',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -85,13 +81,13 @@ class AddCaneService {
 
   Future<List<CaneRoute>> fetchroute() async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Route?fields=["route","distance_km","name","village","circle_office","taluka"]&limit_page_length=99999',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -109,9 +105,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -120,13 +116,13 @@ class AddCaneService {
 
   Future<List<caneFarmer>> fetchfarmerListwithfilter(String village) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Farmer List?fields=["supplier_name","existing_supplier_code","village","name"]&filters=[["workflow_state","=","approved"],["is_farmer","=",1],["village","=","$village"]]&limit_page_length=999999',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -147,9 +143,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -163,7 +159,7 @@ class AddCaneService {
         apifetchSeason,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -188,8 +184,8 @@ class AddCaneService {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -203,7 +199,7 @@ class AddCaneService {
         apiVillageListGet,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -222,9 +218,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -238,7 +234,7 @@ class AddCaneService {
         apifetchPlant,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -263,9 +259,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -279,7 +275,7 @@ class AddCaneService {
         apifetchcanevariety,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -304,9 +300,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -320,7 +316,7 @@ class AddCaneService {
         apifetchplantationsystem,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -345,9 +341,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -361,7 +357,7 @@ class AddCaneService {
         apifetchirrigationmethod,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -386,9 +382,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -402,7 +398,7 @@ class AddCaneService {
         apifetchirrigationsource,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -427,9 +423,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -443,7 +439,7 @@ class AddCaneService {
         apifetchseedmaterial,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -468,9 +464,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -484,7 +480,7 @@ class AddCaneService {
         apifetchcrptype,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -509,9 +505,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -525,7 +521,7 @@ class AddCaneService {
         apifetchsoiltype,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -550,9 +546,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -568,7 +564,7 @@ class AddCaneService {
         '$apiBaseUrl/api/resource/Cane Master/${cane.name.toString()}',
         options: Options(
           method: 'PUT',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: cane.toJson(),
       );
@@ -587,9 +583,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -603,7 +599,7 @@ class AddCaneService {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.caneMasters',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -618,8 +614,8 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg: 'Error: ${e.response?.data["message"].toString()} ',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -633,7 +629,7 @@ class AddCaneService {
         '$apiBaseUrl/api/resource/Cane Master/$id',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -648,9 +644,9 @@ class AddCaneService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }

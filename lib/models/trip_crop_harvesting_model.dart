@@ -4,6 +4,7 @@ class CropHarvestingModel {
   String? growerName;
   String? area;
   String? cropVariety;
+  String? plotNo;
   String? plantattionRatooningDate;
   String? surveyNumber;
   double? areaAcrs;
@@ -18,6 +19,7 @@ class CropHarvestingModel {
       this.growerName,
       this.area,
       this.cropVariety,
+        this.plotNo,
       this.plantattionRatooningDate,
       this.surveyNumber,
       this.areaAcrs,
@@ -31,6 +33,7 @@ class CropHarvestingModel {
     growerCode = json['grower_code'];
     growerName = json['grower_name'];
     area = json['area'];
+    plotNo=json['plot_no'];
     cropVariety = json['crop_variety'];
     plantattionRatooningDate = json['plantattion_ratooning_date'];
     surveyNumber = json['survey_number'];
@@ -47,6 +50,7 @@ class CropHarvestingModel {
     data['grower_code'] = growerCode;
     data['grower_name'] = growerName;
     data['area'] = area;
+    data['plot_no']=plotNo;
     data['crop_variety'] = cropVariety;
     data['plantattion_ratooning_date'] = plantattionRatooningDate;
     data['survey_number'] = surveyNumber;

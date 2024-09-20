@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
 import '../../../models/agri_list_model.dart';
@@ -27,21 +28,27 @@ class ListAgriModel extends BaseViewModel {
 
     // Filter the list to get the latest season
     String latestSeason = seasonList.firstWhere(
-          (season) => season.startsWith("$currentYear-"),
+      (season) => season.startsWith("$currentYear-"),
       orElse: () => seasonList
           .last, // If no season matches the current year, take the last one
     );
+
     seasonController.text = latestSeason;
     // canefilterList = caneList;
     await filterListBySeason(name: latestSeason);
     setBusy(false);
     if (seasonList.isEmpty) {
-      logout(context);
+      Logger().i(seasonList.length);
+      if(context.mounted) {
+        logout(context);
+      }
     }
     notifyListeners();
   }
 
   ///dhdjhdjhj
+
+
 
   Future<void> refresh() async {
     await filterListBySeason(name: seasonController.text);
@@ -50,13 +57,11 @@ class ListAgriModel extends BaseViewModel {
 
   Future<void> filterListBySeason({String? name}) async {
     caneSeasonFilter = name ?? caneSeasonFilter;
-    notifyListeners();
     filteredAgriList =
-    await ListAgriService().getAgriListByNameFilter(caneSeasonFilter);
-    filteredAgriList.sort(
-            (a, b) => b.caneRegistrationId!.compareTo(a.caneRegistrationId ?? ''));
+        await ListAgriService().getAgriListByNameFilter(caneSeasonFilter);
     notifyListeners();
   }
+
 
   void getAgriListByVillageFarmerNameFilter(
       {String? village, String? name}) async {
@@ -64,9 +69,8 @@ class ListAgriModel extends BaseViewModel {
     caneVillageFilter = village ?? caneVillageFilter;
     notifyListeners();
     filteredAgriList = await ListAgriService()
-        .getAgriListByvillagefarmernameFilter(
-        caneVillageFilter, caneNameFilter);
-
+        .getAgriListByVillageFarmerNameFilter(
+            caneVillageFilter, caneNameFilter);
     notifyListeners();
   }
 

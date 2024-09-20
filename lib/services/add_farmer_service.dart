@@ -19,7 +19,7 @@ class FarmerService {
         apiVillageListGet,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -38,7 +38,7 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -54,7 +54,7 @@ class FarmerService {
         '$apiBaseUrl/api/resource/Bank Master?fields=["bank_and_branch","branch","ifsc_code","name"]&limit_page_length=9999',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -72,7 +72,7 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -88,7 +88,7 @@ class FarmerService {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.vendor_code?docname=$docname',
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -119,7 +119,7 @@ class FarmerService {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.role',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -154,7 +154,7 @@ class FarmerService {
           '$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.aadhardata',
           options: Options(
             method: 'GET',
-            headers: {'Cookie': await getTocken()},
+            headers: {'Authorization': await getToken()},
           ),
           data: data);
 
@@ -184,7 +184,7 @@ class FarmerService {
         apiFarmerListPost,
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: data,
       );
@@ -203,7 +203,7 @@ class FarmerService {
       if (e is DioException) {
         Fluttertoast.showToast(
             msg: "${e.response?.data["exception"].toString()}");
-        Logger().e(e.message);
+        Logger().e(e.response?.data);
       } else {
         Fluttertoast.showToast(msg: "Error occurred $e");
         Logger().e(e);
@@ -228,7 +228,7 @@ class FarmerService {
         apiUploadFilePost,
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: data,
       );
@@ -249,7 +249,7 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -265,7 +265,7 @@ class FarmerService {
         '$apiBaseUrl/api/resource/Farmer List/$id',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -281,7 +281,7 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -299,7 +299,7 @@ class FarmerService {
         '$apiBaseUrl/api/resource/Farmer List/${farmer.name}',
         options: Options(
           method: 'PUT',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: farmer.toJson(),
       );
@@ -315,7 +315,7 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );

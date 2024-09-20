@@ -9,7 +9,8 @@ class AgriCane {
   String? plantattionRatooningDate;
   double? areaAcrs;
   String? plantName;
-  int? name;
+  int? plotNo;
+  String? name;
   String? soilType;
   String? season;
 
@@ -19,6 +20,7 @@ class AgriCane {
       this.growerName,
       this.growerCode,
       this.area,
+      this.plotNo,
       this.cropType,
       this.cropVariety,
       this.plantattionRatooningDate,
@@ -35,6 +37,7 @@ class AgriCane {
     growerCode = json['grower_code'];
     area = json['area'];
     cropType = json['crop_type'];
+    plotNo=json['plot_no'];
     cropVariety = json['crop_variety'];
     plantattionRatooningDate = json['plantattion_ratooning_date'];
     areaAcrs = json['area_acrs'];
@@ -51,6 +54,7 @@ class AgriCane {
     data['grower_name'] = growerName;
     data['grower_code'] = growerCode;
     data['area'] = area;
+    data['plot_no']=plotNo;
     data['crop_type'] = cropType;
     data['crop_variety'] = cropVariety;
     data['plantattion_ratooning_date'] = plantattionRatooningDate;

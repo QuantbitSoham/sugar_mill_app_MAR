@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
 import '../../../models/tripsheet_list_search.dart';
@@ -23,7 +24,7 @@ class ListTripsheet extends BaseViewModel {
 
     // Filter the list to get the latest season
     String latestSeason = seasonList.firstWhere(
-          (season) => season.startsWith("$currentYear-"),
+      (season) => season.startsWith("$currentYear-"),
       orElse: () => seasonList
           .last, // If no season matches the current year, take the last one
     );
@@ -36,17 +37,38 @@ class ListTripsheet extends BaseViewModel {
     notifyListeners();
   }
 
+  Color getTileColor(String? plantationStatus) {
+    switch (plantationStatus) {
+      case 'New':
+        return  Colors.grey;
+      case 'Token Pending':
+        return Colors.redAccent.shade200;
+      case 'Token Submitted':
+        return Colors.blue;
+      case 'Weight Done':
+        return Colors.green;
+      default:
+        return Colors.black;
+    }
+  }
+
   Future<void> refresh() async {
-    tripSheetFilter = (await ListTripshhetService().getAllTripsheetList())
-        .cast<TripSheetSearch>();
-    tripSheetFilter.sort((a, b) => b.name!.compareTo(a.name ?? ""));
-    notifyListeners();
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonList.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonList
+          .last, // If no season matches the current year, take the last one
+    );
+    seasonController.text = latestSeason;
+    await filterListByNameAndVillage(season: latestSeason);
   }
 
   void filterList(String filter, String query) async {
     notifyListeners();
     tripSheetFilter =
-    await ListTripshhetService().getAllTripsheetListfilter(filter, query);
+        await ListTripshhetService().getAllTripsheetListfilter(filter, query);
     notifyListeners();
   }
 
@@ -65,9 +87,9 @@ class ListTripsheet extends BaseViewModel {
   void onRowClick(BuildContext context, TripSheetSearch? tripList) {
     Navigator.pushNamed(
       context,
-      Routes.addTripsheetScreen,
+      Routes.addTripSheetScreen,
       arguments:
-      AddTripsheetScreenArguments(tripId: tripList?.name.toString() ?? " "),
+          AddTripSheetScreenArguments(tripId: tripList?.name.toString() ?? " "),
     );
   }
 }

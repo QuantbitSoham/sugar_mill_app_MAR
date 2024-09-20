@@ -14,7 +14,7 @@ class CheckInServices {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.get_dashboard',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -47,7 +47,7 @@ class CheckInServices {
         '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.create_employee_log',
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: data,
       );

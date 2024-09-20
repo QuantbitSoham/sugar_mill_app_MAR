@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
@@ -12,22 +13,43 @@ class LoginViewModel extends BaseViewModel {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final FocusNode focusNode = FocusNode();
-
+  var fcmToken = "";
   bool obscurePassword = true;
   bool isloading = false;
   bool rememberMe = false;
   Future<void> initialise() async{
     rememberMe=true;
+    _getToken();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     rememberMe = prefs.getBool('rememberMe') ?? false;
     if (rememberMe) {
       usernameController.text = prefs.getString('username') ?? '';
       passwordController.text = prefs.getString('password') ?? '';
       Logger().i(usernameController.text);Logger().i(passwordController.text);Logger().i(rememberMe);
-
-
     }
     notifyListeners();
+  }
+
+  Future<void> _getToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      String? token = await messaging.getToken();
+      fcmToken = token!;
+      print("FCM Token: $token");
+    } else {
+      print('User declined or has not accepted permission');
+    }
   }
 
   void changeRememberMe(bool? value) {
@@ -44,7 +66,7 @@ class LoginViewModel extends BaseViewModel {
       String password = passwordController.text;
       Logger().i(username);
       Logger().i(password);
-      bool res = await Authentication().login(username, password);
+      bool res = await Authentication().login(username, password,fcmToken);
       isloading = false;
       notifyListeners();
       if (res) {

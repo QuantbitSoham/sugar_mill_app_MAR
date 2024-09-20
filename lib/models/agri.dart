@@ -9,6 +9,7 @@ class Agri {
   String? salesType;
   String? season;
   String? caneRegistrationId;
+  String? plotNo;
   String? supplier;
   String? vendorCode;
   String? growerName;
@@ -54,6 +55,7 @@ class Agri {
       this.modifiedBy,
       this.docstatus,
       this.idx,
+        this.plotNo,
       this.salesType,
       this.season,
       this.caneRegistrationId,
@@ -102,6 +104,7 @@ class Agri {
     modifiedBy = json['modified_by'];
     docstatus = json['docstatus'];
     idx = json['idx'];
+    plotNo=json['plot_no'];
     salesType = json['sales_type'];
     season = json['season'];
     caneRegistrationId = json['cane_registration_id'];
@@ -174,6 +177,7 @@ class Agri {
     data['supplier'] = supplier;
     data['vendor_code'] = vendorCode;
     data['grower_name'] = growerName;
+    data['plot_no']=plotNo;
     data['nursery_supplier'] = nurserySupplier;
     data['supplier_name'] = supplierName;
     data['branch'] = branch;

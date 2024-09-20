@@ -40,7 +40,7 @@ class ListCompletedSamplingModel extends BaseViewModel {
 
     // Filter the list to get the latest season
     String latestSeason = seasonlist.firstWhere(
-          (season) => season.startsWith("$currentYear-"),
+      (season) => season.startsWith("$currentYear-"),
       orElse: () => seasonlist
           .last, // If no season matches the current year, take the last one
     );
@@ -56,7 +56,7 @@ class ListCompletedSamplingModel extends BaseViewModel {
 
   Future<void> refresh() async {
     filtersamplingList =
-    (await ListCropSamplingServices().getAllCompletedCropSamplingList());
+        (await ListCropSamplingServices().getAllCompletedCropSamplingList());
     notifyListeners();
   }
 
@@ -65,7 +65,7 @@ class ListCompletedSamplingModel extends BaseViewModel {
       context,
       Routes.addCropSamplingScreen,
       arguments:
-      AddCropSamplingScreenArguments(samplingId: samplingList?.name ?? ""),
+          AddCropSamplingScreenArguments(samplingId: samplingList?.name ?? ""),
     );
     // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
     //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));
@@ -85,7 +85,7 @@ class ListCompletedSamplingModel extends BaseViewModel {
     notifyListeners();
     filtersamplingList = await ListCropSamplingServices()
         .getCompletedListByvillagefarmernameFilter(
-        caneVillageFilter, caneNameFilter);
+            caneVillageFilter, caneNameFilter);
     notifyListeners();
   }
 }

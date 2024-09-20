@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import '../constants.dart';
 
-class login {
+class LoginServices {
   Future<List<String>> fetchSeason() async {
     try {
       var dio = Dio();
@@ -13,7 +13,7 @@ class login {
         apifetchSeason,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -38,8 +38,8 @@ class login {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg: 'Error: ${e.response?.data["exception"].toString()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
       return [];

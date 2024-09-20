@@ -7,6 +7,7 @@ class CropSampling {
   double? averageBrix;
   int? noOfPairs;
   String? season;
+  String? plotNo;
   String? plantationStatus;
   String? plantName;
   String? formNumber;
@@ -47,6 +48,7 @@ class CropSampling {
       this.plantName,
       this.formNumber,
       this.growerCode,
+        this.plotNo,
       this.growerName,
       this.mobileNo,
       this.companyName,
@@ -79,6 +81,7 @@ class CropSampling {
     averageBrix = json['average_brix'];
     noOfPairs = json['no_of_pairs'];
     season = json['season'];
+    plotNo=json['plot_no'];
     plantationStatus = json['plantation_status'];
     plantName = json['plant_name'];
     formNumber = json['form_number'];
@@ -117,6 +120,7 @@ class CropSampling {
     data['average_brix'] = averageBrix;
     data['no_of_pairs'] = noOfPairs;
     data['season'] = season;
+    data['plot_no']=plotNo;
     data['plantation_status'] = plantationStatus;
     data['plant_name'] = plantName;
     data['form_number'] = formNumber;

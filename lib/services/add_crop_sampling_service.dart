@@ -24,7 +24,7 @@ class AddCropSmaplingServices {
         apiPostCropSampling,
         options: Options(
           method: 'POST',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: data,
       );
@@ -40,7 +40,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -58,7 +58,7 @@ class AddCropSmaplingServices {
         '$apiBaseUrl/api/resource/Crop Sampling/${cropsample.name}',
         options: Options(
           method: 'PUT',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
         data: cropsample.toJson(),
       );
@@ -74,7 +74,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -90,7 +90,7 @@ class AddCropSmaplingServices {
         apifetchSeason,
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -115,7 +115,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -131,7 +131,7 @@ class AddCropSmaplingServices {
         '$apiBaseUrl/api/resource/Village?limit_page_length=999999&fields=["name","circle_office","taluka"]',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -150,7 +150,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -166,7 +166,7 @@ class AddCropSmaplingServices {
         '$apiBaseUrl/api/resource/Crop Sampling/$id',
         options: Options(
           method: 'GET',
-          headers: {'Cookie': await getTocken()},
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -181,7 +181,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -193,7 +193,7 @@ class AddCropSmaplingServices {
   Future<List<AgriCane>> fetchcanelistwithfilter(
       String season, String village, String farmercode) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var url =
           '$apiBaseUrl/api/resource/Cane Master?fields=["vendor_code","route_km","grower_name","grower_code","area","crop_type","crop_variety","plantattion_ratooning_date","area_acrs","plant_name","name","soil_type","season"]&filters=[["season","like","$season%"],["area","like","$village%"],["grower_code","like","$farmercode%"]]&limit_page_length=999999';
@@ -201,7 +201,7 @@ class AddCropSmaplingServices {
         url,
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       Logger().i(url.toString());
@@ -222,7 +222,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -233,13 +233,13 @@ class AddCropSmaplingServices {
 
   Future<List<caneFarmer>> fetchfarmerListwithfilter(String village) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Farmer List?fields=["supplier_name","existing_supplier_code","village","name"]&limit_page_length=999999&filters=[["village","like","$village%"],["workflow_state","=","approved"]]',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
       if (response.statusCode == 200) {
@@ -260,7 +260,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -271,13 +271,13 @@ class AddCropSmaplingServices {
 
   Future<samplingformula?> fetchsamplingFormula() async {
     try {
-      var headers = {'Cookie': await getTocken()};
+
       var dio = Dio();
       var response = await dio.request(
         '$apiBaseUrl/api/resource/Cane Sampling Formula/1',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -292,7 +292,7 @@ class AddCropSmaplingServices {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );

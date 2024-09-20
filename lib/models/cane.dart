@@ -1,5 +1,5 @@
 class Cane {
-  int? name;
+  String? name;
   String? owner;
   String? creation;
   String? modified;
@@ -7,6 +7,7 @@ class Cane {
   int? docstatus;
   int? idx;
   String? season;
+  int? plotNo;
   String? plantationStatus;
   String? plantName;
   String? formNumber;
@@ -57,6 +58,7 @@ class Cane {
         this.season,
         this.plantationStatus,
         this.plantName,
+        this.plotNo,
         this.formNumber,
         this.growerCode,
         this.vendorCode,
@@ -104,6 +106,7 @@ class Cane {
     idx = json['idx'];
     season = json['season'];
     plantationStatus = json['plantation_status'];
+    plotNo=json['plot_no'];
     plantName = json['plant_name'];
     formNumber = json['form_number'];
     growerCode = json['grower_code'];
@@ -153,6 +156,7 @@ class Cane {
     data['docstatus'] = docstatus;
     data['idx'] = idx;
     data['season'] = season;
+    data['plot_no']=plotNo;
     data['plantation_status'] = plantationStatus;
     data['plant_name'] = plantName;
     data['form_number'] = formNumber;

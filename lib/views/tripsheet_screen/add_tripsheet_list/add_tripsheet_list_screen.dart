@@ -25,8 +25,8 @@ class TripsheetMaster extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    Routes.addTripsheetScreen,
-                    arguments: const AddTripsheetScreenArguments(tripId: ""),
+                    Routes.addTripSheetScreen,
+                    arguments: const AddTripSheetScreenArguments(tripId: ""),
                   );
                 },
                 child: const AutoSizeText('+Add Trip Sheet')),
@@ -57,7 +57,7 @@ class TripsheetMaster extends StatelessWidget {
                                           // controller: model.villageController,
                                           onChanged: (value) {
                                             model.idcontroller.text = value;
-                                            model.filterList("name", value);
+                                            model.filterList("slip_no", value);
                                           },
                                           decoration: const InputDecoration(
                                             labelText: 'ID',
@@ -82,7 +82,7 @@ class TripsheetMaster extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: TextField(
-                                        // controller: model.villageController,
+                                          // controller: model.villageController,
                                           onChanged: (value) {
                                             model.namecontroller.text = value;
                                             model.filterListByNameAndVillage(
@@ -117,7 +117,7 @@ class TripsheetMaster extends StatelessWidget {
                                     Expanded(
                                       child: CdropDown(
                                         dropdownButton:
-                                        DropdownButtonFormField<String>(
+                                            DropdownButtonFormField<String>(
                                           isExpanded: true,
                                           // Replace null with the selected value if needed
                                           decoration: const InputDecoration(
@@ -150,199 +150,146 @@ class TripsheetMaster extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      color: Colors.grey,
-                      child: const ListTile(
-                        trailing: AutoSizeText(
-                          "Circle Office",
-                          maxLines: 2,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14), // Set text color to white
-                        ),
-                        leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: AutoSizeText(
-                                'ID',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color:
-                                  Colors.white, // Set text color to white
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: AutoSizeText(
-                                'Village',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color:
-                                  Colors.white, // Set text color to white
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        title: Text(
-                          'Transporter Name',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white), // Set text color to white
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              'Farmer Name',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color:
-                                  Colors.white), // Set text color to white
-                            ),
-                          ],
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
+
+
                   model.tripSheetFilter.isNotEmpty
                       ? Expanded(
-                    child: ListView.separated(
-                      itemCount: model.tripSheetFilter.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0),
-                            child: ListTile(
-                              tileColor: const Color(0xFFD3E8FD),
-                              trailing: AutoSizeText(
-                                model.tripSheetFilter[index]
-                                    .circleOffice ??
-                                    '',
-                                maxLines: 2,
-                              ),
-                              leading: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
-                                children: [
-                                  Expanded(
-                                    child: AutoSizeText(
-                                      model.tripSheetFilter[index].slipNo
-                                          .toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      minFontSize: 22,
+                          child: ListView.separated(
+                            itemCount: model.tripSheetFilter.length,
+                            itemBuilder: (context, index) {
+                              return
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    gradient: const LinearGradient(
+                                      colors: [Colors.white54, Colors.white],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        blurRadius: 8.0,
+                                        spreadRadius: 3.0,
+                                        offset: const Offset(2, 4),
+                                      ),
+                                    ],
+                                    border: Border.all(color: Colors.blueAccent, width: 0.5),
+                                  ),
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      model.onRowClick(context, model.tripSheetFilter[index]);
+                                    },
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        // Top Row (Supplier name and code)
+                                      Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                      .spaceBetween,
+                                      children: [
+                                        Text(
+                                          model.tripSheetFilter[index].slipNo.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 24.0,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 40),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              Text(
+                                                model.tripSheetFilter[index]
+                                                    .farmerName ??
+                                                    "",
+                                                style: const TextStyle(
+                                                  fontSize: 17.0,
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                ),
+                                              ),
+
+                                            ],
+                                          ),
+                                        ),]),
+                                        const SizedBox(height: 12.0),
+                                        // Bottom Row (Village and Circle)
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            // Village
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                const Text('Village'),
+                                                Text(
+                                                  model.tripSheetFilter[index].fieldVillage ?? "N/A",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            // Circle
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                const Text('Circle'),
+                                                Text(
+                                                  model.tripSheetFilter[index].circleOffice ?? "N/A",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 12.0), // Add some space before the workflow state card
+                                        // Workflow State Card
+                                        Container(
+                                          width: double.infinity, // Make the card take full width
+                                          decoration: BoxDecoration(
+                                            color: model.getTileColor(model.tripSheetFilter[index].status ?? ''),
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                                          child: AutoSizeText(
+                                            model.tripSheetFilter[index].status ?? '',
+                                            minFontSize: 15,
+                                            maxLines: 1,
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Expanded(
-                                    child: AutoSizeText(
-                                      model.tripSheetFilter[index]
-                                          .fieldVillage ??
-                                          '',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              title: Text(
-                                model.tripSheetFilter[index]
-                                    .transporterName ??
-                                    '',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      maxLines: 2,
-                                      model.tripSheetFilter[index]
-                                          .farmerName ??
-                                          '',
-                                      style:
-                                      const TextStyle(fontSize: 12),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onTap: () {
-                                model.onRowClick(context,
-                                    model.tripSheetFilter[index]);
-                              },
-                            )
-                          // ListTile(
-                          //   // tileColor: model.getTileColor(
-                          //   //     model.canefilterList[index].plantationStatus),
-                          //   trailing: AutoSizeText(
-                          //     model.canefilterList[index].area ?? '',
-                          //     maxLines: 2,
-                          //   ),
-                          //   leading: SizedBox(
-                          //     width: getWidth(context) / 5,
-                          //     child: Column(
-                          //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          //       children: [
-                          //         AutoSizeText(
-                          //           model.canefilterList[index].circleOffice ??
-                          //               '',
-                          //           maxLines: 1,
-                          //           overflow: TextOverflow.ellipsis,
-                          //         ),
-                          //         AutoSizeText(
-                          //           model.canefilterList[index]
-                          //                   .plantationStatus ??
-                          //               '',
-                          //           maxLines: 2,
-                          //           style: const TextStyle(
-                          //             fontSize: 8,
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          //   title: Text(
-                          //     model.canefilterList[index].growerName ?? '',
-                          //     style: const TextStyle(fontSize: 11),
-                          //   ),
-                          //   subtitle: Row(
-                          //     children: [
-                          //       Text(
-                          //         model.canefilterList[index].name.toString(),
-                          //         style: const TextStyle(fontSize: 8),
-                          //       ),
-                          //       const SizedBox(
-                          //         width: 35,
-                          //       ),
-                          //       Text(
-                          //         model.canefilterList[index]
-                          //                 .plantattionRatooningDate ??
-                          //             '',
-                          //         style: const TextStyle(fontSize: 8),
-                          //       ),
-                          //     ],
-                          //   ),
-                          //   onTap: () {
-                          //     // Handle row click here
-                          //     // _onRowClick(context, filteredList[index]);
-                          //     model.onRowClick(
-                          //         context, model.canefilterList[index]);
-                          //   },
-                          // ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const Divider(
-                          color: Colors.white, // Color of the line
-                          thickness: 0, // Thickness of the line
-                        );
-                      },
-                    ),
-                  )
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const Divider(
+                              color: Colors.white, // Color of the line
+                              thickness: 0, // Thickness of the line
+                              );// Space between items
+                            },
+                          ),
+                        )
                       : customErrorMessage()
                 ],
               ),

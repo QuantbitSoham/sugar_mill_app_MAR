@@ -60,10 +60,18 @@ class ListCaneModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> refresh() async {
-    canefilterList= (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
-    notifyListeners();
-  }
+Future<void> refresh() async {
+  int currentYear = DateTime.now().year;
+
+  // Filter the list to get the latest season
+  String latestSeason = seasonlist.firstWhere(
+        (season) => season.startsWith("$currentYear-"),
+    orElse: () => seasonlist.last, // If no season matches the current year, take the last one
+  );
+  seasoncontroller.text=latestSeason;
+  await filterListByNameAndVillage(season: latestSeason);
+  notifyListeners();
+}
 
   Future<void> filterListByNameAndVillage({String? season,String? name, String? village}) async {
     caneseasonFilter=season ?? caneseasonFilter;
@@ -81,7 +89,7 @@ class ListCaneModel extends BaseViewModel {
       context,
       Routes.addCaneScreen,
       arguments:
-      AddCaneScreenArguments(caneId: caneList?.name.toString() ?? " "),
+          AddCaneScreenArguments(caneId: caneList?.name.toString() ?? " "),
     );
     // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
     //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));

@@ -171,14 +171,14 @@ class AddCropSamplingScreen extends StatelessWidget {
                                   .toList();
                             },
                             onSelected:(String routeName) {
-                              // Find the corresponding route object
-                              final routeData = model.farmerlist
-                                  .firstWhere((route) =>
-                              route.supplierName ==
-                                  routeName);
-                              model.setSelectedgrowername(context,
-                                  routeData.supplierName); // Pass the route
-                            },
+                          // Find the corresponding route object
+                          final routeData = model.farmerlist
+                              .firstWhere((route) =>
+                    route.supplierName ==
+                    routeName);
+                  model.setSelectedgrowername(context,
+                  routeData.supplierName); // Pass the route
+            },
                             fieldViewBuilder: (BuildContext context,
                                 TextEditingController textEditingController,
                                 FocusNode focusNode,
@@ -257,25 +257,37 @@ class AddCropSamplingScreen extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: CdropDown(
-                              dropdownButton: DropdownButtonFormField<String>(
-                                key: Key(model.cropsamplingdata.id ?? "plotno"),
-                                isExpanded: true,
-                                value: model.cropsamplingdata.id,
+                            child:
+                            TextFormField(
+                                key: Key(
+                                    model.cropsamplingdata.plotNo ??
+                                        "plotNo"),
+                                readOnly: true,
+                                initialValue:  model.cropsamplingdata.plotNo ??
+                                    "",
                                 decoration: const InputDecoration(
-                                  labelText: 'Plot Number *',
+                                  labelText: 'Plot No.',
                                 ),
-                                hint: const Text('Select plot number'),
-                                items: model.plotList.map((val) {
-                                  return DropdownMenuItem<String>(
-                                    value: val.name.toString(),
-                                    child: AutoSizeText(val.name.toString()),
-                                  );
-                                }).toList(),
-                                onChanged: (value) => model.setSelectedplot(value),
-                                validator: model.validateplotNumber,
-                              ),
-                            ),
+                                onChanged: model.setSelectedVendor),
+                            // CdropDown(
+                            //   dropdownButton: DropdownButtonFormField<String>(
+                            //     key: Key(model.cropsamplingdata.id ?? "plotno"),
+                            //     isExpanded: true,
+                            //     value: model.cropsamplingdata.id,
+                            //     decoration: const InputDecoration(
+                            //       labelText: 'Plot Number *',
+                            //     ),
+                            //     hint: const Text('Select plot number'),
+                            //     items: model.plotList.map((val) {
+                            //       return DropdownMenuItem<String>(
+                            //         value: val.name.toString(),
+                            //         child: AutoSizeText(val.name.toString()),
+                            //       );
+                            //     }).toList(),
+                            //     onChanged: (value) => model.setSelectedplot(value),
+                            //     validator: model.validateplotNumber,
+                            //   ),
+                            // ),
 
                           ),
                           const SizedBox(
@@ -288,8 +300,8 @@ class AddCropSamplingScreen extends StatelessWidget {
                                       "branch"),
                               readOnly: true,
                               initialValue:
-                              model.cropsamplingdata.plantName ??
-                                  "",
+                                  model.cropsamplingdata.plantName ??
+                                      "",
                               decoration: const InputDecoration(
                                 labelText: 'Plant',
                               ),
@@ -312,8 +324,8 @@ class AddCropSamplingScreen extends StatelessWidget {
                                       "cropVariety"),
                               readOnly: true,
                               initialValue:
-                              model.cropsamplingdata.cropVariety ??
-                                  "",
+                                  model.cropsamplingdata.cropVariety ??
+                                      "",
                               decoration: const InputDecoration(
                                 labelText: 'Crop Variety',
                               ),
@@ -330,7 +342,7 @@ class AddCropSamplingScreen extends StatelessWidget {
                                       "cropType"),
                               readOnly: true,
                               initialValue:
-                              model.cropsamplingdata.cropType ?? "",
+                                  model.cropsamplingdata.cropType ?? "",
                               decoration: const InputDecoration(
                                 labelText: 'Crop Type',
                               ),

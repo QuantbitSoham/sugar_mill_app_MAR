@@ -52,10 +52,10 @@ class ListSamplingModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> refresh() async {
-    filtersamplingList= (await ListCropSamplingServices().getAllCropSamplingList());
-    notifyListeners();
-  }
+Future<void> refresh() async {
+   filtersamplingList= (await ListCropSamplingServices().getAllCropSamplingList());
+  notifyListeners();
+}
 
   void onRowClick(BuildContext context, ListSampling? samplingList) {
     Navigator.pushNamed(

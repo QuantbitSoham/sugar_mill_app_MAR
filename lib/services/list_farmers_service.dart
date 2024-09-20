@@ -11,13 +11,13 @@ class ListFarmersService {
   Future<List<FarmersListModel>> getAllFarmersList() async {
     Logger().i(apiFarmerAllListGet);
     try {
-      var headers = {'Cookie': await getTocken()};
+      
       var dio = Dio();
       var response = await dio.request(
-        apiFarmerAllListGet,
+        '$apiBaseUrl/api/resource/Farmer List?fields=["supplier_name","village","name","workflow_state","circle_office","existing_supplier_code"]&limit_page_length=30&order_by=creation desc&filters=[["workflow_state","in",["Pending","Pending For Agriculture Officer","New","Approved"]]]',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -36,27 +36,27 @@ class ListFarmersService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
+      return [];
     }
-    return [];
   }
 
   Future<List<FarmersListModel>> getFarmersListByFilter(
       String query, String filter) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+      
       var dio = Dio();
 
       var response = await dio.request(
         // "http://deverpvppl.erpdata.in/api/resource/Farmer List?fields=['supplier_name','village','name','circle_office']&filters=[['$filter','like','$query'']]",
-        "$apiBaseUrl/api/resource/Farmer List?fields=[\"supplier_name\",\"village\",\"name\",\"circle_office\",\"existing_supplier_code\",\"workflow_state\"]&filters=[[\"$filter\",\"like\",\"$query%\"]]&limit_page_length=9999999",
+        "$apiBaseUrl/api/resource/Farmer List?order_by=creation desc&fields=[\"supplier_name\",\"village\",\"name\",\"circle_office\",\"existing_supplier_code\",\"workflow_state\"]&filters=[[\"$filter\",\"like\",\"$query%\"]]&limit_page_length=9999999",
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -74,7 +74,7 @@ class ListFarmersService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );
@@ -90,13 +90,13 @@ class ListFarmersService {
         "$apiBaseUrl/api/method/sugar_mill.sugar_mill.doctype.farmer_list.farmer_list.filterfarmerlist?village=$village&name=$name";
     Logger().i(url);
     try {
-      var headers = {'Cookie': await getTocken()};
+      
       var dio = Dio();
       var response = await dio.request(
         url,
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -114,7 +114,7 @@ class ListFarmersService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
         textColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFFBA1A1A),
       );

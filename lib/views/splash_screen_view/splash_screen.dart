@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants.dart';
 import '../../router.router.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,13 +20,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _performAsyncOperations() async {
     final SharedPreferences prefs = await _prefs;
-    Logger().i(prefs.getString("Cookie"));
-    if (prefs.getString("Cookie") != null) {
+
+    if (prefs.getString("api_secret") != null &&
+        prefs.getString("api_key") != null) {
       isLoggedIn = true;
+      final token = await getToken();
+      Logger().i(token);
     }
     await Future.delayed(const Duration(seconds: 3));
   }
-
   double opacity = 1.0; // Initial opacity for fade-out animation
 
   @override

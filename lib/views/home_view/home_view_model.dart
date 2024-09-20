@@ -1,68 +1,58 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sugar_mill_app/models/checkin.dart';
 import 'package:sugar_mill_app/models/employee.dart';
 import 'package:sugar_mill_app/services/chekin_Services.dart';
 import 'package:sugar_mill_app/services/geolocation_service.dart';
 import '../../models/dashboard_model.dart';
 import '../../services/login_success.dart';
+import '../../widgets/updatedialog.dart';
 
 class HomeViewModel extends BaseViewModel {
   Checkin checkindata = Checkin();
   Employee employee = Employee();
-  Dashboard dashboard=Dashboard();
+  Dashboard dashboard = Dashboard();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   List<String> season = [""];
   List<Employee> empList = [];
   List<Checkin> checkinList = [];
-  var fcmToken = "";
-   String? greeting;
-  String? imageurl;
 
+  String? greeting;
+  String? imageurl;
 
   initialise(BuildContext context) async {
     setBusy(true);
-    _getToken();
-    season = await login().fetchSeason();
+    final newVersion = NewVersionPlus(
+      androidId: 'com.quantbit.sugarapp',
+    );
+
+    Timer(const Duration(milliseconds: 800), () {
+      checkNewVersion(newVersion,context);
+    });
+
+
+    season = await LoginServices().fetchSeason();
     if (season.isEmpty) {
-      logout(context);
+      if(context.mounted){
+        logout(context);
+      }
     }
-handleGreeting();
-handleImage();
-dashboard=await CheckInServices().dashboard() ?? Dashboard();
+    handleGreeting();
+    handleImage();
+    dashboard = await CheckInServices().dashboard() ?? Dashboard();
     setBusy(false);
   }
 
-
-  Future<void> _getToken() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      String? token = await messaging.getToken();
-      fcmToken = token!;
-      print("FCM Token: $token");
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
- void handleGreeting() {
+  void handleGreeting() {
     final now = DateTime.now();
     final timeOfDay = now.hour;
     if (timeOfDay < 12) {
@@ -73,6 +63,34 @@ dashboard=await CheckInServices().dashboard() ?? Dashboard();
       greeting = "Good Evening,";
     }
   }
+
+  void checkNewVersion(NewVersionPlus newVersion, BuildContext context) async {
+    final status = await newVersion.getVersionStatus();
+    Logger().i(status);
+    if(status != null) {
+      if(status.canUpdate) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return UpdateDialog(
+              allowDismissal: true,
+              description: status.releaseNotes!,
+              version: status.storeVersion,
+              appLink: status.appStoreLink,
+            );
+          },
+        );
+        // newVersion.showUpdateDialog(
+        //   context: context,
+        //   versionStatus: status,
+        //   dialogText: 'New Version is available in the store (${status.storeVersion}), update now!',
+        //   dialogTitle: 'Update is Available!',
+        // );
+      }
+    }
+  }
+
+
   void handleImage() {
     final now = DateTime.now();
     final timeOfDay = now.hour;
@@ -91,7 +109,6 @@ dashboard=await CheckInServices().dashboard() ?? Dashboard();
     try {
       Position? position = await geolocationService.determinePosition();
 
-
       if (position == null) {
         Fluttertoast.showToast(msg: 'Failed to get location');
         return setBusy(false);
@@ -105,7 +122,7 @@ dashboard=await CheckInServices().dashboard() ?? Dashboard();
 
       String formattedAddress =
           await geolocationService.getAddressFromCoordinates(
-              position.latitude, position.longitude) ??
+                  position.latitude, position.longitude) ??
               "";
       checkindata.latitude = position.latitude.toString();
       checkindata.longitude = position.longitude.toString();
@@ -114,10 +131,14 @@ dashboard=await CheckInServices().dashboard() ?? Dashboard();
       Logger().i(position.longitude.toString());
       Logger().i(formattedAddress);
 
-      bool res = await CheckInServices().addCheckIn(logtype,position.latitude.toString(),position.longitude.toString(),formattedAddress);
+      bool res = await CheckInServices().addCheckIn(
+          logtype,
+          position.latitude.toString(),
+          position.longitude.toString(),
+          formattedAddress);
       if (res) {
         setBusy(false);
-        dashboard=await CheckInServices().dashboard() ?? Dashboard();
+        dashboard = await CheckInServices().dashboard() ?? Dashboard();
       }
     } catch (e) {
       Fluttertoast.showToast(msg: '$e');
@@ -127,6 +148,4 @@ dashboard=await CheckInServices().dashboard() ?? Dashboard();
     setBusy(false);
     notifyListeners();
   }
-
-
 }

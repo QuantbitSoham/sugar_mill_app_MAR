@@ -4,18 +4,23 @@ import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 
 import '../../../widgets/cdrop_down_widget.dart';
 import '../../../widgets/ctext_button.dart';
+import '../../farmer_screens/add_farmer_view/add_farmer_model.dart';
 import 'add_tripsheet_model.dart';
 
-class AddTripsheetScreen extends StatelessWidget {
+class AddTripSheetScreen extends StatefulWidget {
   final String tripId;
+  const AddTripSheetScreen({super.key, required this.tripId});
 
-  const AddTripsheetScreen({super.key, required this.tripId});
+  @override
+  State<AddTripSheetScreen> createState() => _AddTripSheetScreenState();
+}
 
+class _AddTripSheetScreenState extends State<AddTripSheetScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddTripSheetModel>.reactive(
       viewModelBuilder: () => AddTripSheetModel(),
-      onViewModelReady: (model) => model.initialise(context, tripId),
+      onViewModelReady: (model) => model.initialise(context, widget.tripId),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: model.isEdit == true
@@ -89,9 +94,10 @@ class AddTripsheetScreen extends StatelessWidget {
                           if (model.isEdit)
                             Expanded(
                               child: TextFormField(
+                                readOnly: true,
                                 keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    signed: true),
+                                    const TextInputType.numberWithOptions(
+                                        signed: true),
                                 controller: model.slipnoController,
                                 decoration: const InputDecoration(
                                     labelText: 'Slip No '),
@@ -109,7 +115,7 @@ class AddTripsheetScreen extends StatelessWidget {
                             child: Autocomplete<String>(
                               key: Key(model.tripSheetData.platNoId ?? "05"),
                               initialValue: TextEditingValue(
-                                text: model.tripSheetData.platNoId ?? "",
+                                text: model.plotNo ?? "",
                               ),
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
@@ -117,12 +123,12 @@ class AddTripsheetScreen extends StatelessWidget {
                                   return const Iterable<String>.empty();
                                 }
                                 return model.plotList
-                                    .map((grower) => grower.id ?? "")
+                                    .map((grower) => grower.plotNo ?? "")
                                     .toList()
                                     .where((grower) => grower
-                                    .toLowerCase()
-                                    .contains(textEditingValue.text
-                                    .toLowerCase()));
+                                        .toLowerCase()
+                                        .contains(textEditingValue.text
+                                            .toLowerCase()));
                               },
                               onSelected: model.setSelectPlotNo,
                               fieldViewBuilder: (BuildContext context,
@@ -149,18 +155,18 @@ class AddTripsheetScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           final routeData = model.plotList
                                               .firstWhere((route) =>
-                                          route.id.toString() ==
-                                              option);
+                                                  route.plotNo.toString() ==
+                                                  option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -168,7 +174,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                             child: ListTile(
                                               title: Text(option),
                                               subtitle:
-                                              Text(routeData.growerName!),
+                                                  Text(routeData.growerName!),
                                             ),
                                           );
                                         },
@@ -220,7 +226,7 @@ class AddTripsheetScreen extends StatelessWidget {
                           key: Key(model.tripSheetData.farmerName ?? "04"),
                           initialValue: model.tripSheetData.farmerName,
                           decoration:
-                          const InputDecoration(labelText: 'Farmer Name'),
+                              const InputDecoration(labelText: 'Farmer Name'),
                           // validator: (value) => value!.isEmpty
                           //     ? 'Please enter a Farmer Name'
                           //     : null,
@@ -233,7 +239,7 @@ class AddTripsheetScreen extends StatelessWidget {
                               key: Key(model.tripSheetData.surveryNo ?? "04"),
                               initialValue: model.tripSheetData.surveryNo,
                               decoration:
-                              const InputDecoration(labelText: 'Survey No'),
+                                  const InputDecoration(labelText: 'Survey No'),
                               // validator: (value) => value!.isEmpty
                               //     ? 'Please enter a Survey No'
                               //     : null,
@@ -248,10 +254,10 @@ class AddTripsheetScreen extends StatelessWidget {
                             child: TextFormField(
                               key: Key(model.tripSheetData.areaAcre.toString()),
                               initialValue:
-                              model.tripSheetData.areaAcre?.toString() ??
-                                  "",
+                                  model.tripSheetData.areaAcre?.toString() ??
+                                      "",
                               decoration:
-                              const InputDecoration(labelText: 'Area Acre'),
+                                  const InputDecoration(labelText: 'Area Acre'),
                               // validator: (value) => value!.isEmpty
                               //     ? 'Please enter a Area Acre'
                               //     : null,
@@ -267,10 +273,10 @@ class AddTripsheetScreen extends StatelessWidget {
                           Expanded(
                             child: TextFormField(
                               key:
-                              Key(model.tripSheetData.fieldVillage ?? "04"),
+                                  Key(model.tripSheetData.fieldVillage ?? "04"),
                               initialValue: model.tripSheetData.fieldVillage,
                               decoration:
-                              const InputDecoration(labelText: 'Village'),
+                                  const InputDecoration(labelText: 'Village'),
                               // validator: (value) => value!.isEmpty
                               //     ? 'Please enter a Village'
                               //     : null,
@@ -314,14 +320,14 @@ class AddTripsheetScreen extends StatelessWidget {
                                     .map((route) => route.route!)
                                     .toList()
                                     .where((route) => route
-                                    .toLowerCase()
-                                    .contains(textEditingValue.text
-                                    .toLowerCase()));
+                                        .toLowerCase()
+                                        .contains(textEditingValue.text
+                                            .toLowerCase()));
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final routeData = model.routeList.firstWhere(
-                                        (route) => route.route == routeName);
+                                    (route) => route.route == routeName);
                                 model.setSelectedRoute(
                                     routeData); // Pass the route
                               },
@@ -356,11 +362,11 @@ class AddTripsheetScreen extends StatelessWidget {
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           // Find the corresponding route object
                                           final routeData = model.routeList
                                               .firstWhere((route) =>
-                                          route.route == option);
+                                                  route.route == option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(routeData.route ??
@@ -388,10 +394,10 @@ class AddTripsheetScreen extends StatelessWidget {
                             child: TextFormField(
                               key: Key(model.tripSheetData.distance.toString()),
                               initialValue: model.tripSheetData.distance
-                                  ?.toStringAsFixed(0) ??
+                                      ?.toStringAsFixed(0) ??
                                   "",
                               decoration:
-                              const InputDecoration(labelText: 'Distance'),
+                                  const InputDecoration(labelText: 'Distance'),
                               onChanged: model.setSelectedDistance,
                               readOnly: true,
                             ),
@@ -405,11 +411,11 @@ class AddTripsheetScreen extends StatelessWidget {
                               flex: 3,
                               child: CheckboxListTile(
                                   controlAffinity:
-                                  ListTileControlAffinity.leading,
+                                      ListTileControlAffinity.leading,
                                   title: const Text(
                                     'Apply Flat Rate',
                                     style:
-                                    TextStyle(fontWeight: FontWeight.bold),
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   value: model.applyFlatRate,
                                   onChanged: model.setApplyFlatRate),
@@ -421,7 +427,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                 key: Key(
                                     model.tripSheetData.flatRate.toString()),
                                 initialValue: model.tripSheetData.flatRate
-                                    ?.toStringAsFixed(0) ??
+                                        ?.toStringAsFixed(0) ??
                                     "",
                                 decoration: const InputDecoration(
                                     labelText: 'Flat Rate'),
@@ -459,28 +465,29 @@ class AddTripsheetScreen extends StatelessWidget {
                           Expanded(
                             child: TextFormField(
                               keyboardType:
-                              const TextInputType.numberWithOptions(
-                                  decimal: true),
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               controller: model.deductionController,
                               // onTap: () => model.selectDate(context),
                               decoration: const InputDecoration(
                                 labelText: 'Deduction',
                               ),
                               onChanged: model.setSelectedDeductionAmount,
+                              validator: model.validateCaneDeduction,
                             ),
                           ),
                         ],
                       ),
                       TextFormField(
                         keyboardType:
-                        const TextInputType.numberWithOptions(signed: true),
+                            const TextInputType.numberWithOptions(signed: true),
                         key: Key(model.tripSheetData.cartno.toString()),
                         initialValue:
-                        model.tripSheetData.cartno?.toStringAsFixed(0) ??
-                            "",
+                            model.tripSheetData.cartno?.toStringAsFixed(0) ??
+                                "",
                         decoration:
-                        const InputDecoration(labelText: 'Cart Number'),
-                        onFieldSubmitted: model.setSelectedCartNo,
+                            const InputDecoration(labelText: 'Cart Number'),
+                        onFieldSubmitted:(value){model.setSelectedCartNo(value,context);},
                       ),
                       const SizedBox(
                         width: 20.0,
@@ -503,17 +510,17 @@ class AddTripsheetScreen extends StatelessWidget {
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                textEditingValue.text.toLowerCase();
+                                    textEditingValue.text.toLowerCase();
                                 return model.transportList
                                     .where((grower) =>
-                                grower.oldNo
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchText) ||
-                                    grower.transporterName
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(searchText))
+                                        grower.oldNo
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(searchText) ||
+                                        grower.transporterName
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(searchText))
                                     .map((grower) => grower.oldNo.toString())
                                     .toList();
                               },
@@ -521,7 +528,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                 // Find the corresponding route object
                                 final routeData = model.transportList
                                     .firstWhere((route) =>
-                                route.oldNo.toString() == routeName);
+                                        route.oldNo.toString() == routeName);
                                 model.setSelectedTransCode(
                                     routeData.oldNo); // Pass the route
                               },
@@ -549,18 +556,18 @@ class AddTripsheetScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           final routeData = model.transportList
                                               .firstWhere((route) =>
-                                          route.oldNo.toString() ==
-                                              option);
+                                                  route.oldNo.toString() ==
+                                                  option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -590,7 +597,7 @@ class AddTripsheetScreen extends StatelessWidget {
                               key: Key(
                                   model.tripSheetData.transporterName ?? "07"),
                               initialValue:
-                              model.tripSheetData.transporterName ?? "",
+                                  model.tripSheetData.transporterName ?? "",
                               // onTap: () => model.selectDate(context),
                               decoration: const InputDecoration(
                                 labelText: 'Transporter Name',
@@ -621,9 +628,9 @@ class AddTripsheetScreen extends StatelessWidget {
                             );
                           }).toList(),
                           onChanged:
-                          model.tripSheetData.oldTransporterCode == "SELF"
-                              ? model.setSelectedVType
-                              : null,
+                              model.tripSheetData.oldTransporterCode == "SELF"
+                                  ? model.setSelectedVType
+                                  : null,
                         ),
                       ),
                       Row(
@@ -636,7 +643,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                   model.tripSheetData.harvesterCodeOld ?? "09"),
                               initialValue: TextEditingValue(
                                 text:
-                                model.tripSheetData.harvesterCodeOld ?? "",
+                                    model.tripSheetData.harvesterCodeOld ?? "",
                               ),
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
@@ -644,17 +651,17 @@ class AddTripsheetScreen extends StatelessWidget {
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                textEditingValue.text.toLowerCase();
+                                    textEditingValue.text.toLowerCase();
                                 return model.transportList
                                     .where((grower) =>
-                                grower.oldNo
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchText) ||
-                                    grower.harvesterName
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(searchText))
+                                        grower.oldNo
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(searchText) ||
+                                        grower.harvesterName
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(searchText))
                                     .map((grower) => grower.oldNo.toString())
                                     .toList();
                               },
@@ -662,7 +669,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                 // Find the corresponding route object
                                 final routeData = model.transportList
                                     .firstWhere((route) =>
-                                route.oldNo.toString() == routeName);
+                                        route.oldNo.toString() == routeName);
                                 model.setSelectedHarCode(
                                     routeData.oldNo); // Pass the route
                               },
@@ -675,9 +682,10 @@ class AddTripsheetScreen extends StatelessWidget {
                                   controller: textEditingController,
                                   focusNode: focusNode,
                                   decoration: const InputDecoration(
-                                    labelText: 'Harvester Code',
+                                    labelText: 'Harvester Code*',
                                   ),
                                   onChanged: (value) {},
+                                  validator: model.validateHar,
                                 );
                               },
                               optionsViewBuilder: (BuildContext context,
@@ -689,18 +697,18 @@ class AddTripsheetScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     child: Container(
                                       constraints:
-                                      const BoxConstraints(maxHeight: 200),
+                                          const BoxConstraints(maxHeight: 200),
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: options.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           final routeData = model.transportList
                                               .firstWhere((route) =>
-                                          route.oldNo.toString() ==
-                                              option);
+                                                  route.oldNo.toString() ==
+                                                  option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(option);
@@ -730,7 +738,7 @@ class AddTripsheetScreen extends StatelessWidget {
                               key: Key(
                                   model.tripSheetData.harvesterNameH ?? "10"),
                               initialValue:
-                              model.tripSheetData.harvesterNameH ?? "",
+                                  model.tripSheetData.harvesterNameH ?? "",
                               decoration: const InputDecoration(
                                 labelText: 'Harvester Name',
                               ),
@@ -743,42 +751,22 @@ class AddTripsheetScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Expanded(
-                          //   child: TextFormField(
-                          //     key: Key(model.tripSheetData.gangType ?? "11"),
-                          //     initialValue: model.tripSheetData.gangType ?? "",
-                          //     decoration: const InputDecoration(
-                          //       labelText: 'Gang Type',
-                          //     ),
-                          //     readOnly: true,
-                          //     onChanged: model.setSelectedGang,
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //   width: 20.0,
-                          // ),
                           if (model.tripSheetData.vehicleType != "BULLOCK CART")
                             Expanded(
                               child: TextFormField(
-                                key: Key(
-                                    model.tripSheetData.vehicleNumber ?? "12"),
-                                initialValue:
-                                model.tripSheetData.vehicleNumber ?? "",
+                                controller: model.engineNumberController,
+                                // key: Key(model.tripSheetData.vehicleNumber ?? "12"),
+                                // initialValue: model.tripSheetData.vehicleNumber ?? "",
+                                inputFormatters: [UppercaseTextFormatter()],
                                 decoration: const InputDecoration(
                                   labelText: 'Engine Number',
                                 ),
-                                readOnly:
-                                model.tripSheetData.oldTransporterCode ==
-                                    "SELF"
-                                    ? false
-                                    : true,
+                                readOnly: model.tripSheetData.oldTransporterCode == "SELF" ? false : true,
                                 onChanged: model.setSelectedEngine,
                                 autofocus: true,
                               ),
                             ),
-                          const SizedBox(
-                            width: 20.0,
-                          ),
+                          const SizedBox(width: 20.0),
                         ],
                       ),
                       if (model.tripSheetData.vehicleType != "BULLOCK CART")
@@ -787,44 +775,36 @@ class AddTripsheetScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: TextFormField(
-                                key: Key(model.tripSheetData.tolly1 ?? "13"),
-                                initialValue: model.tripSheetData.tolly1 ?? "",
+                                controller: model.tolly1Controller,
+                                // key: Key(model.tripSheetData.tolly1 ?? "13"),
+                                // initialValue: model.tripSheetData.tolly1 ?? "",
+                                inputFormatters: [UppercaseTextFormatter()],
                                 decoration: const InputDecoration(
-                                  labelText: 'Tolly 1 ',
+                                  labelText: 'Tolly 1',
                                 ),
-                                readOnly:
-                                model.tripSheetData.oldTransporterCode ==
-                                    "SELF"
-                                    ? false
-                                    : true,
+                                readOnly: model.tripSheetData.oldTransporterCode == "SELF" ? false : true,
                                 onChanged: model.setSelectedTy_1,
                                 autofocus: true,
                               ),
                             ),
-                            const SizedBox(
-                              width: 20.0,
-                            ),
+                            const SizedBox(width: 20.0),
                             Expanded(
                               child: TextFormField(
-                                key: Key(model.tripSheetData.tolly2 ?? "14"),
-                                initialValue: model.tripSheetData.tolly2 ?? "",
+                                controller: model.tolly2Controller,
+                                inputFormatters: [UppercaseTextFormatter()],
+                                // key: Key(model.tripSheetData.tolly2 ?? "14"),
+                                // initialValue: model.tripSheetData.tolly2 ?? "",
                                 decoration: const InputDecoration(
                                   labelText: 'Tolly 2',
                                 ),
-                                readOnly:
-                                model.tripSheetData.oldTransporterCode ==
-                                    "SELF"
-                                    ? false
-                                    : true,
+                                readOnly: model.tripSheetData.oldTransporterCode == "SELF" ? false : true,
                                 onChanged: model.setSelectedTy_2,
                                 autofocus: true,
                               ),
                             ),
-                            const SizedBox(
-                              width: 20.0,
-                            ),
                           ],
                         ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -870,27 +850,27 @@ class AddTripsheetScreen extends StatelessWidget {
                                   return const Iterable<String>.empty();
                                 }
                                 final searchText =
-                                textEditingValue.text.toLowerCase();
+                                    textEditingValue.text.toLowerCase();
                                 return model.waterSupplier
                                     .where((route) =>
-                                (route.supplierName
-                                    ?.toLowerCase()
-                                    .contains(searchText) ??
-                                    false) ||
-                                    (route.existingSupplierCode
-                                        ?.toLowerCase()
-                                        .contains(searchText) ??
-                                        false))
+                                        (route.supplierName
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false) ||
+                                        (route.existingSupplierCode
+                                                ?.toLowerCase()
+                                                .contains(searchText) ??
+                                            false))
                                     .map((route) =>
-                                route.existingSupplierCode ?? "")
+                                        route.existingSupplierCode ?? "")
                                     .toList();
                               },
                               onSelected: (String routeName) {
                                 // Find the corresponding route object
                                 final routeData = model.waterSupplier
                                     .firstWhere((route) =>
-                                route.existingSupplierCode ==
-                                    routeName);
+                                        route.existingSupplierCode ==
+                                        routeName);
                                 model.setSelectedWaterSupplier(
                                     routeData); // Pass the route
                               },
@@ -924,16 +904,16 @@ class AddTripsheetScreen extends StatelessWidget {
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           final String option =
-                                          options.elementAt(index);
+                                              options.elementAt(index);
                                           // Find the corresponding route object
                                           final routeData = model.waterSupplier
                                               .firstWhere((route) =>
-                                          route.existingSupplierCode ==
-                                              option);
+                                                  route.existingSupplierCode ==
+                                                  option);
                                           return GestureDetector(
                                             onTap: () {
                                               onSelected(routeData
-                                                  .existingSupplierCode ??
+                                                      .existingSupplierCode ??
                                                   ""); // Send the name as the selected route
                                             },
                                             child: ListTile(
@@ -942,7 +922,7 @@ class AddTripsheetScreen extends StatelessWidget {
                                                       "N/A"),
                                               // Display the corresponding name value
                                               subtitle: Text(routeData
-                                                  .existingSupplierCode ??
+                                                      .existingSupplierCode ??
                                                   "N/A"),
                                             ),
                                           );
@@ -964,7 +944,7 @@ class AddTripsheetScreen extends StatelessWidget {
                               key: Key(model.tripSheetData.waterSupplierName ??
                                   "16"),
                               initialValue:
-                              model.tripSheetData.waterSupplierName ?? "",
+                                  model.tripSheetData.waterSupplierName ?? "",
                               decoration: const InputDecoration(
                                 labelText: 'Water Supplier Name',
                               ),
@@ -980,8 +960,8 @@ class AddTripsheetScreen extends StatelessWidget {
                           Expanded(
                             child: TextFormField(
                                 keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: true),
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 controller: model.watershareController,
                                 decoration: const InputDecoration(
                                   labelText: 'Water Share(%)',

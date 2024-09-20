@@ -1,12 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_model.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
-
 import '../../../router.router.dart';
 import '../../../widgets/cdrop_down_widget.dart';
 import '../../../widgets/error_widget.dart';
@@ -39,6 +36,7 @@ class ListAgriScreen extends StatelessWidget {
             onRefresh: model.refresh,
             child: Column(
               children: [
+                // Filter Section
                 Container(
                   color: Colors.white,
                   child: Padding(
@@ -51,7 +49,6 @@ class ListAgriScreen extends StatelessWidget {
                             child: CdropDown(
                               dropdownButton: DropdownButtonFormField<String>(
                                 isExpanded: true,
-                                // Replace null with the selected value if needed
                                 decoration: const InputDecoration(
                                   labelText: 'Season',
                                 ),
@@ -70,9 +67,7 @@ class ListAgriScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -85,9 +80,7 @@ class ListAgriScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -105,135 +98,124 @@ class ListAgriScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: const ListTile(
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        AutoSizeText(
-                          'Village/route',
-                          maxLines: 2,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        AutoSizeText(
-                          'Crop Variety',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    leading: AutoSizeText(
-                      'Plot Number',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    title: AutoSizeText(
-                      'Farmer Name',
-                      style: TextStyle(color: Colors.white),
-                      minFontSize: 8,
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: AutoSizeText(
-                            'ID',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Expanded(
-                          child: AutoSizeText(
-                            'Plantation Date',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
+
+                // Agri List Section
                 model.filteredAgriList.isNotEmpty
                     ? Expanded(
                   child: ListView.separated(
                     itemCount: model.filteredAgriList.length,
                     itemBuilder: (context, index) {
+                      final agri = model.filteredAgriList[index];
+                      final cardColor = agri.docstatus == 0
+                          ? Colors.grey.shade200
+                          : const Color(0xFFD3E8FD);
+
                       return Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: ListTile(
-                          tileColor:
-                          model.filteredAgriList[index].docstatus == 0
-                              ? Colors.grey.withOpacity(0.2)
-                              : Color(0xFFD3E8FD),
-                          trailing: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
-                            children: [
-                              AutoSizeText(
-                                model.filteredAgriList[index].village ??
-                                    '',
-                                maxLines: 2,
-                              ),
-                              AutoSizeText(
-                                model.filteredAgriList[index]
-                                    .cropVariety ??
-                                    '',
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [cardColor, Colors.white],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 8.0,
+                                spreadRadius: 3.0,
+                                offset: const Offset(2, 4),
                               ),
                             ],
+                            border: Border.all(color: Colors.blueAccent, width: 0.5),
                           ),
-                          leading: AutoSizeText(
-                            model.filteredAgriList[index]
-                                .caneRegistrationId
-                                .toString(),
-                            minFontSize: 20,
-                          ),
-                          title: AutoSizeText(
-                            model.filteredAgriList[index].growerName ??
-                                '',
-                            maxLines: 2,
-                            minFontSize: 10,
-                          ),
-                          subtitle: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: AutoSizeText(
-                                  model.filteredAgriList[index].name
-                                      .toString(),
-                                  maxLines: 2,
+                          child: MaterialButton(
+                            onPressed: () => model.onRowClick(context, agri),
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Top Row (Plot number and farmer details)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      agri.plotNo ?? "",
+                                      style: const TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 24.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(width: 25),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            agri.growerName ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            DateFormat('dd-MM-yyyy').format(
+                                              DateTime.parse(agri.date ?? ""),
+                                            ),
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 15),
-                              Expanded(
-                                child: AutoSizeText(
-                                  DateFormat('dd-MM-yyyy').format(
-                                      DateTime.parse(model
-                                          .filteredAgriList[index]
-                                          .date ??
-                                          '')),
-                                  maxLines: 2,
+                                const SizedBox(height: 12.0),
+
+                                // Bottom Row (Crop variety and village/route)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Crop Variety'),
+                                        Text(
+                                          agri.cropVariety ?? "N/A",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Village/Route'),
+                                        Text(
+                                          agri.village ?? "N/A",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          onTap: () {
-                            model.onRowClick(
-                                context, model.filteredAgriList[index]);
-                          },
                         ),
                       );
                     },
-                    separatorBuilder: (context, index) {
-                      return const Divider(
-                        color: Colors.white, // Color of the line
-                        thickness: 0, // Thickness of the line
-                      );
-                    },
+                    separatorBuilder: (context, index) => const SizedBox(height: 10.0),
                   ),
                 )
                     : customErrorMessage()

@@ -67,6 +67,7 @@ class TripSheetMasters {
 
 class TransportInfo {
   String? name;
+  String? season;
   String? oldNo;
   int? dummyContract;
   String? transporterName;
@@ -85,6 +86,7 @@ class TransportInfo {
         this.dummyContract,
         this.transporterName,
         this.transporterCode,
+        this.season,
         this.harvesterCode,
         this.harvesterName,
         this.vehicleType,
@@ -99,6 +101,7 @@ class TransportInfo {
     dummyContract=json['dummy_contract'];
     transporterName = json['transporter_name'];
     transporterCode = json['transporter_code'];
+    season=json['season'];
     harvesterCode = json['harvester_code'];
     harvesterName = json['harvester_name'];
     vehicleType = json['vehicle_type'];
@@ -116,6 +119,7 @@ class TransportInfo {
     data['transporter_name'] = transporterName;
     data['transporter_code'] = transporterCode;
     data['harvester_code'] = harvesterCode;
+    data['season']=season;
     data['harvester_name'] = harvesterName;
     data['vehicle_type'] = vehicleType;
     data['vehicle_no'] = vehicleNo;

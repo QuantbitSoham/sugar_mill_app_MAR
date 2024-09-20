@@ -10,16 +10,16 @@ import '../models/agri_list_model.dart';
 class ListAgriService {
   Future<List<AgriListModel>> getAgriListByNameFilter(String name) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+      
       var url =
-          '$apiBaseUrl/api/resource/Agriculture Development?fields=["docstatus","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["docstatus","!=","2"]]';
+          '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["docstatus","!=","2"]]';
       var dio = Dio();
       print(url);
       var response = await dio.request(
         url,
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -38,27 +38,26 @@ class ListAgriService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
-      Logger().e(e.response?.data.toString());
-      print(e.response?.data.toString());
+
     }
 
     return [];
   }
 
-  Future<List<AgriListModel>> getAgriListByvillagefarmernameFilter(
+  Future<List<AgriListModel>> getAgriListByVillageFarmerNameFilter(
       String village, String name) async {
     try {
-      var headers = {'Cookie': await getTocken()};
+      
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Agriculture Development?fields=["docstatus","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["village","Like","$village%"],["grower_name","Like","%$name%"],["sales_type","!=","Drip"]]',
+        '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["village","Like","$village%"],["grower_name","Like","%$name%"],["sales_type","!=","Drip"]]',
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -76,9 +75,9 @@ class ListAgriService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -88,13 +87,12 @@ class ListAgriService {
 
   Future<List<AgriListModel>> getAllCaneList() async {
     try {
-      var headers = {'Cookie': await getTocken()};
       var dio = Dio();
       var response = await dio.request(
         apigetagrilist,
         options: Options(
           method: 'GET',
-          headers: headers,
+          headers: {'Authorization': await getToken()},
         ),
       );
 
@@ -112,9 +110,9 @@ class ListAgriService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg:
-            'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+            'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }

@@ -17,13 +17,22 @@ class ListCompletedSamplingScreen extends StatelessWidget {
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: const AutoSizeText('Completed Crop Sampling List'),
+          title: const AutoSizeText(
+            'Completed Crop Sampling List',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
         ),
         body: fullScreenLoader(
+          context: context,
+          loader: model.isBusy,
           child: RefreshIndicator(
             onRefresh: model.refresh,
             child: Column(
               children: [
+                // Filter Section with Drop-downs and Search Fields
                 Container(
                   color: Colors.white,
                   child: Padding(
@@ -32,15 +41,17 @@ class ListCompletedSamplingScreen extends StatelessWidget {
                       height: 100,
                       child: Row(
                         children: [
+                          // Season Drop-down
                           Expanded(
                             child: CdropDown(
                               dropdownButton: DropdownButtonFormField<String>(
                                 isExpanded: true,
-                                // Replace null with the selected value if needed
                                 decoration: const InputDecoration(
                                   labelText: 'Season',
                                 ),
-                                value: model.seasoncontroller.text,
+                                value: model.seasoncontroller.text.isNotEmpty
+                                    ? model.seasoncontroller.text
+                                    : null,
                                 hint: const Text('Select Season'),
                                 items: model.seasonlist.map((val) {
                                   return DropdownMenuItem<String>(
@@ -55,9 +66,8 @@ class ListCompletedSamplingScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10.0),
+                          // Village TextField
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -70,9 +80,8 @@ class ListCompletedSamplingScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10.0),
+                          // Farmer Name TextField
                           Expanded(
                             child: TextField(
                               onChanged: (value) {
@@ -84,193 +93,175 @@ class ListCompletedSamplingScreen extends StatelessWidget {
                                 labelText: 'Farmer Name',
                               ),
                             ),
-                          )
+                          ),
+                          const SizedBox(width: 5.0),
                         ],
                       ),
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: const ListTile(
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        AutoSizeText(
-                          'Village/route',
-                          maxLines: 2,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        AutoSizeText(
-                          'Crop Variety',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    leading: AutoSizeText(
-                      'Plot Number',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    title: AutoSizeText(
-                      'Farmer Name',
-                      style: TextStyle(color: Colors.white),
-                      minFontSize: 8,
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: AutoSizeText(
-                            'Average Brixs',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Expanded(
-                          child: AutoSizeText(
-                            'Plantation Date',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
+                // Sampling List Section
                 model.filtersamplingList.isNotEmpty
                     ? Expanded(
                   child: ListView.separated(
                     itemCount: model.filtersamplingList.length,
                     itemBuilder: (context, index) {
+                      final sampling = model.filtersamplingList[index];
+
+
                       return Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: ListTile(
-                          tileColor: const Color(0xFFFFF5F5),
-                          trailing: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
-                            children: [
-                              AutoSizeText(
-                                model.filtersamplingList[index].area ??
-                                    '',
-                                maxLines: 2,
-                              ),
-                              AutoSizeText(
-                                model.filtersamplingList[index]
-                                    .cropVariety ??
-                                    '',
-                              ),
-                            ],
-                          ),
-                          leading: AutoSizeText(
-                            model.filtersamplingList[index].id.toString(),
-                            minFontSize: 20,
-                          ),
-                          title: AutoSizeText(
-                            model.filtersamplingList[index].growerName ??
-                                '',
-                            maxLines: 2,
-                            minFontSize: 10,
-                          ),
-                          subtitle: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AutoSizeText(
-                                model.filtersamplingList[index]
-                                    .averageBrix!
-                                    .toStringAsFixed(2),
-                                maxLines: 2,
-                              ),
-                              const SizedBox(width: 15),
-                              AutoSizeText(
-                                DateFormat('dd-MM-yyyy').format(
-                                    DateTime.parse(model
-                                        .filtersamplingList[index]
-                                        .plantattionRatooningDate ??
-                                        '')),
-                                maxLines: 2,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [Colors.white54, Colors.white],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 8.0,
+                                spreadRadius: 3.0,
+                                offset: const Offset(2, 4),
                               ),
                             ],
+                            border: Border.all(
+                                color: Colors.blueAccent, width: 0.5),
                           ),
-                          onTap: () {
-                            model.onRowClick(
-                                context, model.filtersamplingList[index]);
-                          },
+                          child: MaterialButton(
+                            onPressed: () => model.onRowClick(
+                                context, sampling),
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                // Top Row (Plot number and farmer details)
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      sampling.plotNo?.toString() ?? "",
+                                      style: const TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 24.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 25),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            sampling.growerName ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            sampling.plantattionRatooningDate !=
+                                                null
+                                                ? DateFormat('dd-MM-yyyy')
+                                                .format(
+                                              DateTime.parse(sampling
+                                                  .plantattionRatooningDate ??
+                                                  ""),
+                                            )
+                                                : "N/A",
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12.0),
+                                // Bottom Row (Crop variety and village/route)
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // Crop Variety
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Crop Variety'),
+                                        Text(
+                                          sampling.cropVariety ?? "N/A",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Village
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Village'),
+                                        Text(
+                                          sampling.area ?? "N/A",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Average Brix
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Avg. Brix'),
+                                        Text(
+                                          sampling.averageBrix != null
+                                              ? sampling.averageBrix!
+                                              .toStringAsFixed(2)
+                                              : "N/A",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     },
                     separatorBuilder: (context, index) {
                       return const Divider(
-                        color: Colors.white, // Color of the line
-                        thickness: 0, // Thickness of the line
+                        color: Colors.transparent,
+                        thickness: 0,
                       );
                     },
                   ),
                 )
-                    : customErrorMessage()
+                    : customErrorMessage(),
               ],
             ),
           ),
-          context: context,
-          loader: model.isBusy,
         ),
-
-        // body: fullScreenLoader(
-        //   context: context,
-        //   loader: model.isBusy,
-        //   child: Column(
-        //     children: [
-        //       Padding(
-        //         padding: const EdgeInsets.all(8.0),
-        //         child: TextField(
-        //           onChanged: model.filterList,
-        //           decoration: const InputDecoration(
-        //             labelText: 'Search',
-        //             prefixIcon: Icon(Icons.search),
-        //           ),
-        //         ),
-        //       ),
-        //       Expanded(
-        //         child: ListView.separated(
-        //           itemCount: model.filteredList.length,
-        //           itemBuilder: (context, index) {
-        //             return ListTile(
-        //               leading: SizedBox(
-        //                 width: 120,
-        //                 child: AutoSizeText(
-        //                   model.filteredList[index].village ?? '',
-        //                   maxLines: 2,
-        //                 ),
-        //               ),
-        //               title: Text(
-        //                 model.filteredList[index].supplierName ?? '',
-        //                 style: const TextStyle(fontSize: 11),
-        //               ),
-        //               subtitle: Text(
-        //                 model.filteredList[index].name ?? '',
-        //                 style: const TextStyle(fontSize: 8),
-        //               ),
-        //               onTap: () {
-        //                 // Handle row click here
-        //                 // _onRowClick(context, filteredList[index]);
-        //                 model.onRowClick(context, model.filteredList[index]);
-        //               },
-        //             );
-        //           },
-        //           separatorBuilder: (context, index) {
-        //             return const Divider();
-        //           },
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }
