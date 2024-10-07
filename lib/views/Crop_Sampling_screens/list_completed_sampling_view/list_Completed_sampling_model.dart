@@ -49,8 +49,9 @@ class ListCompletedSamplingModel extends BaseViewModel {
     await filterListBySeason(name: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
+      if(context.mounted){
       logout(context);
-    }
+    }}
     notifyListeners();
   }
 

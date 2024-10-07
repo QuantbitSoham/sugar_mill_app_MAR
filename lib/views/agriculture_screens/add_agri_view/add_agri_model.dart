@@ -139,8 +139,9 @@ class AgriViewModel extends BaseViewModel {
     }
 
     if (seasonList.isEmpty) {
+      if(context.mounted){
       logout(context);
-    }
+    }}
 
     setBusy(false);
   }

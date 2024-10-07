@@ -124,7 +124,7 @@ class ListTripshhetService {
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","status","slip_no","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["farmer_name","like","%$trsname%"],["field_village","like","$village%"],["season","like","$season%"]]&order_by=FIELD(status, "New", "Token Pending","Token Submitted", "Weight Done")',
+        '$apiBaseUrl/api/resource/Trip Sheet?fields=["name","status","slip_no","farmer_name","field_village","transporter_name","circle_office","season"]&filters=[["farmer_name","like","%$trsname%"],["field_village","like","$village%"],["season","like","$season%"]]&order_by=modified desc,FIELD(status, "New", "Token Pending","Token Submitted", "Weight Done")',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getToken()},
