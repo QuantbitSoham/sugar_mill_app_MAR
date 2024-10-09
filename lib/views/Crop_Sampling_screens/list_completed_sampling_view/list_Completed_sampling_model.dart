@@ -56,8 +56,17 @@ class ListCompletedSamplingModel extends BaseViewModel {
   }
 
   Future<void> refresh() async {
-    filtersamplingList =
-        (await ListCropSamplingServices().getAllCompletedCropSamplingList());
+    int currentYear = DateTime.now().year;
+
+    // Filter the list to get the latest season
+    String latestSeason = seasonlist.firstWhere(
+          (season) => season.startsWith("$currentYear-"),
+      orElse: () => seasonlist
+          .last, // If no season matches the current year, take the last one
+    );
+    seasoncontroller.text = latestSeason;
+    // filtersamplingList = samplingList;
+    await filterListBySeason(name: latestSeason);
     notifyListeners();
   }
 

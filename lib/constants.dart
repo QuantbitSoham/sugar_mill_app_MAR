@@ -70,9 +70,9 @@ String apigetagrilist =
 ///Crop Sampling
 String apiPostCropSampling = "$apiBaseUrl/api/resource/Crop Sampling";
 String apiListSampling =
-    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["plantation_status","=","To Sampling"]]&order_by=creation desc';
+    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["plantation_status","=","To Sampling"]]&order_by=modified desc';
 String apiCompletedListSampling =
-    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["plantation_status","=","To Harvesting"]]&order_by=creation desc';
+    '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["plantation_status","=","To Harvesting"]]&order_by=modified desc';
 
 ///TripSheet
 String apifetchplotnumber =

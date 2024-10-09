@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
 import 'package:sugar_mill_app/models/cane_farmer.dart';
-import 'package:sugar_mill_app/models/list_crop_sampling_model.dart';
 import 'package:sugar_mill_app/models/sampling_formula.dart';
 import 'package:sugar_mill_app/models/village_model.dart';
 import 'package:sugar_mill_app/services/add_crop_sampling_service.dart';
 import '../../../constants.dart';
 import '../../../models/agri_cane_model.dart';
 import '../../../models/crop_sampling.dart';
+import '../../../router.router.dart';
 
 
 class AddCropSmaplingModel extends BaseViewModel {
@@ -88,7 +87,8 @@ class AddCropSmaplingModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-             Navigator.pop(context, const MaterialRoute(page: ListSampling)); 
+            Navigator.popAndPushNamed(context, Routes.listCompletedSamplingScreen);
+
           }
         }
       } else {
@@ -97,7 +97,8 @@ class AddCropSmaplingModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
-            Navigator.pop(context, const MaterialRoute(page: ListSampling)); 
+            Navigator.pop(context);
+
           }
         }
       }

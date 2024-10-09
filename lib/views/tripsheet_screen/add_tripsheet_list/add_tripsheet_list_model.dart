@@ -80,7 +80,6 @@ class ListTripsheet extends BaseViewModel {
     notifyListeners();
     tripSheetFilter = await ListTripshhetService().getTransporterNameFilter(
         tripSheeNameFilter, tripSheetVillageFilter, tripsheetSeasonFilter);
-    tripSheetFilter.sort((a, b) => b.slipNo!.compareTo(a.slipNo!.toInt()));
     notifyListeners();
   }
 

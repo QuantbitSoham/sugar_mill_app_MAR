@@ -84,7 +84,7 @@ class ListCropSamplingServices {
     try {
       
       var url =
-          '$apiBaseUrl/api/resource/Crop Sampling?order_by=creation desc&fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["season","like","$season%"],["plantation_status","=","To Sampling"]]&order_by=creation desc';
+          '$apiBaseUrl/api/resource/Crop Sampling?order_by=modified desc&fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["season","like","$season%"],["plantation_status","=","To Sampling"]]&order_by=creation desc';
       var dio = Dio();
       var response = await dio.request(
         url,
@@ -124,7 +124,7 @@ class ListCropSamplingServices {
     try {
       
       var url =
-          '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["season","like","$season%"],["plantation_status","=","To Harvesting"]]&order_by=creation desc';
+          '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["season","like","$season%"],["plantation_status","=","To Harvesting"]]&order_by=modified desc';
       var dio = Dio();
       var response = await dio.request(
         url,
@@ -163,11 +163,9 @@ class ListCropSamplingServices {
   Future<List<ListSampling>> getListByvillagefarmernameFilter(
       String village, String name) async {
     try {
-      
-
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"],["plantation_status","=","To Sampling"]]&order_by=creation desc',
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"],["plantation_status","=","To Sampling"]]&order_by=modified desc',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getToken()},
@@ -207,7 +205,7 @@ class ListCropSamplingServices {
 
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"],["plantation_status","=","To Harvesting"]]&order_by=creation desc',
+        '$apiBaseUrl/api/resource/Crop Sampling?fields=["id","plot_no","plantattion_ratooning_date","average_brix","grower_name","route","form_number","crop_variety","name","area"]&filters=[["area","Like","$village%"],["grower_name","Like","%$name%"],["plantation_status","=","To Harvesting"]]&order_by=modified desc',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getToken()},

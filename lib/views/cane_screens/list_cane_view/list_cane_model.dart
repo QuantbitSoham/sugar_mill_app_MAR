@@ -38,6 +38,7 @@ class ListCaneModel extends BaseViewModel {
   }
 
   List<String> seasonlist = [""];
+
   void initialise(BuildContext context) async {
     setBusy(true);
     // caneList = (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
@@ -55,7 +56,8 @@ class ListCaneModel extends BaseViewModel {
     await filterListByNameAndVillage(season: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
-      logout(context);
+      if(context.mounted){
+      logout(context);}
     }
     notifyListeners();
   }
@@ -73,6 +75,7 @@ Future<void> refresh() async {
   notifyListeners();
 }
 
+
   Future<void> filterListByNameAndVillage({String? season,String? name, String? village}) async {
     caneseasonFilter=season ?? caneseasonFilter;
     caneNameFilter = name ?? caneNameFilter;
@@ -84,6 +87,8 @@ Future<void> refresh() async {
     notifyListeners();
   }
 
+
+
   void onRowClick(BuildContext context, CaneListModel? caneList) {
     Navigator.pushNamed(
       context,
@@ -91,7 +96,5 @@ Future<void> refresh() async {
       arguments:
           AddCaneScreenArguments(caneId: caneList?.name.toString() ?? " "),
     );
-    // Navigator.pushNamed(context, Routes.detailedFarmerScreen,
-    //     arguments: DetailedFarmerScreenArguments(id: farmresList?.name ?? ""));
   }
 }
