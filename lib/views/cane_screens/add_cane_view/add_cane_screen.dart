@@ -179,48 +179,55 @@ class _AddCaneScreenState extends State<AddCaneScreen> {
                                 width: 15,
                               ),
                               Expanded(
-                                  child: CdropDown(
-                                dropdownButton: DropdownButtonFormField<String>(
-                                  isExpanded: true,
-                                  value: model.canedata.plantationStatus,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Plantation Status *',
-                                  ),
-                                  hint:
-                                      const Text('Select Is Plantation Status'),
-                                  items: model.plantationStatus.map((val) {
-                                    return DropdownMenuItem<String>(
-                                      value: val,
-                                      child: AutoSizeText(
-                                        val,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    // Allow only 'Diversion' to be selected
-                                    Logger().i(newValue);
-
-                                    model.isVisible(newValue);
-                                    if (newValue == 'Diversion') {
-                                      model.setSelectedPlantation(newValue);
-                                    } else {
-                                      // Optionally, show a message or feedback to the user
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          duration: Duration(seconds: 1),
-                                          backgroundColor: Colors.red,
-                                          content: Text(
-                                              'Only "Diversion" is allowed.'),
+                                child: CdropDown(
+                                  dropdownButton: DropdownButtonFormField<String>(
+                                    isExpanded: true,
+                                    value: model.canedata.plantationStatus,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Plantation Status *',
+                                    ),
+                                    hint: const Text('Select Plantation Status'),
+                                    items: model.plantationStatus.map((val) {
+                                      return DropdownMenuItem<String>(
+                                        value: val,
+                                        child: AutoSizeText(
+                                          val,
+                                          style: const TextStyle(color: Colors.black),
                                         ),
                                       );
-                                    }
-                                  },
-                                  validator: model.validatePlantationStatus,
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      Logger().i(newValue);
+
+                                      if (newValue == 'Diversion') {
+                                        // Allow "Diversion" and set the selected value
+                                        model.setSelectedPlantation(newValue);
+                                      } else {
+                                        // Reset the field if it's not "Diversion"
+                                        model.setSelectedPlantation(null);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            duration: Duration(seconds: 1),
+                                            backgroundColor: Colors.red,
+                                            content: Text('Only "Diversion" is allowed.'),
+                                          ),
+                                        );
+                                      }
+
+                                      // Update the visibility state (assuming this is relevant to your logic)
+                                      model.isVisible(newValue);
+                                    },
+                                    validator: (value) {
+                                      // Validate that "Diversion" is the selected value
+                                      if (value != 'Diversion' && model.isEdit==true) {
+                                        return 'Only "Diversion" is allowed.';
+                                      }
+                                      return null; // Return null when the validation passes
+                                    },
+                                  ),
                                 ),
-                              )),
+                              ),
+
                             ],
                           ),
 
@@ -984,30 +991,27 @@ class _AddCaneScreenState extends State<AddCaneScreen> {
                                 Expanded(
                                   child: CtextButton(
                                     onPressed: () {
-                                      if ((model.canedata.areaAcrs ?? 0.0) >
-                                          10.0) {
+                                      if ((model.canedata.areaAcrs ?? 0.0) > 10.0) {
                                         showDialog(
                                           context: context,
-                                          builder: (BuildContext context) {
+                                          builder: (BuildContext dialogContext) { // Use a new context for the dialog
                                             return AlertDialog(
-                                              title: const Text(
-                                                  'More than 10 acres cane registration!'),
+                                              title: const Text('More than 10 acres cane registration!'),
                                               content: const Text(
                                                   'Above Cane Registration is more than 10. Do you want to save this registration?'),
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog
+                                                    Navigator.of(dialogContext).pop(); // Close the dialog with dialogContext
                                                   },
                                                   child: const Text('Cancel'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog
-                                                    model.onSavePressed(
-                                                        context); // Proceed with save
+                                                    Navigator.of(dialogContext).pop(); // Close the dialog
+                                                    if (context.mounted) { // Ensure context is mounted before proceeding
+                                                      model.onSavePressed(context); // Proceed with save
+                                                    }
                                                   },
                                                   child: const Text('Save'),
                                                 ),
@@ -1016,14 +1020,16 @@ class _AddCaneScreenState extends State<AddCaneScreen> {
                                           },
                                         );
                                       } else {
-                                        model.onSavePressed(context);
+                                        if (context.mounted) {
+                                          model.onSavePressed(context);
+                                        }
                                       }
                                     },
                                     text: 'Save',
                                     buttonColor: Colors.green,
                                   ),
-                                ),
-                              ],
+                                )
+                                  ],
                             ),
                           ),
                         ],

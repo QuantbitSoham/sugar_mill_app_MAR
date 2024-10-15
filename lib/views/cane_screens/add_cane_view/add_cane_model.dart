@@ -157,12 +157,13 @@ class CaneViewModel extends BaseViewModel {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text("$name plot registered successfully"),
           actions: [
             TextButton(
               onPressed: () {
+                Navigator.of(dialogContext).pop();
                 Navigator.popAndPushNamed(
                     context, Routes.listCaneScreen); // Close the dialog
               },
@@ -180,15 +181,11 @@ class CaneViewModel extends BaseViewModel {
     if (formKey.currentState!.validate()) {
       bool res = false;
 
-      // Check if we need to update location (only if isEdit is false)
       if (!isEdit) {
-        // Create an instance of your GeolocationService
         GeolocationService geolocationService = GeolocationService();
 
-        // Check for location permissions
         PermissionStatus permission = await Permission.location.status;
         if (permission != PermissionStatus.granted) {
-          // Request location permission
           permission = await Permission.location.request();
           if (permission != PermissionStatus.granted) {
             Fluttertoast.showToast(msg: 'Location permission denied');
@@ -197,60 +194,49 @@ class CaneViewModel extends BaseViewModel {
           }
         }
 
-        // Get the user's position using the geolocation service
         Position? position = await geolocationService.determinePosition();
 
         if (position != null) {
-          // Get the placemark using the geolocation service
-          Placemark? placemark =
-              await geolocationService.getPlacemarks(position);
+          Placemark? placemark = await geolocationService.getPlacemarks(position);
 
           if (placemark != null) {
-            // Extract properties from the placemark
             String street = placemark.street ?? '';
             String subLocality = placemark.subLocality ?? '';
             String locality = placemark.locality ?? '';
             String postalCode = placemark.postalCode ?? '';
             String country = placemark.country ?? '';
-            // Create a formatted address string
             String formattedAddress =
                 '$street, $subLocality, $locality $postalCode, $country';
-            // Update canedata object with latitude, longitude, and address
             canedata.latitude = position.latitude.toString();
             canedata.longitude = position.longitude.toString();
             canedata.city = formattedAddress;
           } else {
-            // Handle case where placemark is null
             Fluttertoast.showToast(msg: 'Failed to get placemark');
             setBusy(false);
             return;
           }
         } else {
-          // Handle case where obtaining location fails
           Fluttertoast.showToast(msg: 'Failed to get location');
           setBusy(false);
           return;
         }
       }
 
-      // Proceed with saving the data
       Logger().i(canedata.toJson().toString());
 
       if (isEdit == true) {
         res = await AddCaneService().updateCane(canedata);
-        if (res) {
-          if (context.mounted) {
-            Navigator.pop(context);
-          }
+        if (res && context.mounted) {
+          Navigator.pop(context);
         }
       } else {
         String? name = await AddCaneService().addCane(canedata);
-        if (name.isNotEmpty) {
-          if(context.mounted){
-            Navigator.pop(context);
-            showSuccessDialog(context, name);
-          }
+        Logger().i(context.mounted);
 
+        if (name.isNotEmpty && context.mounted) {
+          Logger().i('triggered');
+
+              showSuccessDialog(context, name);
         }
       }
     }

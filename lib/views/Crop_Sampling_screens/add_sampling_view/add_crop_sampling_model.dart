@@ -69,7 +69,8 @@ class AddCropSmaplingModel extends BaseViewModel {
       notifyListeners();
     }
     if (seasonlist.isEmpty) {
-      logout(context);
+      if(context.mounted){
+      logout(context);}
     }
 
     setBusy(false);
@@ -87,6 +88,7 @@ class AddCropSmaplingModel extends BaseViewModel {
           if (context.mounted) {
             setBusy(false);
             setBusy(false);
+            Navigator.pop(context);
             Navigator.popAndPushNamed(context, Routes.listCompletedSamplingScreen);
 
           }
