@@ -12,7 +12,7 @@ class ListAgriService {
     try {
       
       var url =
-          '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["docstatus","!=","2"]]';
+          '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["docstatus","!=","2"],["sales_type","!=","Sugarcane Seeds"]]';
       var dio = Dio();
       print(url);
       var response = await dio.request(
@@ -49,12 +49,11 @@ class ListAgriService {
   }
 
   Future<List<AgriListModel>> getAgriListByVillageFarmerNameFilter(
-      String village, String name) async {
+      String village, String name,String plotNo) async {
     try {
-      
       var dio = Dio();
       var response = await dio.request(
-        '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["village","Like","$village%"],["grower_name","Like","%$name%"],["sales_type","!=","Drip"]]',
+        '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["village","Like","$village%"],["plot_no","Like","$plotNo%"],["grower_name","Like","%$name%"],["sales_type","!=","Drip"]]',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getToken()},

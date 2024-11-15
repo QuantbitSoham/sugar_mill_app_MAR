@@ -1,22 +1,29 @@
 class TripSheetMasters {
   List<String>? season;
   List<String>? plant;
+  List<String>? gangType;
   List<TransportInfo>? transportInfo;
   List<WaterSupplierList>? waterSupplierList;
   List<CaneRoute>? caneRoute;
   List<VehicleType>? vehicleType;
+  List<String>? rope;
 
   TripSheetMasters(
       {this.season,
         this.plant,
+        this.gangType,
         this.transportInfo,
         this.waterSupplierList,
         this.caneRoute,
-        this.vehicleType});
+        this.vehicleType,
+      this.rope});
 
   TripSheetMasters.fromJson(Map<String, dynamic> json) {
     season = json['season'].cast<String>();
+    rope = json['rope_type'].cast<String>();
     plant = json['plant'].cast<String>();
+    gangType = json['gang_type'].cast<String>();
+
     if (json['Transport_Info'] != null) {
       transportInfo = <TransportInfo>[];
       json['Transport_Info'].forEach((v) {
@@ -47,6 +54,8 @@ class TripSheetMasters {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['season'] = season;
     data['plant'] = plant;
+    data['gang_type']=gangType;
+    data['rope_type']=rope;
     if (transportInfo != null) {
       data['Transport_Info'] =
           transportInfo!.map((v) => v.toJson()).toList();
