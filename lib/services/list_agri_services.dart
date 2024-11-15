@@ -12,7 +12,7 @@ class ListAgriService {
     try {
       
       var url =
-          '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["docstatus","!=","2"]]';
+          '$apiBaseUrl/api/resource/Agriculture Development?order_by=creation desc&fields=["docstatus","plot_no","route_name","grower_name","crop_variety","date","area","village","name","survey_number","cane_registration_id"]&filters=[["season","Like","$name%"],["docstatus","!=","2"],["sales_type","!=","Sugarcane Seeds"]]';
       var dio = Dio();
       print(url);
       var response = await dio.request(

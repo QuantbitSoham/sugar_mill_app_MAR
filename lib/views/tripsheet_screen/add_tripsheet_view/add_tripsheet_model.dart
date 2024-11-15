@@ -24,15 +24,15 @@ class AddTripSheetModel extends BaseViewModel {
   TextEditingController watershareController = TextEditingController();
   TextEditingController engineNumberController = TextEditingController();
   TextEditingController tolly1Controller = TextEditingController();
-
   TextEditingController tolly2Controller = TextEditingController();
 
-  final List<String> deductionType = [
+  List<String> deductionType = [
     "",
     "Burn Cane",
     "Unmatured Cane",
   ];
-  final List<String> ropeType = [
+
+  List<String> ropeType = [
     "All",
     "trailor 1 st",
     "trailor  2 nd",
@@ -51,7 +51,8 @@ class AddTripSheetModel extends BaseViewModel {
     "TL Top & Middle Rope",
     "2nd trailor all & 1st trailor bottom rope",
     "2nd trailor upper rope",
-    "TL Middle Rope 2"
+    "TL Middle Rope 2",
+    "TL Upper Rope",
   ];
   CartInfo cartinfo = CartInfo();
   List<WaterSupplierList> waterSupplier = [];
@@ -125,11 +126,7 @@ class AddTripSheetModel extends BaseViewModel {
     transportList = masters.transportInfo ?? [];
     waterSupplier = masters.waterSupplierList ?? [];
     vehicleTypeList = masters.vehicleType ?? [];
-    // season = await AddTripSheetServices().fetchSeason();
-    // plantList = await AddTripSheetServices().fetchPlant();
-    // routeList = await AddTripSheetServices().fetchRoute();
-    // transportList = await AddTripSheetServices().fetchTransport();
-    // waterSupplier = await AddTripSheetServices().fetchWaterSupplier();
+    ropeType=masters.rope ?? [];
     tripSheetData.branch = "Bedkihal";
     int currentYear = DateTime.now().year;
     // Filter the list to get the latest season

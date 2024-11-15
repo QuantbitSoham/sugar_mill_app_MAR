@@ -161,14 +161,17 @@ class ListAgriScreen extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            DateFormat('dd-MM-yyyy').format(
-                                              DateTime.parse(agri.date ?? ""),
-                                            ),
+                                            agri.date != null && agri.date!.isNotEmpty
+                                                ? DateFormat('dd-MM-yyyy').format(
+                                                DateTime.parse(agri.date ?? "")
+                                            )
+                                                : "",
                                             style: const TextStyle(
                                               color: Colors.grey,
                                               fontSize: 14.0,
                                             ),
-                                          ),
+                                          )
+
                                         ],
                                       ),
                                     ),
