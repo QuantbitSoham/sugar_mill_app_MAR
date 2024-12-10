@@ -120,6 +120,32 @@ class AddTripSheetModel extends BaseViewModel {
 
   Future<void> initialize(BuildContext context, String tripId) async {
     setBusy(true);
+    plotList = await AddTripSheetServices().fetchPlot("");
+    masters = await AddTripSheetServices().getMasters() ?? TripSheetMasters();
+    Logger().i(masters.toJson());
+    season = masters.season ?? [];
+    plantList = masters.plant ?? [];
+    routeList = masters.caneRoute ?? [];
+    transportList = masters.transportInfo ?? [];
+    waterSupplier = masters.waterSupplierList ?? [];
+    vehicleTypeList = masters.vehicleType ?? [];
+    ropeType=masters.rope ?? [];
+    tripSheetData.branch = "Bedkihal";
+    int currentYear = DateTime.now().year;
+    // Filter the list to get the latest season
+    String latestSeason = season.firstWhere(
+      (season) => season.startsWith("$currentYear-"),
+      orElse: () => season
+          .last, // If no season matches the current year, take the last one
+    );
+    tripSheetData.season = latestSeason;
+   transportList= transportList.where((transporter) => transporter.season == latestSeason).toList();
+   Logger().i(transportList);
+    if (season.isEmpty) {
+      if(context.mounted) {
+        logout(context);
+      }
+    }
 
     try {
       // Fetch data from services

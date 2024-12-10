@@ -15,10 +15,7 @@ const kPanpdf = "PanCard";
 const kBankpdf = "BankPassbook";
 const kConcentpdf = "ConcentLetter";
 
-// const apiBaseUrl = "https://erpvppl.erpdata.in";
-// const apiBaseUrl = "https://migratesugar.erpdata.in";
-const apiBaseUrl = "http://139.167.152.122:1111";
-
+const apiBaseUrl = "https://erpvppl.erpdata.in";
 
 /// api usrls
 String apifetchSeason =
