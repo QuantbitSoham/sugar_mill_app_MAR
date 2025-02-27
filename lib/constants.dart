@@ -15,7 +15,10 @@ const kPanpdf = "PanCard";
 const kBankpdf = "BankPassbook";
 const kConcentpdf = "ConcentLetter";
 
-const apiBaseUrl = "https://erpvppl.erpdata.in";
+// const apiBaseUrl = "https://erpvppl.erpdata.in";
+// const apiBaseUrl = "https://migratesugar.erpdata.in";
+const apiBaseUrl = "http://139.167.152.122:8765";
+
 
 /// api usrls
 String apifetchSeason =
@@ -83,7 +86,7 @@ String apifetchtripsheetsearch =
     '$apiBaseUrl/api/resource/Trip Sheet?order_by=creation desc&fields=["name","farmer_name","field_village","transporter_name","circle_office","season","slip_no"]&limit_page_length=99';
 
 ///functions
-// Future<Map<String, String>> getTocken() async {
+// Future<Map<String, String>> getToken() async {
 //   final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
 //   final SharedPreferences prefs = await prefs0;
 //   String cookies = prefs.getString("Cookie") ?? "";
@@ -167,6 +170,7 @@ Future<File?> compressFile(File file) async {
     file.absolute.path,
     compressedFileName,
     quality: 60,
+    autoCorrectionAngle: true
     // rotate: 180,
   );
 

@@ -142,9 +142,10 @@ Navigator.pop(context);
         ),
       );
       if (response.statusCode == 200) {
+        Logger().i(response.data["data"]);
         return TripSheetMasters.fromJson(response.data["data"]);
       } else {
-        // print(response.statusMessage);
+        print(response.statusMessage);
         return null;
       }
     } on DioException catch (e) {

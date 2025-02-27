@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CustomeTile extends StatefulWidget {
+class CustomTile extends StatefulWidget {
   final Widget child;
   final Color color;
-  const CustomeTile({super.key, required this.child, required this.color});
+  const CustomTile({super.key, required this.child, required this.color});
 
   @override
-  State<CustomeTile> createState() => CustomeTileSate();
+  State<CustomTile> createState() => CustomTileSate();
 }
 
-class CustomeTileSate extends State<CustomeTile> {
+class CustomTileSate extends State<CustomTile> {
   @override
   Widget build(BuildContext context) {
     return PhysicalModel(

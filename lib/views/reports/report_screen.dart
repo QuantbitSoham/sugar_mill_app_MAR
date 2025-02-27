@@ -9,31 +9,87 @@ class ReportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reports List'),
+        title: const Text('Available Reports'),
+        centerTitle: true,
       ),
       body: Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Card(
-              elevation: 1,
-              child: ListTile(
-                leading: const Icon(Icons.receipt_long_outlined),
 
-                title: const Text('UserWise Cane Registrations'),
-
-                trailing: const Icon(CupertinoIcons.arrow_right),
-
-                onTap: () {
-                  Navigator.pushNamed(
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildReportCard(
                     context,
-                    Routes.userWiseRegistrationReport,
-                  );
-                },
+                    icon: Icons.receipt_long_outlined,
+                    title: 'Circle Wise Cane Registration for crop type',
+                    subtitle: 'Detailed report by circles',
+                    routeName: Routes.userWiseRegistrationReport,
+                  ),
+                  _buildReportCard(
+                    context,
+                    icon: Icons.receipt_long_outlined,
+                    title: 'Cane Registration Report',
+                    subtitle: 'Complete registration details',
+                    routeName: Routes.caneRegistrationReport,
+                  ),
+                  _buildReportCard(
+                    context,
+                    icon: Icons.receipt_long_outlined,
+                    title: 'Variety Wise Cane Registration Area Report',
+                    subtitle: 'Variety Wise Cane Registration Area',
+                    routeName: Routes.varietyWiseCaneRegistrationReport,
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildReportCard(
+      BuildContext context, {
+        required IconData icon,
+        required String title,
+        required String subtitle,
+        required String routeName,
+      }) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: CircleAvatar(
+          radius: 24,
+          backgroundColor: Colors.blueAccent.withOpacity(0.1),
+          child: Icon(
+            icon,
+            size: 28,
+            color: Colors.blueAccent,
+          ),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: const TextStyle(color: Colors.grey),
+        ),
+        trailing: const Icon(
+          CupertinoIcons.arrow_right,
+          color: Colors.blueAccent,
+        ),
+        onTap: () {
+          Navigator.pushNamed(context, routeName);
+        },
       ),
     );
   }

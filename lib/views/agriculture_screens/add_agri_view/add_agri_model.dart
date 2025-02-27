@@ -75,7 +75,7 @@ class AgriViewModel extends BaseViewModel {
       seasonList
           .last, // If no season matches the current year, take the last one
     );
-    agridata.season = latestSeason;
+    agridata.season = "2024-2025";
 //     seasonlist = await AddAgriServices().fetchSeason();
 //     itemList = await AddAgriServices().fetchItemlist();
 //     fertilizeritemlist=await AddAgriServices().fetchItemwithfilter();

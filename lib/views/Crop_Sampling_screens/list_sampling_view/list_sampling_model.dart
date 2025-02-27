@@ -11,7 +11,7 @@ class ListSamplingModel extends BaseViewModel {
   TextEditingController seasonController = TextEditingController();
   TextEditingController villageController = TextEditingController();
   TextEditingController plotController = TextEditingController();
-
+  String latestSeason='';
   List<ListSampling> samplingList = [];
   List<ListSampling> filterSamplingList = [];
   String caneSeasonFilter = "";
@@ -45,7 +45,7 @@ class ListSamplingModel extends BaseViewModel {
       }
 
       // Set the latest season and filter the list
-      String latestSeason = _getLatestSeason();
+    latestSeason = "2024-2025";
       seasonController.text = latestSeason;
       await getListByvillagefarmernameFilter(season: latestSeason);
     } catch (error) {
@@ -59,7 +59,7 @@ class ListSamplingModel extends BaseViewModel {
   Future<void> refresh() async {
     if (seasonList.isEmpty) return;
 
-    String latestSeason = _getLatestSeason();
+latestSeason = "2024-2025";
     seasonController.text = latestSeason;
 
     await getListByvillagefarmernameFilter(season: latestSeason);

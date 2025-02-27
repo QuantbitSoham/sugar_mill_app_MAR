@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:sugar_mill_app/firebase_options.dart';
 import 'package:sugar_mill_app/router.locator.dart';
@@ -35,8 +36,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: lightColorScheme, // Use fixed light color scheme
         extensions: [lightCustomColors],
+fontFamily: 'Reddit Sans'
+
       ),
       home: const SplashScreen(),
     );
   }
+
 }

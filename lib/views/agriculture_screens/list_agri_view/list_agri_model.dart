@@ -37,9 +37,9 @@ class ListAgriModel extends BaseViewModel {
           .last, // If no season matches the current year, take the last one
     );
 
-    seasonController.text = latestSeason;
+    seasonController.text = "2024-2025";
     // canefilterList = caneList;
-    await filterListBySeason(name: latestSeason);
+    await filterListBySeason(name: "2024-2025");
     setBusy(false);
     if (seasonList.isEmpty) {
       Logger().i(seasonList.length);

@@ -39,7 +39,8 @@ class CaneViewModel extends BaseViewModel {
     "Added To Sampling",
     "Added To Harvesting",
     "To Sampling",
-    "To Harvesting"
+    "To Harvesting",
+    "Harvested"
   ];
   final List<String> seedType = ["Regular", "Foundation"];
   List<caneFarmer> farmerList = [];
@@ -98,7 +99,7 @@ class CaneViewModel extends BaseViewModel {
       orElse: () => seasonlist
           .last, // If no season matches the current year, take the last one
     );
-    canedata.season = latestSeason;
+    canedata.season = "2024-2025";
     Logger().i(caneId);
     if (caneId != "") {
       isEdit = true;

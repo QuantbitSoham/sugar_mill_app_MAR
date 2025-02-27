@@ -47,7 +47,7 @@ class ListCompletedSamplingModel extends BaseViewModel {
       }
 
       // Set the latest season and filter the list
-      String latestSeason = _getLatestSeason();
+      String latestSeason = "2024-2025";
       seasoncontroller.text = latestSeason;
       await getListByvillagefarmernameFilter(season: latestSeason);
     } catch (error) {
