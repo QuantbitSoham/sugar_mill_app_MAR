@@ -48,7 +48,7 @@ class AgriCane {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['vendor_code'] = vendorCode;
     data['route_km'] = routeKm;
     data['grower_name'] = growerName;

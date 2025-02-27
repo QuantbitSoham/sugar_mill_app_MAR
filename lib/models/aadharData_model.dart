@@ -66,7 +66,7 @@ class aadharData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['email_mobile_status'] = emailMobileStatus;
     data['referenceid'] = referenceid;
     data['name'] = name;

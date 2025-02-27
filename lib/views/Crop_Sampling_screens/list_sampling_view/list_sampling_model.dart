@@ -49,7 +49,7 @@ class ListSamplingModel extends BaseViewModel {
       seasonController.text = latestSeason;
       await getListByvillagefarmernameFilter(season: latestSeason);
     } catch (error) {
-      print("Error during initialization: $error");
+
     } finally {
       setBusy(false);
       notifyListeners();
@@ -98,19 +98,10 @@ latestSeason = "2024-2025";
         canePlotFilter,
       );
     } catch (error) {
-      print("Error fetching filtered list: $error");
     } finally {
       notifyListeners();
     }
   }
 
-  /// Private helper method to determine the latest season
-  String _getLatestSeason() {
-    int currentYear = DateTime.now().year;
-    return seasonList.firstWhere(
-          (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonList.last,
-    );
-  }
 
 }

@@ -94,7 +94,7 @@ class CaneViewModel extends BaseViewModel {
     int currentYear = DateTime.now().year;
 
     // Filter the list to get the latest season
-    String latestSeason = seasonlist.firstWhere(
+    seasonlist.firstWhere(
       (season) => season.startsWith("$currentYear-"),
       orElse: () => seasonlist
           .last, // If no season matches the current year, take the last one
@@ -135,16 +135,12 @@ class CaneViewModel extends BaseViewModel {
 
 
   bool isVisible(String? plantationStatus) {
-    print(
-        'name: ${canedata.name}, role: $role, isEdit: $isEdit, plantationStatus: $plantationStatus');
 
     bool visibility = true; // Default value
 
     if (role == true && isEdit == true && plantationStatus != "Diversion") {
-      print('Condition 1 triggered: role and isEdit are true, but plantationStatus is not "Diversion"');
       visibility = false;
     } else if (plantationStatus == "Diversion" && isEdit == true) {
-      print('Condition 2 triggered: plantationStatus is "Diversion" and isEdit is true');
       visibility = true;
     }
 

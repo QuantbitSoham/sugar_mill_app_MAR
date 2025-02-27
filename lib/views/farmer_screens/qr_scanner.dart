@@ -5,7 +5,6 @@ import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
 import 'package:sugar_mill_app/models/aadharData_model.dart';
 import 'package:sugar_mill_app/services/add_farmer_service.dart';
 import 'package:sugar_mill_app/views/farmer_screens/add_farmer_view/add_farmer_screen.dart';
-import 'package:sugar_mill_app/views/farmer_screens/result_screen.dart';
 
 
 
@@ -41,7 +40,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
-      drawer: Drawer(),
+      drawer: const Drawer(),
       appBar: AppBar(
         actions: [
           IconButton(onPressed: (){
@@ -60,9 +59,9 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
             controller.switchCamera();
           }, icon:  Icon(Icons.camera_front, color:isFrontCamera ?Colors.blueAccent :Colors.grey)),
         ],
-        iconTheme: IconThemeData(color: Colors.black87),
+        iconTheme: const IconThemeData(color: Colors.black87),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "QR Scanner",
           style: TextStyle(
             color: Colors.black87,
@@ -71,20 +70,20 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
             letterSpacing: 1,
           ),
         ),
-        leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.arrow_back)),
         // leading: IconButton(onPressed: (){
         //   Navigator.pop(context, MaterialPageRoute(builder: (context)=> VisitorList()));
         // }, icon: Icon(Icons.arrow_back)),
       ),
       body: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text("Place the QR code in the area",
                     style: TextStyle(
                       color: Colors.black87,
@@ -120,10 +119,8 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                             for (final barcode in barcodes) {
                               if (barcode.rawValue?.isNotEmpty == true) {
                                 isScanCompleted = true;
-                                print(barcode.rawValue.toString());
 aadharData qrdata=aadharData();
 qrdata=await FarmerService().aadharCardData( barcode.rawValue) ?? aadharData();
-print(qrdata);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

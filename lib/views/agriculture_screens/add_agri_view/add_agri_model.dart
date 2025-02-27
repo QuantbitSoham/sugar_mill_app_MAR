@@ -69,7 +69,7 @@ class AgriViewModel extends BaseViewModel {
         .year;
 
     // Filter the list to get the latest season
-    String latestSeason = seasonList.firstWhere(
+    seasonList.firstWhere(
           (season) => season.startsWith("$currentYear-"),
       orElse: () =>
       seasonList

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/models/varietywiseregistration.dart';
-import 'dart:convert';
 import '../../../services/report_service.dart';
 
 class VarietyWiseCaneRegistrationViewModel extends BaseViewModel {
@@ -13,8 +12,8 @@ class VarietyWiseCaneRegistrationViewModel extends BaseViewModel {
     try {
       var response = await ReportServices().fetchVarietyWiseRegistration(season, startDate, endDate);
       if (response != null) {
-        columnNames = response.columns ?? [];
-        rowData = response.data ?? [];
+        columnNames = response.columns;
+        rowData = response.data;
       }
     } catch (e) {
       debugPrint("Error fetching data: $e");

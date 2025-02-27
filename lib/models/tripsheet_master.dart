@@ -51,7 +51,7 @@ class TripSheetMasters {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['season'] = season;
     data['plant'] = plant;
     data['gang_type']=gangType;
@@ -121,7 +121,7 @@ class TransportInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['old_no'] = oldNo;
     data['dummy_contract']=dummyContract;
@@ -153,7 +153,7 @@ class WaterSupplierList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['supplier_name'] = supplierName;
     data['existing_supplier_code'] = existingSupplierCode;
@@ -193,7 +193,7 @@ class CaneRoute {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['route'] = route;
     data['distance_km'] = distanceKm;
     data['name'] = name;
@@ -218,7 +218,7 @@ class VehicleType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['apply_flat_rate'] = applyFlatRate;
     return data;

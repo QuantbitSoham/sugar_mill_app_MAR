@@ -36,7 +36,7 @@ class ListSampling {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['plantattion_ratooning_date'] = plantattionRatooningDate;
     data['average_brix'] = averageBrix;

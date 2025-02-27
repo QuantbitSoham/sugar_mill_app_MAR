@@ -9,7 +9,6 @@ import '../constants.dart';
 import '../models/cane_master_report_model.dart';
 import '../models/userwise_registration_model.dart';
 import '../models/varietywiseregistration.dart';
-import '../views/reports/varitywise cane registration data/varietywise_cane_registration_viewmodel.dart';
 
 class ReportServices {
   Future<List<String>> fetchSeason() async {
@@ -44,8 +43,8 @@ class ReportServices {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -93,18 +92,17 @@ class ReportServices {
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: $errorMessage',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
         Logger().e(errorMessage);
-        print(e.response!.statusCode);
       } else {
         // Handle Dio errors without response data
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: ${e.message}',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
         Logger().e(e.message);
       }
@@ -145,18 +143,17 @@ Logger().i(response.data['data']);
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: $errorMessage',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
         Logger().e(errorMessage);
-        print(e.response!.statusCode);
       } else {
         // Handle Dio errors without response data
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: ${e.message}',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
         Logger().e(e.message);
       }
@@ -200,18 +197,17 @@ Logger().i(response.data['data']);
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: $errorMessage',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
         Logger().e(errorMessage);
-        print(e.response!.statusCode);
       } else {
         // Handle Dio errors without response data
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: ${e.message}',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
         Logger().e(e.message);
       }

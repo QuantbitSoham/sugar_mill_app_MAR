@@ -697,7 +697,6 @@ class FarmerViewModel extends BaseViewModel {
 
 
   Future<void> uploadPassbook(int index) async {
-    print("INDEX IS: $index");
 
     try {
       if (passbookattch.isEmpty) {
@@ -987,7 +986,6 @@ class FarmerViewModel extends BaseViewModel {
       if (bankAccounts[index].nursery == 1) {
         nursery = true;
       }
-      print("SELECED: ${bankAccounts[index].bankAndBranch}");
       bankandbranch = bankAccounts[index].bankAndBranch ?? "";
       bankName = bankAccounts[index].bankName ?? "";
       branchifscCode = bankAccounts[index].branchifscCode!;
@@ -1076,8 +1074,6 @@ class FarmerViewModel extends BaseViewModel {
   }
 
   String? getFileFromFarmer(String filetype) {
-    print(filetype);
-    print("SELECTED FILE: $passbookattch");
     if (filetype == kAadharpdf) return farmerData.aadhaarCard;
     if (filetype == kPanpdf) return farmerData.panCard;
     if (filetype == kBankpdf) {

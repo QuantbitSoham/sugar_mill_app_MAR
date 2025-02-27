@@ -40,7 +40,6 @@ class AddCropSmaplingModel extends BaseViewModel {
       cropsamplingdata =
           await AddCropSmaplingServices().getCropSampling(samplingId) ??
               CropSampling();
-      print(cropsamplingdata.toJson());
       plotList = (await AddCropSmaplingServices().fetchcanelistwithfilter(cropsamplingdata.season ?? "",cropsamplingdata.area ?? "",cropsamplingdata.growerCode ?? ""));
       brixbottmAreaController.text = cropsamplingdata.brixBottom?.toStringAsFixed(0) ?? "";
       brixmiddleController.text = cropsamplingdata.brixMiddle?.toStringAsFixed(0) ?? "";
@@ -60,7 +59,6 @@ class AddCropSmaplingModel extends BaseViewModel {
           DateTime parsedDate = DateTime.parse(cropsamplingdata.plantattionRatooningDate!);
           cropsamplingdata.plantattionRatooningDate = DateFormat('dd-MM-yyyy').format(parsedDate);
         } catch (e) {
-          print('Invalid date format: ${cropsamplingdata.plantattionRatooningDate}');
           cropsamplingdata.plantattionRatooningDate = ""; // Handle invalid date format
         }
       } else {

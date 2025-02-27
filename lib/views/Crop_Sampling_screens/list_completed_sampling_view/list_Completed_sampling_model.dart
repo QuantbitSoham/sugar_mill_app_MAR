@@ -52,7 +52,6 @@ class ListCompletedSamplingModel extends BaseViewModel {
       await getListByvillagefarmernameFilter(season: latestSeason);
     } catch (error) {
       // Handle errors appropriately (e.g., logging or showing a snackbar)
-      print("Error initializing: $error");
     } finally {
       setBusy(false);
       notifyListeners();
@@ -99,7 +98,6 @@ class ListCompletedSamplingModel extends BaseViewModel {
       );
     } catch (error) {
       // Handle fetch errors
-      print("Error fetching filtered list: $error");
     } finally {
       notifyListeners();
     }

@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/views/reports/varitywise%20cane%20registration%20data/varietywise_cane_registration_viewmodel.dart';
 import 'package:sugar_mill_app/widgets/full_screen_loader.dart';
 
-import '../../../widgets/customdropdown2.dart';
 
 class VarietyWiseCaneRegistrationReport extends StatefulWidget {
   const VarietyWiseCaneRegistrationReport({super.key});
@@ -30,7 +29,7 @@ class _VarietyWiseCaneRegistrationReportState extends State<VarietyWiseCaneRegis
           context: context,
           loader:model.isBusy,
           child: Scaffold(
-            appBar: AppBar(title: Text('Dynamic Cane Registration Report')),
+            appBar: AppBar(title: const Text('Dynamic Cane Registration Report')),
             body: model.columnNames.isNotEmpty
                 ? SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -41,13 +40,13 @@ class _VarietyWiseCaneRegistrationReportState extends State<VarietyWiseCaneRegis
                 rows: model.rowData.map((row) {
                   return DataRow(
                     cells: model.columnNames
-                        .map((col) => DataCell(Text(row.circle?.toString() ?? '')))
+                        .map((col) => DataCell(Text(row.circle.toString())))
                         .toList(),
                   );
                 }).toList(),
               ),
             )
-                : Center(child: Text('No Data Available')),
+                : const Center(child: Text('No Data Available')),
           ),
         );
       },

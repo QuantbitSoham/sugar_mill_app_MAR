@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 class CircleData {
   final List<ColumnDefinition> columns;

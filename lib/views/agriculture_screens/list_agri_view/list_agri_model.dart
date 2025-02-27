@@ -31,7 +31,7 @@ class ListAgriModel extends BaseViewModel {
     int currentYear = DateTime.now().year;
 
     // Filter the list to get the latest season
-    String latestSeason = seasonList.firstWhere(
+    seasonList.firstWhere(
       (season) => season.startsWith("$currentYear-"),
       orElse: () => seasonList
           .last, // If no season matches the current year, take the last one

@@ -39,8 +39,8 @@ class FarmerService {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -73,8 +73,8 @@ class FarmerService {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -104,8 +104,8 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg: 'Error: ${e.response?.data["message"].toString()} ',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -136,8 +136,8 @@ class FarmerService {
       Fluttertoast.showToast(
         gravity: ToastGravity.BOTTOM,
         msg: 'Error: ${e.response?.data["message"].toString()} ',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -250,8 +250,8 @@ class FarmerService {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -282,8 +282,8 @@ class FarmerService {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }
@@ -316,8 +316,8 @@ class FarmerService {
         gravity: ToastGravity.BOTTOM,
         msg:
             'Error: ${e.response?.data["exception"].toString().split(":").elementAt(1).trim()}',
-        textColor: Color(0xFFFFFFFF),
-        backgroundColor: Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
       );
       Logger().e(e.response?.data.toString());
     }

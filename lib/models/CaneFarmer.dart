@@ -12,10 +12,10 @@ class caneFarmer {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['supplier_name'] = this.supplierName;
-    data['existing_supplier_code'] = this.existingSupplierCode;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['supplier_name'] = supplierName;
+    data['existing_supplier_code'] = existingSupplierCode;
+    data['name'] = name;
     return data;
   }
 }

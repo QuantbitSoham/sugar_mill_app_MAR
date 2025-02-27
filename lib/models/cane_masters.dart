@@ -37,19 +37,19 @@ class CaneMasters {
     if (json['village'] != null) {
       village = <Village>[];
       json['village'].forEach((v) {
-        village!.add(new Village.fromJson(v));
+        village!.add( Village.fromJson(v));
       });
     }
     if (json['cane_route'] != null) {
       caneRoute = <CaneRoute>[];
       json['cane_route'].forEach((v) {
-        caneRoute!.add(new CaneRoute.fromJson(v));
+        caneRoute!.add( CaneRoute.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['season'] = season;
     data['plant'] = plant;
     data['cane_variety'] = caneVariety;

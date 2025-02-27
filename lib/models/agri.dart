@@ -163,7 +163,7 @@ class Agri {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['owner'] = owner;
     data['creation'] = creation;
@@ -318,7 +318,7 @@ class AgricultureDevelopmentItem {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['owner'] = owner;
     data['creation'] = creation;
@@ -414,7 +414,7 @@ class AgricultureDevelopmentItem2 {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['owner'] = owner;
     data['creation'] = creation;
@@ -490,7 +490,7 @@ class Grantor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['owner'] = owner;
     data['creation'] = creation;

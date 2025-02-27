@@ -48,7 +48,6 @@ class ListCaneModel extends BaseViewModel {
     // caneList = (await ListCaneService().getAllCaneList()).cast<CaneListModel>();
     seasonlist = await AddCaneService().fetchSeason();
     Logger().i(seasonlist);
-    int currentYear = DateTime.now().year;
 
     // Filter the list to get the latest season
      latestSeason ="2024-2025";

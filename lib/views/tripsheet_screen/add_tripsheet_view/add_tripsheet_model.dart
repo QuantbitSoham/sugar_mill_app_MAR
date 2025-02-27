@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:sugar_mill_app/models/CaneRoute.dart';
 import 'package:sugar_mill_app/models/trip_crop_harvesting_model.dart';
 import 'package:sugar_mill_app/models/tripsheet.dart';
 import 'package:sugar_mill_app/views/tripsheet_screen/add_tripsheet_list/add_tripsheet_list_model.dart';
@@ -155,7 +154,7 @@ class AddTripSheetModel extends BaseViewModel {
       ]);
 Logger().i(results);
       // Assign results
-      plotList = results[0] as List<CropHarvestingModel> ?? [];
+      plotList = results[0] as List<CropHarvestingModel>;
       masters = results[1] as TripSheetMasters? ?? TripSheetMasters();
       // Initialize master lists
       season = masters.season ?? [];

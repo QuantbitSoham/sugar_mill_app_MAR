@@ -12,35 +12,35 @@ class AgriMasters {
     if (json['Item_List'] != null) {
       itemList = <ItemList>[];
       json['Item_List'].forEach((v) {
-        itemList!.add(new ItemList.fromJson(v));
+        itemList!.add(ItemList.fromJson(v));
       });
     }
     if (json['Fertilizer_Item_List'] != null) {
       fertilizerItemList = <FertilizerItemList>[];
       json['Fertilizer_Item_List'].forEach((v) {
-        fertilizerItemList!.add(new FertilizerItemList.fromJson(v));
+        fertilizerItemList!.add(FertilizerItemList.fromJson(v));
       });
     }
     if (json['village'] != null) {
       village = <Village>[];
       json['village'].forEach((v) {
-        village!.add(new Village.fromJson(v));
+        village!.add(Village.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['season'] = this.season;
-    if (this.itemList != null) {
-      data['Item_List'] = this.itemList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['season'] = season;
+    if (itemList != null) {
+      data['Item_List'] = itemList!.map((v) => v.toJson()).toList();
     }
-    if (this.fertilizerItemList != null) {
+    if (fertilizerItemList != null) {
       data['Fertilizer_Item_List'] =
-          this.fertilizerItemList!.map((v) => v.toJson()).toList();
+          fertilizerItemList!.map((v) => v.toJson()).toList();
     }
-    if (this.village != null) {
-      data['village'] = this.village!.map((v) => v.toJson()).toList();
+    if (village != null) {
+      data['village'] = village!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -62,11 +62,11 @@ class ItemList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['item_name'] = this.itemName;
-    data['item_code'] = this.itemCode;
-    data['rate'] = this.rate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['item_name'] = itemName;
+    data['item_code'] = itemCode;
+    data['rate'] = rate;
     return data;
   }
 }
@@ -100,14 +100,14 @@ class FertilizerItemList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['item_name'] = this.itemName;
-    data['item_code'] = this.itemCode;
-    data['weight_per_unit'] = this.weightPerUnit;
-    data['item_tax_temp'] = this.itemTaxTemp;
-    data['actual_qty'] = this.actualQty;
-    data['rate'] = this.rate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['item_name'] = itemName;
+    data['item_code'] = itemCode;
+    data['weight_per_unit'] = weightPerUnit;
+    data['item_tax_temp'] = itemTaxTemp;
+    data['actual_qty'] = actualQty;
+    data['rate'] = rate;
     return data;
   }
 }
@@ -126,10 +126,10 @@ class Village {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['taluka'] = this.taluka;
-    data['circle_office'] = this.circleOffice;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['taluka'] = taluka;
+    data['circle_office'] = circleOffice;
+    data['name'] = name;
     return data;
   }
 }

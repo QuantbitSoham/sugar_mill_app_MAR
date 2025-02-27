@@ -12,7 +12,7 @@ class caneRoute {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['route'] = route;
     data['distance_km'] = distanceKm;
     data['name'] = name;

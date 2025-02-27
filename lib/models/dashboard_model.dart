@@ -21,12 +21,12 @@ class Dashboard {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['last_log_type'] = this.lastLogType;
-    data['emp_name'] = this.empName;
-    data['email'] = this.email;
-    data['company'] = this.company;
-    data['last_log_time'] = this.lastLogTime;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['last_log_type'] = lastLogType;
+    data['emp_name'] = empName;
+    data['email'] = email;
+    data['company'] = company;
+    data['last_log_time'] = lastLogTime;
     return data;
   }
 }
