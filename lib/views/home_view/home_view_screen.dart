@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sugar_mill_app/constants.dart';
@@ -371,24 +372,23 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               ],
                             ),
                           ),
-                          // const SizedBox(
-                          //   height: 15.0,
-                          // ),
-                          // Card(
-                          //   elevation: 1,
-                          //   child: ListTile(
-                          //     leading:
-                          //         Icon(CupertinoIcons.rectangle_on_rectangle),
-                          //     title: Text('Reports'),
-                          //     trailing: Icon(CupertinoIcons.arrow_right),
-                          //     onTap: () {
-                          //       Navigator.pushNamed(
-                          //         context,
-                          //         Routes.reportScreen,
-                          //       );
-                          //     },
-                          //   ),
-                          // ),
+                          const SizedBox(
+                            height: 15.0,
+                          ),
+                          Card(
+                            elevation: 1,
+                            child: ListTile(
+                              leading:const Icon(CupertinoIcons.rectangle_on_rectangle),
+                              title: const Text('Reports'),
+                              trailing: const Icon(CupertinoIcons.arrow_right),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  Routes.reportScreen,
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ))),

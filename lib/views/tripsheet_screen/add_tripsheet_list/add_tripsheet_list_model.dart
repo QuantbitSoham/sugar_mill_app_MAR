@@ -28,8 +28,8 @@ class ListTripsheet extends BaseViewModel {
       orElse: () => seasonList
           .last, // If no season matches the current year, take the last one
     );
-    seasonController.text = latestSeason;
-    await filterListByNameAndVillage(season: latestSeason);
+    seasonController.text = "2024-2025";
+    await filterListByNameAndVillage(season: "2024-2025");
     setBusy(false);
     if (seasonList.isEmpty) {
       logout(context);

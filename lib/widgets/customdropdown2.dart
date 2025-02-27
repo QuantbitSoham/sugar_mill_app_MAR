@@ -31,111 +31,100 @@ class CustomDropdownButton2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18.0),
-        border: Border.all(
-          width: 2,
-          color: Colors.grey,
-          style: BorderStyle.solid,
+    return DropdownSearch<String>(
+      popupProps: PopupProps.bottomSheet(
+        fit: FlexFit.tight,
+        showSearchBox: true,
+        showSelectedItems: true,
+        searchFieldProps: TextFieldProps(
+          controller: searchController,
+          decoration: searchInputDecoration ??
+              InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                labelText: 'Search',
+                hintText: 'Search here ..',
+                prefixIcon: const Icon(Icons.search),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(color: Colors.blue, width: 2),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(color: Colors.black45, width: 2),
+                ),
+              ),
         ),
-      ),
-      child: DropdownSearch<String>(
-        popupProps: PopupProps.bottomSheet(
-          fit: FlexFit.tight,
-          showSearchBox: true,
-          showSelectedItems: true,
-          searchFieldProps: TextFieldProps(
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              labelText: 'Search',
-              hintText: 'Search here ..',
-              prefixIcon: const Icon(Icons.search),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: const BorderSide(color: Colors.blue, width: 2)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: const BorderSide(color: Colors.grey, width: 2)),
-              disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide:
-                      const BorderSide(color: Colors.black45, width: 2)),
-            ),
-          ),
-          itemBuilder: (
-            BuildContext context,
-            String? item,
-            bool isSelected,
-          ) {
-            return Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        width: 20, // Adjust the width as needed
-                        height: 20, // Adjust the height as needed
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 1.0,
-                          ),
-                          color: isSelected
-                              ? Colors.blueAccent
-                              : Colors.transparent,
+        itemBuilder: (BuildContext context, String? item, bool isSelected) {
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 1.0,
                         ),
+                        color: isSelected ? Colors.blueAccent : Colors.transparent,
                       ),
                     ),
-                    Expanded(
-                      flex: 6,
-                      child: ListTile(
-                        title: Text(
-                          item ?? '',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: isSelected ? Colors.blue : Colors.black,
-                          ),
+                  ),
+                  Expanded(
+                    flex: 6,
+                    child: ListTile(
+                      title: Text(
+                        item ?? '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: isSelected ? Colors.blue : Colors.black,
                         ),
-                        selected: isSelected,
                       ),
+                      selected: isSelected,
                     ),
-                  ],
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Colors.black45,
-                ),
-              ],
-            );
-          },
-        ),
-        items: items,
-        dropdownDecoratorProps: DropDownDecoratorProps(
-          dropdownSearchDecoration: InputDecoration(
-              fillColor: Colors.white,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-              labelText: labelText,
-              hintText: hintText,
-              prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-              labelStyle: const TextStyle(
-                color: Colors.black54, // Customize label text color
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+                  ),
+                ],
               ),
-              hintStyle: const TextStyle(
-                color: Colors.grey, // Customize hint text color
+              const Divider(
+                thickness: 1,
+                color: Colors.black45,
               ),
-              border: InputBorder.none),
-        ),
-        onChanged: onChanged,
-        selectedItem: value,
-        validator: validator,
+            ],
+          );
+        },
       ),
+      items: items,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+          labelText: labelText,
+          hintText: hintText,
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0), // Adjusted padding to remove extra space
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24),
+              borderSide: const BorderSide(
+                  color: Colors.blue, width: 2)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24),
+              borderSide: const BorderSide(
+                  color: Colors.grey, width: 2)),
+          disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24),
+              borderSide: const BorderSide(
+                  color: Colors.black45, width: 2)),
+        ),
+      ),
+      onChanged: onChanged,
+      selectedItem: value,
+      validator: validator,
     );
   }
 }

@@ -410,6 +410,7 @@ class _AddTripSheetScreenState extends State<AddTripSheetScreen> {
                             Expanded(
                               flex: 3,
                               child: CheckboxListTile(
+
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
                                   title: const Text(
@@ -818,7 +819,7 @@ class _AddTripSheetScreenState extends State<AddTripSheetScreen> {
                                 decoration: const InputDecoration(
                                   labelText: 'Tolly 1',
                                 ),
-                                validator: model.validate,
+
                                 readOnly: model.tripSheetData.oldTransporterCode == "SELF" ? false : true,
                                 onChanged: model.setSelectedTy_1,
                                 autofocus: true,
@@ -834,7 +835,7 @@ class _AddTripSheetScreenState extends State<AddTripSheetScreen> {
                                 decoration: const InputDecoration(
                                   labelText: 'Tolly 2',
                                 ),
-                                validator: model.validate,
+
                                 readOnly: model.tripSheetData.oldTransporterCode == "SELF" ? false : true,
                                 onChanged: model.setSelectedTy_2,
                                 autofocus: true,

@@ -42,7 +42,7 @@ Widget fullScreenLoader({
                   Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
-                    child: Text(
+                    child: const Text(
                       'Please Wait...',
                       style: TextStyle(
                         fontSize: 16,

@@ -20,6 +20,7 @@ class ListCaneModel extends BaseViewModel {
   String caneseasonFilter = "";
   String canevillageFilter = "";
   String plotNoFilter = "";
+  String latestSeason="";
 
   Color getTileColor(String? plantationStatus) {
     switch (plantationStatus) {
@@ -50,29 +51,22 @@ class ListCaneModel extends BaseViewModel {
     int currentYear = DateTime.now().year;
 
     // Filter the list to get the latest season
-    String latestSeason = seasonlist.firstWhere(
-          (season) => season.startsWith("$currentYear-"),
-      orElse: () => seasonlist.last, // If no season matches the current year, take the last one
-    );
-    seasonController.text=latestSeason;
+     latestSeason ="2024-2025";
+    seasonController.text="2024-2025";
     // canefilterList = caneList;
     await filterListByNameAndVillage(season: latestSeason);
     setBusy(false);
     if (seasonlist.isEmpty) {
       if(context.mounted){
-      logout(context);}
+      logout(context);
+      }
     }
     notifyListeners();
   }
 
 Future<void> refresh() async {
-  int currentYear = DateTime.now().year;
-
   // Filter the list to get the latest season
-  String latestSeason = seasonlist.firstWhere(
-        (season) => season.startsWith("$currentYear-"),
-    orElse: () => seasonlist.last, // If no season matches the current year, take the last one
-  );
+   latestSeason = "2024-2025";
   seasonController.text=latestSeason;
   await filterListByNameAndVillage(season: latestSeason);
   notifyListeners();

@@ -153,9 +153,9 @@ class AddTripSheetModel extends BaseViewModel {
         AddTripSheetServices().fetchPlot(""),
         AddTripSheetServices().getMasters(),
       ]);
-
+Logger().i(results);
       // Assign results
-      plotList = results[0] as List<CropHarvestingModel>;
+      plotList = results[0] as List<CropHarvestingModel> ?? [];
       masters = results[1] as TripSheetMasters? ?? TripSheetMasters();
       // Initialize master lists
       season = masters.season ?? [];
@@ -169,11 +169,11 @@ class AddTripSheetModel extends BaseViewModel {
       tripSheetData.branch = "Bedkihal";
 Logger().i(masters.toJson());
       // Get the latest season
-      int currentYear = DateTime.now().year;
-      tripSheetData.season = season.firstWhere(
-            (seasonItem) => seasonItem.startsWith("$currentYear-"),
-        orElse: () => season.isNotEmpty ? season.last : "",
-      );
+      tripSheetData.season = "2024-2025";
+      //     season.firstWhere(
+      //       (seasonItem) => seasonItem.startsWith("$currentYear-"),
+      //   orElse: () => season.isNotEmpty ? season.last : "",
+      // );
 
       // Filter transporters for the selected season
       transportList = transportList.where((transporter) {
@@ -512,6 +512,7 @@ Logger().i(masters.toJson());
       tripSheetData.harvestingCodeHt = selectedGrowerData.name;
       harCode = selectedGrowerData.harvesterCode;
       tripSheetData.harvesterCodeH = harCode;
+      tripSheetData.harvesterCode=harCode;
       harName = selectedGrowerData.harvesterName;
       tripSheetData.harvesterNameH = harName;
     } else {
@@ -528,9 +529,6 @@ Logger().i(masters.toJson());
     // Update gangType regardless of "SELF" or not
     gangType = selectedGrowerData.gangType;
     tripSheetData.gangType = gangType;
-
-    Logger().i(tripSheetData.toJson());
-
     notifyListeners();
   }
 

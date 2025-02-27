@@ -14,7 +14,7 @@ class UserWiseRegistrationReport extends StatelessWidget {
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child) => Scaffold(
               appBar: AppBar(
-                title: const Text('User Wise Registration'),
+                title: const Text('Circle Wise Cane Registration'),
               ),
               body: fullScreenLoader(
                 context: context,
@@ -36,42 +36,21 @@ class UserWiseRegistrationReport extends StatelessWidget {
                                     onTap: () =>
                                         model.selectValidFromDate(context),
                                     decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 12.0),
-                                      labelText: 'From Date',
+                                      labelText: 'From Date*',
                                       hintText: 'From Date',
-                                      prefixIcon: const Icon(
-                                          Icons.calendar_today_rounded),
-                                      labelStyle: const TextStyle(
-                                        color: Colors.black54,
-                                        // Customize label text color
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      hintStyle: const TextStyle(
-                                        color: Colors
-                                            .grey, // Customize hint text color
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                      ),
+                                      prefixIcon: const Icon(Icons.calendar_today_rounded),
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0), // Adjust the padding
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors
-                                              .blue, // Customize focused border color
-                                        ),
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(color: Colors.blue, width: 2),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors
-                                              .grey, // Customize enabled border color
-                                        ),
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(color: Colors.grey, width: 2),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(color: Colors.black45, width: 2),
                                       ),
                                     ),
                                     onChanged: model.onFromDateDobChanged,
@@ -87,42 +66,21 @@ class UserWiseRegistrationReport extends StatelessWidget {
                                     onTap: () =>
                                         model.selectValidTolDate(context),
                                     decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 12.0),
-                                      labelText: 'To Date',
+                                      labelText: 'To Date*',
                                       hintText: 'To Date',
-                                      prefixIcon: const Icon(
-                                          Icons.calendar_today_rounded),
-                                      labelStyle: const TextStyle(
-                                        color: Colors.black54,
-                                        // Customize label text color
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      hintStyle: const TextStyle(
-                                        color: Colors
-                                            .grey, // Customize hint text color
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                      ),
+                                      prefixIcon: const Icon(Icons.calendar_today_rounded),
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0), // Adjust the padding
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors
-                                              .blue, // Customize focused border color
-                                        ),
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(color: Colors.blue, width: 2),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors
-                                              .grey, // Customize enabled border color
-                                        ),
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(color: Colors.grey, width: 2),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(color: Colors.black45, width: 2),
                                       ),
                                     ),
                                     onChanged: model.onToDateChanged,
@@ -133,38 +91,23 @@ class UserWiseRegistrationReport extends StatelessWidget {
                             const SizedBox(
                               height: 15,
                             ),
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: CustomDropdownButton2(
-                                  value: model.season,
-                                  prefixIcon: Icons.person_2,
-                                  items: model.seasonList,
-                                  hintText: 'Select the Season',
-                                  labelText: 'Season',
-                                  onChanged: model.setOperation,
-                                )),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                // Expanded(
-                                //     child: CustomDropdownButton2(
-                                //   value: model.workOrder,
-                                //   prefixIcon: Icons.person_2,
-                                //   items: model.customerGroup,
-                                //   hintText: 'Select the Customer group',
-                                //   labelText: 'Customer Group',
-                                //   onChanged: model.setWorkOrder,
-                                // )),
-                              ],
+                            Expanded(
+                                child: CustomDropdownButton2(
+                              value: model.season,
+                              prefixIcon: Icons.person_2,
+                              items: model.seasonList,
+                              hintText: 'Select the Season',
+                              labelText: 'Season',
+                              onChanged: model.setOperation,
+                            )),
+                            const SizedBox(
+                              width: 15,
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+
                     Expanded(
                       flex: 4,
                       child: SingleChildScrollView(
@@ -199,53 +142,6 @@ class UserWiseRegistrationReport extends StatelessWidget {
   }
 
   DataTable buildDataTable(UserRegistrationReportViewModel model) {
-    // Calculate totals for each month and overall
-    double totalPlJune =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.plJune ?? 0.0));
-    double totalRtJune =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.rtJune ?? 0.0));
-    double totalPlJuly =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.plJuly ?? 0.0));
-    double totalRtJuly =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.rtJuly ?? 0.0));
-    double totalPlAugust =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.plAugust ?? 0.0));
-    double totalRtAugust =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.rtAugust ?? 0.0));
-    double totalPlSeptember = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.plSeptember ?? 0.0));
-    double totalRtSeptember = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.rtSeptember ?? 0.0));
-    double totalPlOctober = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.plOctober ?? 0.0));
-    double totalRtOctober = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.rtOctober ?? 0.0));
-    double totalPlNovember = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.plNovember ?? 0.0));
-    double totalRtNovember = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.rtNovember ?? 0.0));
-    double totalPlDecember = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.plDecember ?? 0.0));
-    double totalRtDecember = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.rtDecember ?? 0.0));
-    double totalPlJanuary = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.plJanuary ?? 0.0));
-    double totalRtJanuary = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.rtJanuary ?? 0.0));
-    double totalPlFebruary = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.plFebruary ?? 0.0));
-    double totalRtFebruary = model.reportList
-        .fold(0.0, (sum, item) => sum + (item.rtFebruary ?? 0.0));
-    double totalPlMarch =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.plMarch ?? 0.0));
-    double totalRtMarch =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.rtMarch ?? 0.0));
-
-    double totalPlOverall =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.plTotal ?? 0.0));
-    double totalRtOverall =
-        model.reportList.fold(0.0, (sum, item) => sum + (item.rtTotal ?? 0.0));
-
     return DataTable(
       columnSpacing: 22.0,
       border: TableBorder.all(width: 1),
@@ -258,7 +154,7 @@ class UserWiseRegistrationReport extends StatelessWidget {
         ),
         DataColumn(
           label: Text(
-            'Village',
+            'Circle',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -396,107 +292,9 @@ class UserWiseRegistrationReport extends StatelessWidget {
         ),
       ],
       rows: List<DataRow>.generate(
-        model.reportList.length + 1,
+        model.reportList.length ,
         (int index) {
-          if (index == model.reportList.length) {
-            return DataRow(
-              cells: [
-                const DataCell(Text(
-                  'Total',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-                const DataCell(Text('')),
-                DataCell(Text(
-                  totalPlJune.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtJune.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlJuly.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtJuly.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlAugust.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtAugust.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlSeptember.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtSeptember.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlOctober.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtOctober.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlNovember.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtNovember.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlDecember.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtDecember.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlJanuary.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtJanuary.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlFebruary.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtFebruary.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlMarch.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtMarch.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalPlOverall.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  totalRtOverall.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )),
-              ],
-            );
-          } else {
+
             return DataRow(
               cells: [
                 DataCell(Text(
@@ -505,102 +303,102 @@ class UserWiseRegistrationReport extends StatelessWidget {
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].village.toString(),
+                  model.reportList[index].circle.toString(),
                   style: const TextStyle(overflow: TextOverflow.ellipsis),
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plJune?.toString() ?? '0',
+                  model.reportList[index].newPlJune?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtJune?.toString() ?? '0',
+                  model.reportList[index].newRtJune?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plJuly?.toString() ?? '0',
+                  model.reportList[index].newPlJuly?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtJuly?.toString() ?? '0',
+                  model.reportList[index].newRtJuly?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plAugust?.toString() ?? '0',
+                  model.reportList[index].newRtAugust?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtAugust?.toString() ?? '0',
+                  model.reportList[index].newRtAugust?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plSeptember?.toString() ?? '0',
+                  model.reportList[index].newPlSeptember?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtSeptember?.toString() ?? '0',
+                  model.reportList[index].newRtSeptember?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plOctober?.toString() ?? '0',
+                  model.reportList[index].newPlOctober?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtOctober?.toString() ?? '0',
+                  model.reportList[index].newRtOctober?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plNovember?.toString() ?? '0',
+                  model.reportList[index].newPlNovember?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtNovember?.toString() ?? '0',
+                  model.reportList[index].newRtNovember?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plDecember?.toString() ?? '0',
+                  model.reportList[index].newPlDecember?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtDecember?.toString() ?? '0',
+                  model.reportList[index].newRtDecember?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plJanuary?.toString() ?? '0',
+                  model.reportList[index].newPlJanuary?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtJanuary?.toString() ?? '0',
+                  model.reportList[index].newRtJanuary?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plFebruary?.toString() ?? '0',
+                  model.reportList[index].newPlFebruary?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtFebruary?.toString() ?? '0',
+                  model.reportList[index].newRtFebruary?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plMarch?.toString() ?? '0',
+                  model.reportList[index].newPlMarch?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtMarch?.toString() ?? '0',
+                  model.reportList[index].newRtMarch?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].plTotal?.toString() ?? '0',
+                  model.reportList[index].newPlTotal?.toString() ?? '0',
                   maxLines: 2,
                 )),
                 DataCell(Text(
-                  model.reportList[index].rtTotal?.toString() ?? '0',
+                  model.reportList[index].newRtTotal?.toString() ?? '0',
                   maxLines: 2,
                 )),
               ],
             );
           }
-        },
+
       ),
     );
   }
