@@ -15,6 +15,7 @@ import 'package:sugar_mill_app/views/reports/Cane%20Registration%20Report/cane_r
 import 'package:sugar_mill_app/views/reports/report_screen.dart';
 import 'package:sugar_mill_app/views/reports/userwise%20cane%20register/userwise_registration_screen.dart';
 import 'package:sugar_mill_app/views/reports/varitywise%20cane%20registration%20data/varietywise_cane_registration_screen.dart';
+import 'package:sugar_mill_app/views/reports/yard_balance/yard_balane_screen.dart';
 import 'package:sugar_mill_app/views/splash_screen_view/splash_screen.dart';
 import 'package:sugar_mill_app/views/tripsheet_screen/add_tripsheet_list/add_tripsheet_list_screen.dart';
 import 'package:sugar_mill_app/views/tripsheet_screen/add_tripsheet_view/add_tripsheet_screen.dart';
@@ -50,7 +51,8 @@ import 'views/farmer_screens/list_farmers_view/list_farmers_screen.dart';
     MaterialRoute(page: UserWiseRegistrationReport),
     MaterialRoute(page: ReportScreen),
     MaterialRoute(page: CaneRegistrationReport),
-    MaterialRoute(page: VarietyWiseCaneRegistrationReport)
+    MaterialRoute(page: VarietyWiseCaneRegistrationReport),
+     MaterialRoute(page: YardBalaneScreen)
 
   ],
   dependencies: [

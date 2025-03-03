@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:sugar_mill_app/models/yard_balance.dart';
 
 import '../constants.dart';
 import '../models/cane_master_report_model.dart';
@@ -110,8 +111,7 @@ class ReportServices {
     }
   }
 
-
-  Future<CircleData?> fetchVarietyWiseRegistration(String season, String startDate, String endDate) async {
+ Future<List<VarietyWisePlotReportmodel>> fetchVarietyWiseRegistration(String season, String startDate, String endDate) async {
     try {
       var data = json.encode({
         "start_date": startDate,
@@ -130,12 +130,21 @@ class ReportServices {
           ),
           data: data);
       if (response.statusCode == 200) {
- // Extract the 'job_card' array
-Logger().i(response.data['data']);
-        return CircleData.fromJson(response.data["data"]);
+        List<dynamic> jsonData =
+            response.data['data']; // Extract the 'job_card' array
+        List<VarietyWisePlotReportmodel> jobSummaries = [];
+        Logger().i(jsonData);
+        // Parse each item in the 'job_card' array
+        for (var item in jsonData) {
+          // Check if the item is a map (not the total summary at the end)
+          if (item is Map<String, dynamic>) {
+            jobSummaries.add(VarietyWisePlotReportmodel.fromJson(item));
+          }
+        }
+        return jobSummaries;
       } else {
         Fluttertoast.showToast(msg: "Unable to fetch job cards");
-        return null;
+        return [];
       }
     } on DioException catch (e) {
       if (e.response != null && e.response!.data != null) {
@@ -157,7 +166,65 @@ Logger().i(response.data['data']);
         );
         Logger().e(e.message);
       }
-      return null;
+      return [];
+    }
+  }
+
+
+ Future<List<YardBalance>> fetchyardBalance(String season) async {
+    try {
+      var data = json.encode({
+        "season": season,
+      });
+      Logger().i(data);
+      var dio = Dio();
+      var url =
+          '$apiBaseUrl/api/method/sugar_mill.sugar_mill.app.run_yard_balance';
+      Logger().i(url);
+      var response = await dio.request(url,
+          options: Options(
+            method: 'GET',
+            headers: {'Authorization': await getToken()},
+          ),
+          data: data);
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData =
+            response.data['data']; // Extract the 'job_card' array
+        List<YardBalance> jobSummaries = [];
+        Logger().i(jsonData);
+        // Parse each item in the 'job_card' array
+        for (var item in jsonData) {
+          // Check if the item is a map (not the total summary at the end)
+          if (item is Map<String, dynamic>) {
+            jobSummaries.add(YardBalance.fromJson(item));
+          }
+        }
+        return jobSummaries;
+      } else {
+        Fluttertoast.showToast(msg: "Unable to fetch job cards");
+        return [];
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response!.data != null) {
+        String errorMessage = e.response!.data.toString();
+        Fluttertoast.showToast(
+          gravity: ToastGravity.BOTTOM,
+          msg: 'Error: $errorMessage',
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
+        );
+        Logger().e(errorMessage);
+      } else {
+        // Handle Dio errors without response data
+        Fluttertoast.showToast(
+          gravity: ToastGravity.BOTTOM,
+          msg: 'Error: ${e.message}',
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
+        );
+        Logger().e(e.message);
+      }
+      return [];
     }
   }
 

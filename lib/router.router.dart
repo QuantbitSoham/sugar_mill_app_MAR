@@ -5,11 +5,11 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i20;
+import 'package:flutter/material.dart' as _i21;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i22;
-import 'package:sugar_mill_app/models/aadharData_model.dart' as _i21;
+import 'package:stacked_services/stacked_services.dart' as _i23;
+import 'package:sugar_mill_app/models/aadharData_model.dart' as _i22;
 import 'package:sugar_mill_app/views/agriculture_screens/add_agri_view/add_agri_screen.dart'
     as _i9;
 import 'package:sugar_mill_app/views/agriculture_screens/list_agri_view/list_agri_screen.dart'
@@ -37,6 +37,8 @@ import 'package:sugar_mill_app/views/reports/userwise%20cane%20register/userwise
     as _i16;
 import 'package:sugar_mill_app/views/reports/varitywise%20cane%20registration%20data/varietywise_cane_registration_screen.dart'
     as _i19;
+import 'package:sugar_mill_app/views/reports/yard_balance/yard_balane_screen.dart'
+    as _i20;
 import 'package:sugar_mill_app/views/splash_screen_view/splash_screen.dart'
     as _i2;
 import 'package:sugar_mill_app/views/tripsheet_screen/add_tripsheet_list/add_tripsheet_list_screen.dart'
@@ -82,6 +84,8 @@ class Routes {
   static const varietyWiseCaneRegistrationReport =
       '/variety-wise-cane-registration-report';
 
+  static const yardBalaneScreen = '/yard-balane-screen';
+
   static const all = <String>{
     splashScreen,
     homePageScreen,
@@ -101,6 +105,7 @@ class Routes {
     reportScreen,
     caneRegistrationReport,
     varietyWiseCaneRegistrationReport,
+    yardBalaneScreen,
   };
 }
 
@@ -178,124 +183,134 @@ class StackedRouter extends _i1.RouterBase {
       Routes.varietyWiseCaneRegistrationReport,
       page: _i19.VarietyWiseCaneRegistrationReport,
     ),
+    _i1.RouteDef(
+      Routes.yardBalaneScreen,
+      page: _i20.YardBalaneScreen,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashScreen(),
         settings: data,
       );
     },
     _i3.HomePageScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.HomePageScreen(),
         settings: data,
       );
     },
     _i4.LoginViewScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.LoginViewScreen(),
         settings: data,
       );
     },
     _i5.AddFarmerScreen: (data) {
       final args = data.getArgs<AddFarmerScreenArguments>(nullOk: false);
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.AddFarmerScreen(
             key: args.key, farmerid: args.farmerid, qrdata: args.qrdata),
         settings: data,
       );
     },
     _i6.ListFarmersScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.ListFarmersScreen(),
         settings: data,
       );
     },
     _i7.AddCaneScreen: (data) {
       final args = data.getArgs<AddCaneScreenArguments>(nullOk: false);
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i7.AddCaneScreen(key: args.key, caneId: args.caneId),
         settings: data,
       );
     },
     _i8.ListCaneScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.ListCaneScreen(),
         settings: data,
       );
     },
     _i9.AddAgriScreen: (data) {
       final args = data.getArgs<AddAgriScreenArguments>(nullOk: false);
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i9.AddAgriScreen(key: args.key, agriId: args.agriId),
         settings: data,
       );
     },
     _i10.ListAgriScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i10.ListAgriScreen(),
         settings: data,
       );
     },
     _i11.AddCropSamplingScreen: (data) {
       final args = data.getArgs<AddCropSamplingScreenArguments>(nullOk: false);
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.AddCropSamplingScreen(
             key: args.key, samplingId: args.samplingId),
         settings: data,
       );
     },
     _i12.ListSamplingScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i12.ListSamplingScreen(),
         settings: data,
       );
     },
     _i13.ListCompletedSamplingScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i13.ListCompletedSamplingScreen(),
         settings: data,
       );
     },
     _i14.AddTripSheetScreen: (data) {
       final args = data.getArgs<AddTripSheetScreenArguments>(nullOk: false);
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i14.AddTripSheetScreen(key: args.key, tripId: args.tripId),
         settings: data,
       );
     },
     _i15.TripsheetMaster: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i15.TripsheetMaster(),
         settings: data,
       );
     },
     _i16.UserWiseRegistrationReport: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i16.UserWiseRegistrationReport(),
         settings: data,
       );
     },
     _i17.ReportScreen: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i17.ReportScreen(),
         settings: data,
       );
     },
     _i18.CaneRegistrationReport: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i18.CaneRegistrationReport(),
         settings: data,
       );
     },
     _i19.VarietyWiseCaneRegistrationReport: (data) {
-      return _i20.MaterialPageRoute<dynamic>(
+      return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => const _i19.VarietyWiseCaneRegistrationReport(),
+        settings: data,
+      );
+    },
+    _i20.YardBalaneScreen: (data) {
+      return _i21.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i20.YardBalaneScreen(),
         settings: data,
       );
     },
@@ -315,11 +330,11 @@ class AddFarmerScreenArguments {
     required this.qrdata,
   });
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String farmerid;
 
-  final _i21.aadharData qrdata;
+  final _i22.aadharData qrdata;
 
   @override
   String toString() {
@@ -346,7 +361,7 @@ class AddCaneScreenArguments {
     required this.caneId,
   });
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String caneId;
 
@@ -373,7 +388,7 @@ class AddAgriScreenArguments {
     required this.agriId,
   });
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String agriId;
 
@@ -400,7 +415,7 @@ class AddCropSamplingScreenArguments {
     required this.samplingId,
   });
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String samplingId;
 
@@ -427,7 +442,7 @@ class AddTripSheetScreenArguments {
     required this.tripId,
   });
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String tripId;
 
@@ -448,7 +463,7 @@ class AddTripSheetScreenArguments {
   }
 }
 
-extension NavigatorStateExtension on _i22.NavigationService {
+extension NavigatorStateExtension on _i23.NavigationService {
   Future<dynamic> navigateToSplashScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -492,9 +507,9 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToAddFarmerScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String farmerid,
-    required _i21.aadharData qrdata,
+    required _i22.aadharData qrdata,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -525,7 +540,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToAddCaneScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String caneId,
     int? routerId,
     bool preventDuplicates = true,
@@ -556,7 +571,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToAddAgriScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String agriId,
     int? routerId,
     bool preventDuplicates = true,
@@ -587,7 +602,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToAddCropSamplingScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String samplingId,
     int? routerId,
     bool preventDuplicates = true,
@@ -633,7 +648,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToAddTripSheetScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String tripId,
     int? routerId,
     bool preventDuplicates = true,
@@ -719,6 +734,20 @@ extension NavigatorStateExtension on _i22.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToYardBalaneScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.yardBalaneScreen,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithSplashScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -762,9 +791,9 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithAddFarmerScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String farmerid,
-    required _i21.aadharData qrdata,
+    required _i22.aadharData qrdata,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -795,7 +824,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithAddCaneScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String caneId,
     int? routerId,
     bool preventDuplicates = true,
@@ -826,7 +855,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithAddAgriScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String agriId,
     int? routerId,
     bool preventDuplicates = true,
@@ -857,7 +886,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithAddCropSamplingScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String samplingId,
     int? routerId,
     bool preventDuplicates = true,
@@ -903,7 +932,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithAddTripSheetScreen({
-    _i20.Key? key,
+    _i21.Key? key,
     required String tripId,
     int? routerId,
     bool preventDuplicates = true,
@@ -983,6 +1012,20 @@ extension NavigatorStateExtension on _i22.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.varietyWiseCaneRegistrationReport,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithYardBalaneScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.yardBalaneScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

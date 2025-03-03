@@ -42,6 +42,13 @@ class ReportScreen extends StatelessWidget {
                     subtitle: 'Variety Wise Cane Registration Area',
                     routeName: Routes.varietyWiseCaneRegistrationReport,
                   ),
+                   _buildReportCard(
+                    context,
+                    icon: Icons.receipt_long_outlined,
+                    title: 'Yard balance vehicle wise',
+                    subtitle: 'Pie chart of the yard balance',
+                    routeName: Routes.yardBalaneScreen,
+                  ),
                 ],
               ),
             ),
